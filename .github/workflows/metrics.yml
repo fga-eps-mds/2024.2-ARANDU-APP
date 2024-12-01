@@ -23,6 +23,7 @@ jobs:
           
       - name: Cria arquivo .env
         run: |
+        
           touch ./sonar_scripts/.env
           echo GITHUB_TOKEN=${{ secrets.API_TOKEN_GITHUB }} >> ./sonar_scripts/.env
           echo RELEASE_MAJOR=${{ contains(github.event.pull_request.labels.*.name, 'MAJOR RELEASE') }} >> ./sonar_scripts/.env

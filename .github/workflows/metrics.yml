@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
           
       - name: Install dotenv
-        run: pip install python-dotenv packaging
+        run: pip install python-dotenv packaging pandas
           
       - name: Cria arquivo .env
         run: |

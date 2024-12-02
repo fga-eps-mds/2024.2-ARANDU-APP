@@ -29,7 +29,7 @@ jobs:
           echo RELEASE_MAJOR=${{ contains(github.event.pull_request.labels.*.name, 'MAJOR RELEASE') }} >> ./sonar_scripts/.env
           echo RELEASE_MINOR=${{ contains(github.event.pull_request.labels.*.name, 'MINOR RELEASE') }} >> ./sonar_scripts/.env
           echo RELEASE_FIX=${{ contains(github.event.pull_request.labels.*.name, 'FIX RELEASE') }} >> ./sonar_scripts/.env
-          echo DEVELOP=${{ contains(github.event.pull_request.labels.*.name, 'DEVELOP') }} >> ./sonar_scripts/.env
+          echo DEVELOP=${{ contains(github.event.pull_request.labels.*.name, 'DEV') }} >> ./sonar_scripts/.env
           echo REPO=${{ github.event.repository.name }} >> ./sonar_scripts/.env
           echo REPO_DOC=${{ secrets.GIT_DOC_REPO }} >> ./sonar_scripts/.env
 

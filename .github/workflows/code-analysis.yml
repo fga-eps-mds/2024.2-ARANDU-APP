@@ -33,4 +33,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: $HOME/.sonar/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner -Dsonar.projectKey=fga-eps-mds_2024.2-ARANDU-APP -Dsonar.organization=fga-eps-mds-1 -Dsonar.sources=./lib -Dsonar.tests=./test -Dsonar.dart.lcov.reportPaths=./coverage/lcov.info -Dsonar.exclusions={**/assets/**, .github/**, scripts/**, **/*.g.dart}
+        run: $HOME/.sonar/sonar-scanner-6.2.1.4610-linux-x64/bin/sonar-scanner -Dproject.settings=./sonar-project.properties

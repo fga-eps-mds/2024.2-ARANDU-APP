@@ -22,7 +22,7 @@ jobs:
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
       - name: Build
-        run: flutter run lib/main.dart
+        run: flutter build
       - name: Execute tests
         run: flutter test --coverage
       - name: Download sonar-scanner

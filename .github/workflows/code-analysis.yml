@@ -5,7 +5,6 @@ on:
       - dev
   pull_request:
     types: [opened, synchronize, reopened]
-
 jobs:
   sonarcloud:
     name: SonarCloud
@@ -13,29 +12,39 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      #2 Setup Java
       - name: Set Up Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v3.12.0
         with:
-          distribution: 'adopt'
+          distribution: 'oracle'
           java-version: '17'
+      #3 Setup Flutter
       - name: Set Up Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.24.3'
           channel: 'stable'
+      #4 Install Dependencies
       - name: Install Dependencies
         run: flutter pub get
+      #5 Run flutter tests
       - name: Run Flutter Tests
         run: flutter test --coverage
+      #6 Run Sonar cloud scan
       - name: SonarCloud Scan
-        uses: sonarsource/sonarcloud-github-action@v1
-        with:
-          args: >
-            -Dsonar.organization=fga-eps-mds-1
-            -Dsonar.projectKey=fga-eps-mds_2024.2-ARANDU-APP
-            -Dsonar.sources=./lib
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
         env:
-          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}
+          GITHUB_TOKEN: ${{ secrets.API_TOKEN_GITHUB }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          export SONAR_SCANNER_VERSION=6.2.1.4610
+          export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux-x64
+          curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux-x64.zip
+          unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+          export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+          export SONAR_SCANNER_OPTS="-server"
+          sonar-scanner \
+            -Dsonar.organization=fga-eps-mds-1 \
+            -Dsonar.projectKey=fga-eps-mds_2024.2-ARANDU-APP\
+            -Dsonar.sources=./lib \
+            -Dsonar.host.url=https://sonarcloud.io

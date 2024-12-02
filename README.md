@@ -1,4 +1,4 @@
-# aranduapp
+# APP em Flutter para o Projeto Arandu
 
 A new Flutter project.
 

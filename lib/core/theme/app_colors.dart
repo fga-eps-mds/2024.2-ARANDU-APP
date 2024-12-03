@@ -44,6 +44,25 @@ class AppColors {
   }
 }
 
+class _GradientColors {
+  final LinearGradient orange = LinearGradient(
+    colors: [fromHex('#FB923C'), fromHex('#C2410C')],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+  final LinearGradient cyan = LinearGradient(
+    colors: [fromHex('#38CFE3'), fromHex('#0E7490')],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+}
+
+class _Alerts {
+  final Color error = fromHex('#C00F0C');
+  final Color alert = fromHex('#D4B139');
+  final Color success = fromHex('#5A9D4B');
+}
+
 class _Colors {
   final Color background;
   final Color secBackground;
@@ -64,23 +83,4 @@ class _Colors {
     required this.losang,
     required this.colorDesenho,
   });
-}
-
-class _GradientColors {
-  final LinearGradient orange = LinearGradient(
-    colors: [fromHex('#FB923C'), fromHex('#C2410C')],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-  final LinearGradient cyan = LinearGradient(
-    colors: [fromHex('#38CFE3'), fromHex('#0E7490')],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-}
-
-class _Alerts {
-  final Color error = fromHex('#C00F0C');
-  final Color alert = fromHex('#D4B139');
-  final Color success = fromHex('#5A9D4B');
 }

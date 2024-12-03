@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 class AppTypography {
   static late _Typography typography;
 
-  // Inicialização de acordo com o tema
   static void initialize(BuildContext context) {
     typography = (Theme.of(context).brightness == Brightness.dark)
         ? _darkTypography(context)
@@ -13,80 +12,78 @@ class AppTypography {
 
   static _Typography get current => typography;
 
-  // Função para tipografia para o tema claro
   static _Typography _lightTypography(BuildContext context) {
-    final colors = AppColors.current; // Obter as cores do tema atual
+    final colors = AppColors.current;
     return _Typography(
-      titleH1: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.bold, // Peso para título H1
-        fontSize: 26,
-        color: colors.tituloApp, // Usar a cor definida para o título
-      ),
-      titleH1SemiBold: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.w600, // Semi-bold para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
-      titleH1Medium: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.w500, // Medium para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
-      titleH1Regular: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.normal, // Regular para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
+      titleH1: _baseTextStyle('Amarante', 26, colors.tituloApp),
+      titleH2: _baseTextStyle('Amarante', 24, colors.tituloApp),
+      titleH3: _baseTextStyle('Amarante', 22, colors.tituloApp),
+      titleH4: _baseTextStyle('Amarante', 20, colors.tituloApp),
+      subtitleH1: _baseTextStyle('Dosis', 22, colors.subText),
+      subtitleH2: _baseTextStyle('Dosis', 20, colors.subText),
+      subtitleH3: _baseTextStyle('Dosis', 18, colors.subText),
+      subtitleH4: _baseTextStyle('Dosis', 16, colors.subText),
+      textH1: _baseTextStyle('Comfortaa', 16, colors.subText),
+      textH2: _baseTextStyle('Comfortaa', 14, colors.subText),
+      textH3: _baseTextStyle('Comfortaa', 12, colors.subText),
+      textH4: _baseTextStyle('Comfortaa', 10, colors.subText),
     );
   }
 
-  // Função para tipografia para o tema escuro
   static _Typography _darkTypography(BuildContext context) {
-    final colors = AppColors.current; // Obter as cores do tema atual
+    final colors = AppColors.current;
     return _Typography(
-      titleH1: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.bold,
-        fontSize: 26,
-        color: colors.tituloApp, // Usar a cor do tema escuro
-      ),
-      titleH1SemiBold: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.w600, // Semi-bold para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
-      titleH1Medium: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.w500, // Medium para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
-      titleH1Regular: TextStyle(
-        fontFamily: 'Amarante',
-        fontWeight: FontWeight.normal, // Regular para título H1
-        fontSize: 26,
-        color: colors.tituloApp,
-      ),
+      titleH1: _baseTextStyle('Amarante', 26, colors.tituloApp),
+      titleH2: _baseTextStyle('Amarante', 24, colors.tituloApp),
+      titleH3: _baseTextStyle('Amarante', 22, colors.tituloApp),
+      titleH4: _baseTextStyle('Amarante', 20, colors.tituloApp),
+      subtitleH1: _baseTextStyle('Dosis', 22, colors.subText),
+      subtitleH2: _baseTextStyle('Dosis', 20, colors.subText),
+      subtitleH3: _baseTextStyle('Dosis', 18, colors.subText),
+      subtitleH4: _baseTextStyle('Dosis', 16, colors.subText),
+      textH1: _baseTextStyle('Comfortaa', 16, colors.subText),
+      textH2: _baseTextStyle('Comfortaa', 14, colors.subText),
+      textH3: _baseTextStyle('Comfortaa', 12, colors.subText),
+      textH4: _baseTextStyle('Comfortaa', 10, colors.subText),
+    );
+  }
+
+  static TextStyle _baseTextStyle(
+      String fontFamily, double? fontSize, Color color) {
+    return TextStyle(
+      fontFamily: fontFamily,
+      fontSize: fontSize,
+      color: color,
     );
   }
 }
 
-// Classe que armazena as configurações de tipografia divididas por Títulos e Subtítulos
 class _Typography {
+  // Titles
   final TextStyle titleH1;
-  final TextStyle titleH1SemiBold;
-  final TextStyle titleH1Medium;
-  final TextStyle titleH1Regular;
-
+  final TextStyle titleH2;
+  final TextStyle titleH3;
+  final TextStyle titleH4;
+  final TextStyle subtitleH1;
+  final TextStyle subtitleH2;
+  final TextStyle subtitleH3;
+  final TextStyle subtitleH4;
+  final TextStyle textH1;
+  final TextStyle textH2;
+  final TextStyle textH3;
+  final TextStyle textH4;
   _Typography({
     required this.titleH1,
-    required this.titleH1SemiBold,
-    required this.titleH1Medium,
-    required this.titleH1Regular,
+    required this.titleH2,
+    required this.titleH3,
+    required this.titleH4,
+    required this.subtitleH1,
+    required this.subtitleH2,
+    required this.subtitleH3,
+    required this.subtitleH4,
+    required this.textH1,
+    required this.textH2,
+    required this.textH3,
+    required this.textH4,
   });
 }

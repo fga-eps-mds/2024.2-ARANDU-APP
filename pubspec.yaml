@@ -36,6 +36,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   logger: ^2.5.0
+  flex_color_scheme: ^8.0.2
+  google_fonts: ^6.2.1
+  path_provider: ^2.0.14
+  provider: ^6.1.2
+  local_auth: ^2.3.0
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:

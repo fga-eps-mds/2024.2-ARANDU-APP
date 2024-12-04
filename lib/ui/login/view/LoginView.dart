@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,7 +24,7 @@ class _Login extends StatefulWidget {
   const _Login({super.key});
 
   @override
-  State<StatefulWidget> createState() => _LoginState();
+  State<_Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<_Login> {
@@ -64,8 +66,9 @@ class _LoginState extends State<_Login> {
 
   Widget _authDevice(LoginViewModel viewModel) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const SizedBox(height: 20),
         Icon(
           Icons.lock_sharp,
           color: Theme.of(context).colorScheme.primary,
@@ -89,6 +92,7 @@ class _LoginState extends State<_Login> {
       padding: const EdgeInsets.all(20),
       child: Column(
         children: [
+          const SizedBox(height: 20),
           const TitleSlogan(),
           const SizedBox(height: 40),
           Form(
@@ -111,7 +115,7 @@ class _LoginState extends State<_Login> {
           const SizedBox(height: 10),
           _forgotPassword(),
           const SizedBox(height: 20),
-          _loginButton(),
+          _loginButton(viewModel),
           const SizedBox(height: 20),
           _orSeparator(),
           const SizedBox(height: 20),
@@ -137,8 +141,12 @@ class _LoginState extends State<_Login> {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
+        style: const TextStyle(
+          color: Colors.black,
+        ),
         decoration: InputDecoration(
           hintText: hint,
+          hintStyle: const TextStyle(color: Colors.grey),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         ),
@@ -146,10 +154,17 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _loginButton() {
+  Widget _loginButton(LoginViewModel viewModel) {
     return GestureDetector(
-      onTap: () {
-        print("Botão pressionado!");
+      onTap: () async {
+        try {
+          await viewModel.loginWithEmailAndPassword();
+        } catch (e) {
+          // Opcional: exiba uma mensagem de erro caso algo dê errado
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erro ao fazer login: $e')),
+          );
+        }
       },
       child: Container(
         width: 315,
@@ -161,8 +176,8 @@ class _LoginState extends State<_Login> {
               Color(0xFFfb923c),
               Color(0xFFc2410c),
             ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: const Center(
@@ -190,7 +205,7 @@ class _LoginState extends State<_Login> {
         child: Text(
           "Esqueceu a senha?",
           style: Theme.of(context).textTheme.bodySmall!.apply(
-                color: Theme.of(context).colorScheme.primary,
+                color: Colors.black,
               ),
         ),
       ),
@@ -198,8 +213,8 @@ class _LoginState extends State<_Login> {
   }
 
   Widget _orSeparator() {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         Expanded(
           child: Divider(
             thickness: 1,
@@ -232,9 +247,9 @@ class _LoginState extends State<_Login> {
             print("Login com Google!");
           },
           icon: Image.asset(
-            '../assets/images/google.png', // Caminho da imagem
-            width: 40, // Ajuste o tamanho conforme necessário
-            height: 40, // Ajuste o tamanho conforme necessário
+            '../assets/images/google.png', // Corrigido o caminho
+            width: 40,
+            height: 40,
           ),
         ),
         const SizedBox(width: 20),
@@ -243,9 +258,9 @@ class _LoginState extends State<_Login> {
             print("Login!");
           },
           icon: Image.asset(
-            '../assets/images/icon.png', // Caminho da imagem
-            width: 40, // Ajuste o tamanho conforme necessário
-            height: 40, // Ajuste o tamanho conforme necessário
+            '../assets/images/icon.png', // Corrigido o caminho
+            width: 40,
+            height: 40,
           ),
         ),
       ],
@@ -257,8 +272,8 @@ class _LoginState extends State<_Login> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          "Criar conta?",
-          style: Theme.of(context).textTheme.bodySmall,
+          "Não tem uma conta?",
+          style: TextStyle(color: Colors.black),
         ),
         GestureDetector(
           onTap: () {
@@ -269,7 +284,7 @@ class _LoginState extends State<_Login> {
           child: Text(
             " Registre-se",
             style: Theme.of(context).textTheme.bodySmall!.apply(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Colors.blue,
                   fontWeightDelta: 1,
                 ),
           ),

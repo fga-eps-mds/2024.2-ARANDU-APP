@@ -96,7 +96,7 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-flutter:
+flutterAssets:
   assets:
     # Declare o caminho da pasta onde está sua imagem
     - assets/images/topo.png

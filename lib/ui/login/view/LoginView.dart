@@ -24,7 +24,7 @@ class Login extends StatelessWidget {
 }
 
 class _Login extends StatefulWidget {
-  const _Login({Key? key}) : super(key: key);
+  const _Login({super.key});
 
   @override
   State<StatefulWidget> createState() {

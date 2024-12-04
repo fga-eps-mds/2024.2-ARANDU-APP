@@ -96,11 +96,14 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
 
-flutter:
+
   assets:
     # Declare o caminho da pasta onde está sua imagem
     - assets/images/topo.png
     - assets/images/losang.png
+    - assets/images/Component1.png
+    - assets/images/Component2.png
+    - assets/images/Component3.png
 
 
   fonts:

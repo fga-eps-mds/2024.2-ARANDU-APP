@@ -1,7 +1,8 @@
-import 'package:aranduapp/config/ThemeApp.dart';
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/login/view/LoginView.dart';
-import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
+import 'package:provider/provider.dart';
+import 'package:aranduapp/config/ThemeApp.dart';
+import 'package:aranduapp/ui/onboarding/view/onboarding_page.dart'; // Certifique-se de que o caminho esteja correto
+import 'package:aranduapp/ui/onboarding/viewModel/onboarding_view_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +13,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeApp.themeData(),
-      debugShowCheckedModeBanner: false,
-      home: RegisterAccount(),
+    return ChangeNotifierProvider(
+      create: (_) => OnboardingViewModel(),
+      child: MaterialApp(
+        theme: ThemeApp.themeData(), // Usando seu tema customizado
+        debugShowCheckedModeBanner: false,
+        home:
+            OnboardingPage(), // Substituindo RegisterAccount por OnboardingPage
+      ),
     );
   }
 }

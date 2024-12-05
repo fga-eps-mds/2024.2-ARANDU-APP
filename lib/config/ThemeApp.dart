@@ -1,69 +1,85 @@
 import 'package:flutter/material.dart';
-
-// TODO: colcar o nosso tema e tirar essas duas dependencia
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:aranduapp/core/theme/style/app_colors.dart';
+import 'package:aranduapp/core/theme/style/app_typography.dart';
 
 class ThemeApp {
+  static ThemeData themeData(BuildContext context) {
+    AppColors.initialize(context);
+    AppTypography.initialize(context);
 
- static var textTheme =  const TextTheme( 
-    headlineLarge: TextStyle (
-      fontWeight: FontWeight.w700,
-      fontSize: 36
-    ),
-  );
-
-
- static themeData(){
-    return FlexThemeData.light(
-        scheme: FlexScheme.redWine,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 7,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 10,
-          blendOnColors: false,
-          useTextTheme: true,
-          useM2StyleDividerInM3: true,
-          alignedDropdown: true,
-          useInputDecoratorThemeInDialogs: true,
+    return ThemeData(
+      brightness: Brightness.light,
+      primaryColor: AppColors.current.tituloApp,
+      scaffoldBackgroundColor: AppColors.current.background,
+      textTheme: TextTheme(
+        displayLarge: AppTypography.current.title28,
+        displayMedium: AppTypography.current.title26,
+        titleMedium: AppTypography.current.subtitle22,
+        bodyLarge: AppTypography.current.text16,
+        bodyMedium: AppTypography.current.text14,
+      ),
+      colorScheme: ColorScheme.light(
+        primary: AppColors.current.tituloApp,
+        secondary: AppColors.current.losang,
+        surface: AppColors.current.background,
+        onPrimary: AppColors.current.text,
+        onSecondary: AppColors.current.text,
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.current.text,
+          backgroundColor: AppColors.current.secBackground,
         ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: true,
-        swapLegacyOnMaterial3: true,
-        fontFamily: GoogleFonts.notoSans().fontFamily,
-
-        textTheme:  textTheme,
-
-        appBarBackground: FlexColor.redWineLightPrimary
-
-         
-      );
-
-    
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: AppColors.current.losang,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: AppColors.current.background,
+          backgroundColor: AppColors.current.tituloApp,
+        ),
+      ),
+    );
   }
 
- static darkThemeData(){
-      return FlexThemeData.dark(
-        scheme: FlexScheme.redWine,
-        surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
-        blendLevel: 13,
-        subThemesData: const FlexSubThemesData(
-          blendOnLevel: 20,
-          useTextTheme: true,
-          useM2StyleDividerInM3: true,
-          alignedDropdown: true,
-          useInputDecoratorThemeInDialogs: true,
+  static ThemeData darkThemeData(BuildContext context) {
+    AppColors.initialize(context);
+    AppTypography.initialize(context);
+
+    return ThemeData(
+      brightness: Brightness.dark,
+      primaryColor: AppColors.current.tituloApp,
+      scaffoldBackgroundColor: AppColors.current.background,
+      textTheme: TextTheme(
+        displayLarge: AppTypography.current.title28,
+        displayMedium: AppTypography.current.title26,
+        titleMedium: AppTypography.current.subtitle22,
+        bodyLarge: AppTypography.current.text16,
+        bodyMedium: AppTypography.current.text14,
+      ),
+      colorScheme: ColorScheme.dark(
+        primary: AppColors.current.tituloApp,
+        secondary: AppColors.current.losang,
+        surface: AppColors.current.background,
+        onPrimary: AppColors.current.text,
+        onSecondary: AppColors.current.text,
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.current.text,
+          backgroundColor: AppColors.current.secBackground,
         ),
-        visualDensity: FlexColorScheme.comfortablePlatformDensity,
-        useMaterial3: true,
-        swapLegacyOnMaterial3: true,
-        fontFamily: GoogleFonts.notoSans().fontFamily,
-
-
-        textTheme:  textTheme,
-
-        appBarBackground: FlexColor.redWineDarkPrimary
-      );   
+      ),
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: AppColors.current.losang,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          foregroundColor: AppColors.current.background,
+          backgroundColor: AppColors.current.tituloApp,
+        ),
+      ),
+    );
   }
-
 }

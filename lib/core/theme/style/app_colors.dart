@@ -1,4 +1,4 @@
-import 'package:aranduapp/core/utils/color_utils.dart';
+import 'package:aranduapp/core/theme/service/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {

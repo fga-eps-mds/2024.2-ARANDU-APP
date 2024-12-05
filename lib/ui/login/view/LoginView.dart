@@ -1,7 +1,8 @@
-import 'package:aranduapp/core/theme/app_typography.dart';
+import 'package:aranduapp/core/theme/style/app_colors.dart';
+import 'package:aranduapp/core/theme/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../../../core/theme/service/theme_provider.dart';
 import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
 
 import 'package:aranduapp/ui/recover_account/view/RecoverAccount.dart';
@@ -48,6 +49,22 @@ class _LoginState extends State<_Login> {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Arandu App'),
+          actions: [
+            IconButton(
+              icon: Icon(
+                Provider.of<ThemeProvider>(context).isDarkMode
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+              ),
+              onPressed: () {
+                Provider.of<ThemeProvider>(context, listen: false)
+                    .toggleTheme();
+              },
+            ),
+          ],
+        ),
         body: FutureBuilder(
             future: _future,
             builder: (context, snapshot) {
@@ -76,7 +93,7 @@ class _LoginState extends State<_Login> {
           child: Center(
             child: Icon(
               Icons.lock_sharp,
-              color: Theme.of(context).colorScheme.primary,
+              color: AppColors.colors.losang,
               size: 120,
             ),
           ),
@@ -161,13 +178,8 @@ class _LoginState extends State<_Login> {
         alignment: Alignment.centerRight,
         child: Padding(
           padding: const EdgeInsets.only(top: 13, right: 20),
-          child: Text(
-            'esqueceu a senha ?',
-            textAlign: TextAlign.right,
-            style: Theme.of(context).textTheme.bodySmall!.apply(
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-          ),
+          child: Text('esqueceu a senha ?',
+              textAlign: TextAlign.right, style: AppTypography.current.text10),
         ),
       ),
     );
@@ -177,7 +189,19 @@ class _LoginState extends State<_Login> {
     return SizedBox(
       width: 291,
       height: 64,
-      child: ElevatedButton(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: AppColors.currentGradients.orange,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
           onPressed: () {
             viewModel
                 .loginWithEmailAndPassword()
@@ -190,8 +214,12 @@ class _LoginState extends State<_Login> {
           child: Consumer<LoginViewModel>(
             builder: (context, value, child) => value.isLoading
                 ? const CircularProgressIndicator(value: null)
-                : const Text('Entrar'),
-          )),
+                : const Text(
+                    'Entrar',
+                  ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -201,10 +229,9 @@ class _LoginState extends State<_Login> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            'É novo por aqui?',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
+          Text('É novo por aqui?',
+              style: AppTypography.current.subtitle16
+                  .copyWith(fontWeight: FontWeight.bold)),
           GestureDetector(
             onTap: () {
               Navigator.of(context).push(
@@ -215,8 +242,8 @@ class _LoginState extends State<_Login> {
             },
             child: SizedBox(
               child: Text(' Crie a sua conta',
-                  style: AppTypography.current.titleH1.copyWith(
-                    fontWeight: FontWeight.bold,
+                  style: AppTypography.current.title24.copyWith(
+                    fontWeight: FontWeight.w400,
                   )),
             ),
           ),

@@ -1,45 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/core/theme/app_typography.dart';
+import '/core/theme/app_colors.dart';
+import '/ui/register_account/viewModel/RegisterAccountViewModel.dart';
 
 class RegisterAccount extends StatelessWidget {
   const RegisterAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => RegisterAccountViewModel(),
+      child: const _RegisterAccount(),
+    );
+  }
+}
+
+class _RegisterAccount extends StatefulWidget {
+  const _RegisterAccount({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _RegisterAccountState();
+}
+
+class _RegisterAccountState extends State<_RegisterAccount> {
+  @override
+  Widget build(BuildContext context) {
+    AppColors.initialize(context);
+    AppTypography.initialize(context);
+    RegisterAccountViewModel viewModel = Provider.of<RegisterAccountViewModel>(context);
+
     return Scaffold(
-      body: Column(
-        children: [
-          // Cabeçalho com padrão de losangos
-          Stack(
+      backgroundColor: AppColors.current.background,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
             children: [
-              // Padrão de losangos
-              Container(
-                height: 100,
-                color: Colors.white,
-                child: CustomPaint(
-                  size: const Size(double.infinity, 100),
-                  painter: DiamondPainter(),
-                ),
+              const SizedBox(height: 40),
+              // Logo e título
+              Column(
+                children: [
+                  Image.asset(
+                    'assets/images/logo.png', // Certifique-se de usar o caminho correto
+                    height: 80,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    'Olá,\nCrie uma conta',
+                    textAlign: TextAlign.center,
+                    style: AppTypography.current.titleH1.copyWith(
+                      color: AppColors.current.tituloApp,
+                    ),
+                  ),
+                ],
               ),
-              // Logotipo centralizado
-              Positioned(
-                top: 40,
-                left: 0,
-                right: 0,
+              const SizedBox(height: 20),
+              // Formulário
+              Form(
+                key: viewModel.formKey,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: const BoxDecoration(
-                        color: Colors.orange,
-                        shape: BoxShape.circle,
+                    _buildTextField(
+                      controller: viewModel.firstNameController,
+                      labelText: 'Primeiro Nome',
+                    ),
+                    _buildTextField(
+                      controller: viewModel.lastNameController,
+                      labelText: 'Último Nome',
+                    ),
+                    _buildTextField(
+                      controller: viewModel.emailController,
+                      labelText: 'Email',
+                    ),
+                    _buildTextField(
+                      controller: viewModel.passwordController,
+                      labelText: 'Password',
+                      obscureText: true,
+                    ),
+                    _buildTextField(
+                      controller: viewModel.confPasswordController,
+                      labelText: 'Confirm Password',
+                      obscureText: true,
+                      validator: (value) => value != viewModel.passwordController.text
+                          ? 'As senhas não correspondem'
+                          : null,
+                    ),
+                    const SizedBox(height: 10),
+                    // Checkbox para termos
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: viewModel.isTermsAccepted,
+                          onChanged: (value) {
+                            viewModel.toggleTermsAccepted(value ?? false);
+                          },
+                        ),
+                        Expanded(
+                          child: Text(
+                            'Para continuar, aceite os termos de privacidade e políticas de uso',
+                            style: AppTypography.current.textH2,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    // Botão de cadastro
+                    ElevatedButton(
+                      onPressed: () async {
+                        if (viewModel.formKey.currentState?.validate() ?? false) {
+                          try {
+                            await viewModel.register();
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Cadastro realizado!', style: AppTypography.current.titleH2),
+                                content: Text(
+                                  'Sua conta foi criada com sucesso. Faça login para continuar.',
+                                  style: AppTypography.current.textH2,
+                                ),
+                              ),
+                            );
+                          } catch (e) {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: Text('Erro', style: AppTypography.current.titleH2),
+                                content: Text(e.toString(), style: AppTypography.current.textH2),
+                              ),
+                            );
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.current.tituloApp,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        minimumSize: const Size(double.infinity, 50),
                       ),
-                      child: const Text(
-                        'Arandú',
-                        style: TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Serif',
+                      child: viewModel.isLoading
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              'Registrar',
+                              style: AppTypography.current.textH1.copyWith(color: Colors.white),
+                            ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Linha divisória com "ou"
+                    Row(
+                      children: [
+                        const Expanded(child: Divider()),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            'ou',
+                            style: AppTypography.current.textH2,
+                          ),
+                        ),
+                        const Expanded(child: Divider()),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    // Botão de login com Google
+                    OutlinedButton.icon(
+                      onPressed: () {
+                        // Adicione funcionalidade do Google Login
+                      },
+                      icon: Image.asset(
+                        'assets/images/google_icon.png', // Certifique-se de usar o caminho correto
+                        height: 20,
+                      ),
+                      label: Text('Login com Google', style: AppTypography.current.textH1),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: AppColors.current.tituloApp),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        minimumSize: const Size(double.infinity, 50),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    // Link para fazer login
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context); // Voltar para a tela de login
+                      },
+                      child: Text.rich(
+                        TextSpan(
+                          text: 'Já tem uma conta? ',
+                          style: AppTypography.current.textH2.copyWith(color: AppColors.current.text),
+                          children: [
+                            TextSpan(
+                              text: 'faça login',
+                              style: AppTypography.current.textH2.copyWith(
+                                color: AppColors.current.tituloApp,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -48,155 +207,30 @@ class RegisterAccount extends StatelessWidget {
               ),
             ],
           ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Olá,\nCrie uma conta',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    _buildTextField('Primeiro Nome'),
-                    _buildTextField('Último Nome'),
-                    _buildTextField('Email', isEmail: true),
-                    _buildTextField('Password', isPassword: true),
-                    _buildTextField('Confirm Password', isPassword: true),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: false,
-                          onChanged: (value) {
-                            // Ação ao clicar no checkbox
-                          },
-                        ),
-                        const Expanded(
-                          child: Text(
-                            'Para continuar, aceite os termos de privacidade e políticas de uso',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Ação ao clicar no botão de cadastro
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        minimumSize: const Size(double.infinity, 50),
-                      ),
-                      child: const Text(
-                        'Registrar',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: const [
-                        Expanded(child: Divider()),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('ou'),
-                        ),
-                        Expanded(child: Divider()),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    IconButton(
-                      onPressed: () {
-                        // Ação ao usar o Google
-                      },
-                      icon: Image.network(
-                        'https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg',
-                        height: 36,
-                        width: 36,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        // Navegar para a tela de login
-                      },
-                      child: const Text(
-                        'Já tem uma conta? faça login',
-                        style: TextStyle(
-                          color: Colors.orange,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _buildTextField(String label, {bool isEmail = false, bool isPassword = false}) {
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String labelText,
+    bool obscureText = false,
+    String? Function(String?)? validator,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
-        obscureText: isPassword,
+      child: TextFormField(
+        controller: controller,
+        obscureText: obscureText,
         decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(fontSize: 14),
-          hintText: isEmail ? 'Digite seu e-mail' : 'Digite seu $label',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200],
+          labelText: labelText,
+          labelStyle: AppTypography.current.textH2.copyWith(color: AppColors.current.text),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        validator: validator ??
+            (value) => value == null || value.isEmpty ? 'Por favor, preencha este campo' : null,
       ),
     );
-  }
-}
-
-// Custom Painter para os losangos
-class DiamondPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(255, 161, 115, 77)
-      ..style = PaintingStyle.fill;
-
-    const diamondWidth = 40.0;
-    const diamondHeight = 20.0;
-
-    for (double x = -diamondWidth; x < size.width; x += diamondWidth) {
-      final path = Path()
-        ..moveTo(x + diamondWidth / 2, 0)
-        ..lineTo(x + diamondWidth, diamondHeight)
-        ..lineTo(x + 3 * diamondWidth / 2, 0)
-        ..lineTo(x + diamondWidth, -diamondHeight)
-        ..close();
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

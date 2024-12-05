@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/theme/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -213,12 +214,10 @@ class _LoginState extends State<_Login> {
               );
             },
             child: SizedBox(
-              child: Text(
-                ' Crie a sua conta',
-                style: Theme.of(context).textTheme.bodySmall!.apply(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
+              child: Text(' Crie a sua conta',
+                  style: AppTypography.current.titleH1.copyWith(
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
           ),
         ],

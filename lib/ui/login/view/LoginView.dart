@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
+
 import 'package:aranduapp/ui/recover_account/view/RecoverAccount.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
+
 import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
@@ -46,20 +48,18 @@ class _LoginState extends State<_Login> {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
     return Scaffold(
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return _loadingScreen(viewModel);
-          } else if (!snapshot.hasError) {
-            viewModel.loginWithDeviceAuth();
-            return _authDevice(viewModel);
-          } else {
-            return _emailAndPassword(viewModel);
-          }
-        },
-      ),
-    );
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return _loadingScreen(viewModel);
+              } else if (!snapshot.hasError) {
+                viewModel.loginWithDeviceAuth();
+                return _authDevice(viewModel);
+              } else {
+                return _emailAndPassword(viewModel);
+              }
+            }));
   }
 
   Widget _loadingScreen(LoginViewModel viewModel) {
@@ -104,36 +104,30 @@ class _LoginState extends State<_Login> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: const TitleSlogan(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 50),
-              child: _formSection(viewModel),
-            ),
-            _forgotPasswordLink(context),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: _loginButtonSection(context, viewModel),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: _createAccountLink(context),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: DividerWithText(text: 'OU'),
-            ),
-            // Google logo button
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              child: GoogleLoginButton(
-                onTap: () {},
+            const Expanded(
+              child: Center(
+                child: TitleSlogan(),
               ),
             ),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [_formSection(viewModel), _forgotPasswordLink(context)],
+            )),
+            Expanded(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _loginButtonSection(context, viewModel),
+                _createAccountLink(context)
+              ],
+            )),
+            _orDivider(),
+            GoogleLoginButton(onTap: () {
+              print("login com o google");
+            })
           ],
         ),
       ),
@@ -145,19 +139,13 @@ class _LoginState extends State<_Login> {
       key: viewModel.formKey,
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: TextEmail(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
-              controller: viewModel.emailController,
-            ),
+          TextEmail(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            controller: viewModel.emailController,
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: TextPassWord(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
-              controller: viewModel.passwordController,
-            ),
+          TextPassWord(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            controller: viewModel.passwordController,
           ),
         ],
       ),
@@ -174,14 +162,14 @@ class _LoginState extends State<_Login> {
         );
       },
       child: Align(
-        alignment: Alignment.center,
+        alignment: Alignment.centerRight,
         child: Padding(
           padding: const EdgeInsets.only(top: 13, right: 20),
           child: Text(
-            'Esqueceu a senha ?',
+            'esqueceu a senha ?',
             textAlign: TextAlign.right,
             style: Theme.of(context).textTheme.bodySmall!.apply(
-                  color: Colors.blue,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
           ),
         ),
@@ -191,33 +179,23 @@ class _LoginState extends State<_Login> {
 
   Widget _loginButtonSection(BuildContext context, LoginViewModel viewModel) {
     return SizedBox(
-      width: 315,
+      width: 291,
       height: 64,
       child: ElevatedButton(
-        onPressed: () {
-          viewModel
-              .loginWithEmailAndPassword()
-              .catchError((e) => showDialog<Object>(
-                    context: context,
-                    builder: (BuildContext context) =>
-                        ErrorPopUp(content: Text('$e')),
-                  ));
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xfffb923c),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25),
-          ),
-        ),
-        child: Consumer<LoginViewModel>(
-          builder: (context, value, child) => value.isLoading
-              ? const CircularProgressIndicator(value: null)
-              : const Text(
-                  'Entrar',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-        ),
-      ),
+          onPressed: () {
+            viewModel
+                .loginWithEmailAndPassword()
+                .catchError((e) => showDialog<Object>(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          ErrorPopUp(content: Text('$e')),
+                    ));
+          },
+          child: Consumer<LoginViewModel>(
+            builder: (context, value, child) => value.isLoading
+                ? const CircularProgressIndicator(value: null)
+                : const Text('Entrar'),
+          )),
     );
   }
 
@@ -243,7 +221,7 @@ class _LoginState extends State<_Login> {
               child: Text(
                 ' Crie a sua conta',
                 style: Theme.of(context).textTheme.bodySmall!.apply(
-                      color: Colors.blue,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
               ),
             ),
@@ -252,48 +230,29 @@ class _LoginState extends State<_Login> {
       ),
     );
   }
-}
 
-// Widget para Divider com texto
-class DividerWithText extends StatelessWidget {
-  final String text;
-  const DividerWithText({Key? key, required this.text}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Divider(
-            color: Colors.grey,
-            thickness: 1,
-            indent: 30,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Text(
-            text,
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontWeight: FontWeight.bold,
+  Widget _orDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: <Widget>[
+          const Expanded(child: Divider()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              'ou',
+              style: Theme.of(context).textTheme.bodyMedium!.apply(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
             ),
           ),
-        ),
-        Expanded(
-          child: Divider(
-            color: Colors.grey,
-            thickness: 1,
-            endIndent: 30,
-          ),
-        ),
-      ],
+          const Expanded(child: Divider()),
+        ],
+      ),
     );
   }
 }
 
-// Widget para o botão do Google
 class GoogleLoginButton extends StatelessWidget {
   final VoidCallback onTap;
   const GoogleLoginButton({Key? key, required this.onTap}) : super(key: key);
@@ -313,7 +272,7 @@ class GoogleLoginButton extends StatelessWidget {
         child: Icon(
           FontAwesomeIcons.google, // Ícone do Google
           size: 20,
-          color: Colors.blue, // Cor do ícone
+          color: Theme.of(context).colorScheme.primary, // Cor do ícone
         ),
       ),
     );

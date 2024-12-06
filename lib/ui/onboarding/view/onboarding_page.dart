@@ -55,128 +55,194 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   @override
   Widget build(BuildContext context) {
-    String currentImage = steps[_currentPage].imageAsset;
-
     return Scaffold(
       appBar: null,
       body: Stack(
         children: [
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(currentImage),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+          OnboardingImage(imageAsset: steps[_currentPage].imageAsset),
+          OnboardingSteps(
+            steps: steps,
+            pageController: _pageController,
           ),
-          Positioned(
-            top: MediaQuery.of(context).size.height * 0.6,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: steps.length,
-              itemBuilder: (context, index) {
-                OnboardingStep step = steps[index];
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        step.title,
-                        style: const TextStyle(
-                          fontFamily: 'Amarante',
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.start,
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        step.description,
-                        style: const TextStyle(
-                          fontFamily: 'Amarante',
-                          fontSize: 18,
-                        ),
-                        textAlign: TextAlign.justify,
-                      ),
-                    ],
+          NavigationButtons(
+            currentPage: _currentPage,
+            totalSteps: steps.length,
+            onNext: _goToNextPage,
+            onPrevious: _goToPreviousPage,
+          ),
+          if (_currentPage == steps.length - 1)
+            StartButton(
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterAccount(),
                   ),
                 );
               },
             ),
+        ],
+      ),
+    );
+  }
+}
+
+class OnboardingImage extends StatelessWidget {
+  final String imageAsset;
+
+  const OnboardingImage({required this.imageAsset, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.6,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(imageAsset),
+            fit: BoxFit.cover,
           ),
-          Positioned(
-            left: 10,
-            bottom: 48,
-            child: FloatingActionButton(
-              onPressed: _goToPreviousPage,
+        ),
+      ),
+    );
+  }
+}
+
+class OnboardingSteps extends StatelessWidget {
+  final List<OnboardingStep> steps;
+  final PageController pageController;
+
+  const OnboardingSteps({
+    required this.steps,
+    required this.pageController,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      top: MediaQuery.of(context).size.height * 0.6,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: PageView.builder(
+        controller: pageController,
+        itemCount: steps.length,
+        itemBuilder: (context, index) {
+          OnboardingStep step = steps[index];
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  step.title,
+                  style: const TextStyle(
+                    fontFamily: 'Amarante',
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  step.description,
+                  style: const TextStyle(
+                    fontFamily: 'Amarante',
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.justify,
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class NavigationButtons extends StatelessWidget {
+  final int currentPage;
+  final int totalSteps;
+  final VoidCallback onNext;
+  final VoidCallback onPrevious;
+
+  const NavigationButtons({
+    required this.currentPage,
+    required this.totalSteps,
+    required this.onNext,
+    required this.onPrevious,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      left: 10,
+      bottom: 48,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          FloatingActionButton(
+            onPressed: onPrevious,
+            mini: true,
+            backgroundColor: Colors.orange,
+            child: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
+          if (currentPage < totalSteps - 1)
+            FloatingActionButton(
+              onPressed: onNext,
               mini: true,
               backgroundColor: Colors.orange,
               child: const Icon(
-                Icons.arrow_back,
+                Icons.arrow_forward,
                 color: Colors.white,
               ),
             ),
-          ),
-          if (_currentPage < steps.length - 1)
-            Positioned(
-              right: 10,
-              bottom: 48,
-              child: FloatingActionButton(
-                onPressed: _goToNextPage,
-                mini: true,
-                backgroundColor: Colors.orange,
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          Positioned(
-            bottom: 50,
-            right: 30, // Ajustado para posicionar mais à direita
-            child: _currentPage == steps.length - 1
-                ? SizedBox(
-                    width: 150, // Largura reduzida
-                    height: 48, // Altura reduzida
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        backgroundColor: Colors.orange, // Cor laranja
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegisterAccount(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        'Começar',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class StartButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  const StartButton({required this.onPressed, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+      bottom: 50,
+      right: 30,
+      child: SizedBox(
+        width: 150,
+        height: 48,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            backgroundColor: Colors.orange,
+          ),
+          onPressed: onPressed,
+          child: const Text(
+            'Começar',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
       ),
     );
   }

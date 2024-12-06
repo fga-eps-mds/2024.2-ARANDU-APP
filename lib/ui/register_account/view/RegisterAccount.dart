@@ -50,7 +50,8 @@ class RegisterAccount extends StatelessWidget {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,7 +153,8 @@ class RegisterAccount extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, {bool isEmail = false, bool isPassword = false}) {
+  Widget _buildTextField(String label,
+      {bool isEmail = false, bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(

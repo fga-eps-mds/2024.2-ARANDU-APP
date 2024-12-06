@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
 
@@ -24,7 +25,7 @@ class Login extends StatelessWidget {
 }
 
 class _Login extends StatefulWidget {
-  const _Login({Key? key}) : super(key: key);
+  const _Login({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -122,7 +123,11 @@ class _LoginState extends State<_Login> {
                 _loginButtonSection(context, viewModel),
                 _createAccountLink(context)
               ],
-            ))
+            )),
+            _orDivider(),
+            GoogleLoginButton(onTap: () {
+              print("login com o google");
+            })
           ],
         ),
       ),
@@ -222,6 +227,53 @@ class _LoginState extends State<_Login> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _orDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: <Widget>[
+          const Expanded(child: Divider()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              'ou',
+              style: Theme.of(context).textTheme.bodyMedium!.apply(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ),
+          const Expanded(child: Divider()),
+        ],
+      ),
+    );
+  }
+}
+
+class GoogleLoginButton extends StatelessWidget {
+  final VoidCallback onTap;
+  const GoogleLoginButton({super.key, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), // Bordas arredondadas
+          border: Border.all(color: Colors.grey), // Borda opcional
+          color: Colors.transparent, // Cor de fundo para o Container
+        ),
+        child: Icon(
+          FontAwesomeIcons.google, // Ícone do Google
+          size: 20,
+          color: Theme.of(context).colorScheme.primary, // Cor do ícone
+        ),
       ),
     );
   }

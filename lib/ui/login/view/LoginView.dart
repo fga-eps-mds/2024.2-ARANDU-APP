@@ -1,5 +1,7 @@
+import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
 
@@ -24,7 +26,7 @@ class Login extends StatelessWidget {
 }
 
 class _Login extends StatefulWidget {
-  const _Login({Key? key}) : super(key: key);
+  const _Login({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -120,9 +122,11 @@ class _LoginState extends State<_Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _loginButtonSection(context, viewModel),
-                _createAccountLink(context)
+                _orDivider(),
+                _loggingInWithOther(),
+                _createAccountLink(context),
               ],
-            ))
+            )),
           ],
         ),
       ),
@@ -157,12 +161,12 @@ class _LoginState extends State<_Login> {
         );
       },
       child: Align(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.only(top: 13, right: 20),
+          padding: const EdgeInsets.only(top: 10),
           child: Text(
-            'esqueceu a senha ?',
-            textAlign: TextAlign.right,
+            'esqueceu sua senha ?',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall!.apply(
                   color: Theme.of(context).colorScheme.primary,
                 ),
@@ -222,6 +226,50 @@ class _LoginState extends State<_Login> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _orDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Row(
+        children: <Widget>[
+          const Expanded(child: Divider()),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              'ou',
+              style: Theme.of(context).textTheme.bodyMedium!.apply(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+            ),
+          ),
+          const Expanded(child: Divider()),
+        ],
+      ),
+    );
+  }
+
+
+
+  Widget _loggingInWithOther(){
+
+    return GestureDetector(
+      onTap: () => Log.d(""),
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), 
+          border: Border.all(color: Colors.grey),
+          color: Colors.transparent,
+        ),
+        child: Icon(
+          FontAwesomeIcons.google,
+          size: 20,
+          color: Theme.of(context).colorScheme.primary, 
+        ),
       ),
     );
   }

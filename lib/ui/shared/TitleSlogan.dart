@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TitleSlogan extends StatelessWidget {
   const TitleSlogan({super.key});
@@ -6,10 +7,10 @@ class TitleSlogan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 196,
+      width: 400,
       height: 96,
       child: Stack(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         children: [
           Container(
             width: 96,
@@ -23,6 +24,7 @@ class TitleSlogan extends StatelessWidget {
             "Arandú",
             style: TextStyle(
               color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: GoogleFonts.amarante().fontFamily ,
               fontSize: 64,
             ),
           ),

@@ -62,8 +62,9 @@ class LoginViewModel extends ChangeNotifier {
     bool value =  await LocalAuthentication().authenticate(
       localizedReason: 'Toque com o dedo no sensor para logar');
 
-      if (!value) 
+      if (!value) {
         throw Exception();
+      }
       
       _moveToHome();
    }

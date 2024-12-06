@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
-import '../model/RegisterRequest.dart';
+import 'package:aranduapp/ui/register_account/model/RegisterRequest.dart';
+
 class RegisterService {
   static final Dio _dio = Dio();
+
   static Future<void> register(RegisterRequest request) async {
     final response = await _dio.post(
       'https://example.com/register',

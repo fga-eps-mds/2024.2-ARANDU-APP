@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -121,13 +122,11 @@ class _LoginState extends State<_Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _loginButtonSection(context, viewModel),
-                _createAccountLink(context)
+                _orDivider(),
+                _loggingInWithOther(),
+                _createAccountLink(context),
               ],
             )),
-            _orDivider(),
-            GoogleLoginButton(onTap: () {
-              print("login com o google");
-            })
           ],
         ),
       ),
@@ -162,12 +161,12 @@ class _LoginState extends State<_Login> {
         );
       },
       child: Align(
-        alignment: Alignment.centerRight,
+        alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.only(top: 13, right: 20),
+          padding: const EdgeInsets.only(top: 10),
           child: Text(
-            'esqueceu a senha ?',
-            textAlign: TextAlign.right,
+            'esqueceu sua senha ?',
+            textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodySmall!.apply(
                   color: Theme.of(context).colorScheme.primary,
                 ),
@@ -251,28 +250,25 @@ class _LoginState extends State<_Login> {
       ),
     );
   }
-}
 
-class GoogleLoginButton extends StatelessWidget {
-  final VoidCallback onTap;
-  const GoogleLoginButton({super.key, required this.onTap});
 
-  @override
-  Widget build(BuildContext context) {
+
+  Widget _loggingInWithOther(){
+
     return GestureDetector(
-      onTap: onTap,
+      onTap: () => Log.d(""),
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), // Bordas arredondadas
-          border: Border.all(color: Colors.grey), // Borda opcional
-          color: Colors.transparent, // Cor de fundo para o Container
+          borderRadius: BorderRadius.circular(10), 
+          border: Border.all(color: Colors.grey),
+          color: Colors.transparent,
         ),
         child: Icon(
-          FontAwesomeIcons.google, // Ícone do Google
+          FontAwesomeIcons.google,
           size: 20,
-          color: Theme.of(context).colorScheme.primary, // Cor do ícone
+          color: Theme.of(context).colorScheme.primary, 
         ),
       ),
     );

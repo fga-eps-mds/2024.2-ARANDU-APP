@@ -19,10 +19,10 @@ class TitleSlogan extends StatelessWidget {
               shape: BoxShape.circle,
             ),
           ),
-          const Text(
+          Text(
             "Arandú",
             style: TextStyle(
-              color: Colors.white,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 64,
             ),
           ),

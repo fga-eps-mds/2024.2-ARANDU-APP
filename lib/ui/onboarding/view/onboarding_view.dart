@@ -1,6 +1,7 @@
 // lib/view/onboarding_page.dart
 import 'package:flutter/material.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -109,9 +110,8 @@ class _OnboardingViewState extends State<OnboardingView> {
               children: <Widget>[
                 Text(
                   step['title']!,
-                  style: const TextStyle(
-                    fontFamily: 'Amarante',
-                    fontSize: 24,
+                  style: GoogleFonts.comfortaa(
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                   textAlign: TextAlign.start,
@@ -119,8 +119,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 const SizedBox(height: 20),
                 Text(
                   step['description']!,
-                  style: const TextStyle(
-                    fontFamily: 'Amarante',
+                  style: GoogleFonts.comfortaa(
                     fontSize: 18,
                   ),
                   textAlign: TextAlign.justify,

@@ -1,6 +1,5 @@
 import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/welcome/model/WelcomeModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 

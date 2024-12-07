@@ -152,6 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // Ícone circular
           CircleAvatar(
             radius: 30, // Tamanho do círculo
+            backgroundColor: Colors.grey,
           ),
           SizedBox(width: 16), // Espaço entre a imagem e o texto
           // Texto com o nome e o cargo
@@ -159,7 +160,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Stefani",
+                "NOME",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

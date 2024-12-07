@@ -4,32 +4,13 @@ import 'package:flutter/material.dart';
 class OnboardingViewModel extends ChangeNotifier {
   int _currentStep = 0;
 
-  // Dados do onboarding diretamente incorporados
-  final List<Map<String, String>> steps = [
-    {
-      'title': 'Bem-vindo ao Arandu',
-      'description':
-          'Descubra como usar o aplicativo para maximizar sua experiência.',
-      'imageAsset': 'assets/images/Component1.png',
-    },
-    {
-      'title': 'Funcionalidades',
-      'description':
-          'Explore as funcionalidades únicas que tornam o Arandu especial.',
-      'imageAsset': 'assets/images/Component2.png',
-    },
-    {
-      'title': 'Comece agora',
-      'description': 'Configure sua conta e comece sua jornada com o Arandu.',
-      'imageAsset': 'assets/images/Component3.png',
-    },
-  ];
+  // Dados do onboarding removidos
 
   int get currentStep => _currentStep;
-  int get totalSteps => steps.length;
+  int get totalSteps => 3; // Definindo um número fixo de etapas
 
   void nextStep() {
-    if (_currentStep < steps.length - 1) {
+    if (_currentStep < totalSteps - 1) {
       _currentStep++;
       notifyListeners();
     }

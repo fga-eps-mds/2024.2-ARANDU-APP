@@ -14,7 +14,6 @@ class _OnboardingViewState extends State<OnboardingView> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  // Dados do onboarding diretamente incorporados
   final List<Map<String, String>> steps = [
     {
       'title': 'Lorem',
@@ -134,28 +133,36 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _buildNavigationButtons() {
     return Positioned(
-      left: 10,
       bottom: 48,
+      left: 0,
+      right: 0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FloatingActionButton(
-            onPressed: _goToPreviousPage,
-            mini: true,
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            child: const Icon(
-              Icons.arrow_back,
-              color: Colors.white,
+          if (_currentPage > 0)
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: FloatingActionButton(
+                onPressed: _goToPreviousPage,
+                mini: true,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                child: const Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
             ),
-          ),
           if (_currentPage < steps.length - 1)
-            FloatingActionButton(
-              onPressed: _goToNextPage,
-              mini: true,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: FloatingActionButton(
+                onPressed: _goToNextPage,
+                mini: true,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                child: const Icon(
+                  Icons.arrow_forward,
+                  color: Colors.white,
+                ),
               ),
             ),
         ],

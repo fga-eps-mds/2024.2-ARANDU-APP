@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,7 +67,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
         const Expanded(
           child: Center(
             child: Padding(
-              padding: EdgeInsets.only(top: 20.0),
+              padding: EdgeInsets.only(top: 25.0),
               child: TitleSlogan(),
             ),
           ),
@@ -96,7 +97,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
               TextName(controller: viewModel.firstNameController, padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
               TextEmail(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.emailController),
               TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.passwordController),
-              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.passwordController),
+              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.confPasswordController),
               const SizedBox(height: 10),
               _buildTermsCheckbox(context),
               const SizedBox(height: 20),
@@ -193,6 +194,11 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     return TextButton(
       onPressed: () {
         // Navegar para a tela de login
+        Navigator.of(context).push(
+          MaterialPageRoute(
+                  builder: (context) => const Login(),
+          ),
+        );
       },
       child: const Text(
         'Já tem uma conta? faça login',

@@ -7,6 +7,7 @@ class RegisterAccountViewModel extends ChangeNotifier {
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   final TextEditingController confPasswordController = TextEditingController();
   bool isLoading = false;
   bool isTermsAccepted = false; // Adicionado

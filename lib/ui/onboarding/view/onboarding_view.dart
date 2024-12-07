@@ -1,7 +1,5 @@
 // lib/view/onboarding_page.dart
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/onboarding/service/onboarding_service.dart';
-import 'package:aranduapp/ui/onboarding/model/onboarding_step.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -12,9 +10,30 @@ class OnboardingView extends StatefulWidget {
 }
 
 class _OnboardingViewState extends State<OnboardingView> {
-  final List<OnboardingStep> steps = OnboardingService().getOnboardingSteps();
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  // Dados do onboarding diretamente incorporados
+  final List<Map<String, String>> steps = [
+    {
+      'title': 'Lorem',
+      'description':
+          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+      'imageAsset': 'assets/images/Component1.png',
+    },
+    {
+      'title': 'Lorem',
+      'description':
+          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+      'imageAsset': 'assets/images/Component2.png',
+    },
+    {
+      'title': 'Lorem',
+      'description':
+          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+      'imageAsset': 'assets/images/Component3.png',
+    },
+  ];
 
   void _goToNextPage() {
     if (_currentPage < steps.length - 1) {
@@ -81,7 +100,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         controller: _pageController,
         itemCount: steps.length,
         itemBuilder: (context, index) {
-          OnboardingStep step = steps[index];
+          final step = steps[index];
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -89,7 +108,7 @@ class _OnboardingViewState extends State<OnboardingView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  step.title,
+                  step['title']!,
                   style: const TextStyle(
                     fontFamily: 'Amarante',
                     fontSize: 24,
@@ -99,7 +118,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                  step.description,
+                  step['description']!,
                   style: const TextStyle(
                     fontFamily: 'Amarante',
                     fontSize: 18,
@@ -185,7 +204,7 @@ class _OnboardingViewState extends State<OnboardingView> {
       appBar: null,
       body: Stack(
         children: [
-          _buildOnboardingImage(steps[_currentPage].imageAsset),
+          _buildOnboardingImage(steps[_currentPage]['imageAsset']!),
           _buildOnboardingSteps(),
           _buildNavigationButtons(),
           if (_currentPage == steps.length - 1) _buildStartButton(),

@@ -1,14 +1,32 @@
 // lib/view_model/onboarding_view_model.dart
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/onboarding/model/onboarding_step.dart';
-import 'package:aranduapp/ui/onboarding/service/onboarding_service.dart';
 
 class OnboardingViewModel extends ChangeNotifier {
-  final OnboardingService _onboardingService = OnboardingService();
   int _currentStep = 0;
 
-  List<OnboardingStep> get steps => _onboardingService.getOnboardingSteps();
+  // Dados do onboarding diretamente incorporados
+  final List<Map<String, String>> steps = [
+    {
+      'title': 'Bem-vindo ao Arandu',
+      'description':
+          'Descubra como usar o aplicativo para maximizar sua experiência.',
+      'imageAsset': 'assets/images/Component1.png',
+    },
+    {
+      'title': 'Funcionalidades',
+      'description':
+          'Explore as funcionalidades únicas que tornam o Arandu especial.',
+      'imageAsset': 'assets/images/Component2.png',
+    },
+    {
+      'title': 'Comece agora',
+      'description': 'Configure sua conta e comece sua jornada com o Arandu.',
+      'imageAsset': 'assets/images/Component3.png',
+    },
+  ];
+
   int get currentStep => _currentStep;
+  int get totalSteps => steps.length;
 
   void nextStep() {
     if (_currentStep < steps.length - 1) {
@@ -25,7 +43,8 @@ class OnboardingViewModel extends ChangeNotifier {
   }
 
   void completeOnboarding() {
-    // Aqui você pode armazenar o estado (em preferências ou banco de dados local)
-    // para indicar que o onboarding foi completado
+    // Aqui você pode armazenar o estado para indicar que o onboarding foi concluído.
+    // Por exemplo, usando SharedPreferences ou outro armazenamento local.
+    print("Onboarding concluído!");
   }
 }

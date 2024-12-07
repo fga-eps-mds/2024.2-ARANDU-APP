@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
-
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 
 class EditProfile extends StatelessWidget {
@@ -31,45 +30,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // Define o fundo transparente
-        elevation: 0, // Remove a sombra da AppBar
-        title: Center(
-          child: Text(
-            style: TextStyle(
-              color: Colors.black, // Muda a cor do texto
-              fontSize: 24, // Ajusta o tamanho (opcional)
-            ),
-            'Editar perfil',
-          ),
+        appBar: AppBar(
+          title: const Text('Editar Perfil'),
         ),
-        actions: [
-          IconButton(
-            color: Colors.black,
-            icon: Icon(Icons.notifications), // Ícone de notificação
-            onPressed: () {
-              // Ação quando o ícone de notificação for pressionado
-            },
-          ),
-        ],
-        leading: IconButton(
-          color: Colors.black,
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {},
-        ),
-      ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente
-        crossAxisAlignment:
-            CrossAxisAlignment.center, // Centraliza horizontalmente
-        children: [
-          _icon(context),
-          SizedBox(height: 50),
-          _buildForm(viewModel),
-        ],
-      )),
-    );
+        body: _buildForm(viewModel));
   }
 
   Widget _buildForm(EditProfileViewModel viewModel) {
@@ -83,24 +47,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             TextName(
                 controller: viewModel.firstNameController,
                 padding: const EdgeInsets.symmetric(vertical: 16)),
-            SizedBox(height: 20),
             TextEmail(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.emailController,
             ),
-            SizedBox(height: 20),
             TextPassWord(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.passwordController,
             ),
-            SizedBox(height: 56),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _saveButton(viewModel),
-                _deleteButton(context),
-              ],
-            ),
+            const SizedBox(height: 32),
+            _saveButton(viewModel),
+            const SizedBox(height: 16),
+            _deleteButton(context),
           ],
         ),
       ),
@@ -122,9 +80,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-      style: ElevatedButton.styleFrom(
-        minimumSize: Size(150, 50), // Largura: 200, Altura: 50
-      ),
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
             ? const CircularProgressIndicator(value: null)

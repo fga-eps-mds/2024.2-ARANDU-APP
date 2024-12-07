@@ -16,7 +16,7 @@ class ThemeApp {
 
  static themeData(){
     return FlexThemeData.light(
-        scheme: FlexScheme.redWine,
+        scheme: FlexScheme.amber,
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 7,
         subThemesData: const FlexSubThemesData(
@@ -30,7 +30,8 @@ class ThemeApp {
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
         swapLegacyOnMaterial3: true,
-        fontFamily: GoogleFonts.notoSans().fontFamily,
+        fontFamily: GoogleFonts.comfortaa().fontFamily,
+        
 
         textTheme:  textTheme,
 
@@ -44,7 +45,7 @@ class ThemeApp {
 
  static darkThemeData(){
       return FlexThemeData.dark(
-        scheme: FlexScheme.redWine,
+        scheme: FlexScheme.mango,
         surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
         blendLevel: 13,
         subThemesData: const FlexSubThemesData(
@@ -57,7 +58,7 @@ class ThemeApp {
         visualDensity: FlexColorScheme.comfortablePlatformDensity,
         useMaterial3: true,
         swapLegacyOnMaterial3: true,
-        fontFamily: GoogleFonts.notoSans().fontFamily,
+        fontFamily: GoogleFonts.comfortaa().fontFamily,
 
 
         textTheme:  textTheme,

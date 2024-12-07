@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/CustomTextField.dart';
+
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 
 class EditProfile extends StatelessWidget {
@@ -27,15 +27,48 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Perfil'),
+        backgroundColor: Colors.transparent, // Define o fundo transparente
+        elevation: 0, // Remove a sombra da AppBar
+        title: Center(
+          child: Text(
+            style: TextStyle(
+              color: Colors.black, // Muda a cor do texto
+              fontSize: 24, // Ajusta o tamanho (opcional)
+            ),
+            'Editar perfil',
+          ),
+        ),
+        actions: [
+          IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.notifications), // Ícone de notificação
+            onPressed: () {
+              // Ação quando o ícone de notificação for pressionado
+            },
+          ),
+        ],
+        leading: IconButton(
+          color: Colors.black,
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
       ),
-      body: _buildForm(viewModel)
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente
+        crossAxisAlignment:
+            CrossAxisAlignment.center, // Centraliza horizontalmente
+        children: [
+          _icon(context),
+          SizedBox(height: 50),
+          _buildForm(viewModel),
+        ],
+      )),
     );
   }
 
@@ -47,26 +80,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             TextName(
-              controller: viewModel.firstNameController,
-              padding: const EdgeInsets.symmetric(vertical: 16)
-            ),
-
+                controller: viewModel.firstNameController,
+                padding: const EdgeInsets.symmetric(vertical: 16)),
+            SizedBox(height: 20),
             TextEmail(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.emailController,
             ),
-
+            SizedBox(height: 20),
             TextPassWord(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.passwordController,
             ),
-
-            const SizedBox(height: 32),
-            _saveButton(viewModel),
-            const SizedBox(height: 16),
-            _deleteButton(context),
+            SizedBox(height: 56),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _saveButton(viewModel),
+                _deleteButton(context),
+              ],
+            ),
           ],
         ),
       ),
@@ -88,20 +122,60 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(150, 50), // Largura: 200, Altura: 50
+      ),
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
             ? const CircularProgressIndicator(value: null)
             : const Text('Salvar'),
       ),
-
     );
   }
 
   Widget _deleteButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => _showDeleteConfirmationDialog(context),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(150, 50), // Largura: 200, Altura: 50
+      ),
       child: const Text('Deletar Conta'),
+    );
+  }
+
+  Widget _icon(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(
+          left: 16.0), // Adiciona espaço da borda esquerda
+      child: Row(
+        children: [
+          // Ícone circular
+          CircleAvatar(
+            radius: 30, // Tamanho do círculo
+          ),
+          SizedBox(width: 16), // Espaço entre a imagem e o texto
+          // Texto com o nome e o cargo
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Stefani",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Estudante",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.grey,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

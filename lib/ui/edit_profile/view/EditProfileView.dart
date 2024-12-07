@@ -1,9 +1,9 @@
+import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/CustomTextField.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 
 class EditProfile extends StatelessWidget {
@@ -26,18 +26,6 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  Future<void>? _future;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _future = Provider.of<EditProfileViewModel>(context, listen: false)
-            .getRefreshTokenFuture();
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,22 +34,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         title: const Text('Editar Perfil'),
       ),
-      body: _future == null
-          ? const Center(child: CircularProgressIndicator())
-          : FutureBuilder(
-              future: _future,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Erro: ${snapshot.error}'),
-                  );
-                } else {
-                  return _buildForm(viewModel);
-                }
-              },
-            ),
+      body: _buildForm(viewModel)
     );
   }
 
@@ -73,27 +46,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            CustomTextField(
-              label: 'Primeiro Nome',
-              placeholder: 'Stefani',
+
+            TextName(
               controller: viewModel.firstNameController,
+              padding: const EdgeInsets.symmetric(vertical: 16)
             ),
-            const SizedBox(height: 16),
-            CustomTextField(
-              label: 'Último Nome',
-              placeholder: 'Silva',
-              controller: viewModel.lastNameController,
-            ),
-            const SizedBox(height: 16),
+
             TextEmail(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.emailController,
             ),
-            const SizedBox(height: 16),
+
             TextPassWord(
-              padding: const EdgeInsets.symmetric(horizontal: 0),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.passwordController,
             ),
+
             const SizedBox(height: 32),
             _saveButton(viewModel),
             const SizedBox(height: 16),
@@ -119,7 +87,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-      child: const Text('Salvar'),
+
+      child: Consumer<EditProfileViewModel>(
+        builder: (context, value, child) => value.isLoading
+            ? const CircularProgressIndicator(value: null)
+            : const Text('Salvar'),
+      ),
+
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aranduapp/ui/edit_profile/service/EditProfileService.dart';
@@ -29,14 +30,19 @@ class EditProfileViewModel extends ChangeNotifier {
 
     try {
       isLoading = true;
-      super.notifyListeners();
+      notifyListeners();
 
       if (!formKey.currentState!.validate()) {
         throw Exception('Valores inválidos');
       }
 
-      await EditProfileService.edit(
-          EditProfileRequest(emailController.text, passwordController.text));
+  
+      await Future.delayed(const Duration(seconds: 10));
+
+
+   // await EditProfileService.edit(
+   //     EditProfileRequest(emailController.text, passwordController.text));
+
     } catch (e) {
       rethrow;
     } finally {

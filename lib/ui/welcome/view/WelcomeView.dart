@@ -1,10 +1,11 @@
+import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
 import 'package:aranduapp/ui/welcome/model/WelcomeModel.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
 class WelcomeView extends StatelessWidget {
-  final WelcomeModel model = WelcomeModel("Arandú","Começar");
+  //final WelcomeModel model = WelcomeModel("Arandú","Começar");
 
   WelcomeView({super.key});
 
@@ -22,33 +23,33 @@ class WelcomeView extends StatelessWidget {
             Stack(
               alignment: Alignment.center, //centraliza logo no cículo
               children: [
+
+
+
                 Container(
                   width: 278,
                   height: 278,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
                     shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors:[
-                        Color(0xFFFB923C),
-                        Color(0xFFC2410C),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomLeft,
-                    ),
+                //  gradient: LinearGradient(
+                //    colors:[
+                //      Color(0xFFFB923C),
+                //      Color(0xFFC2410C),
+                //    ],
+                //    begin: Alignment.topLeft,
+                //    end: Alignment.bottomLeft,
+                //  ),
                   ),
                 ),
-                // comentado: Local onde a logo pode ser adicionada no futuro (CircleAvatar todo)
-                //CircleAvatar(
-                // radius: 100, 
-                //  backgroundImage: AssetImage('//colocar a logo png'),
-                // ),
+
               ],
             ),
             const SizedBox(height: 20),
 
             //Titulo "arandú" com fonte amarante 
             Text(
-              model.title,
+              "Arandú",
               style: GoogleFonts.amarante(
                 fontSize: 60,
                 fontWeight: FontWeight.w500, 
@@ -58,22 +59,23 @@ class WelcomeView extends StatelessWidget {
 
             //Botão de começar com gradiente
             GestureDetector(
-              onTap: () => navigateToNextPage(context),
+              onTap: () => Log.d("tap"),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal:120, vertical: 15),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xFFFB923C),
-                      Color(0xFFC2410C),
-                    ], 
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomLeft,
-                  ),
+                  color: Theme.of(context).colorScheme.primary,
+             //   gradient: const LinearGradient(
+             //     colors: [
+             //       Color(0xFFFB923C),
+             //       Color(0xFFC2410C),
+             //     ], 
+             //     begin: Alignment.topLeft,
+             //     end: Alignment.bottomLeft,
+             //   ),
                 ),
                 child: Text(
-                  model.buttonText,
+                  "Começar",
                   style: GoogleFonts.comfortaa(
                     color: Colors.white,
                     fontSize: 15,
@@ -91,7 +93,4 @@ class WelcomeView extends StatelessWidget {
     );
   }
   
-  void navigateToNextPage(BuildContext context) {
-    Navigator.pushNamed(context, "/login");
-  }
 }

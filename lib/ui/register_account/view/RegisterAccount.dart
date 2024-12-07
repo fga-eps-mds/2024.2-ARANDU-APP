@@ -113,28 +113,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       ),
     );
   }
-
-  Widget _TextField(String label,
-      {bool isEmail = false, bool isPassword = false}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
-        obscureText: isPassword,
-        decoration: InputDecoration(
-          labelText: label,
-          labelStyle: const TextStyle(fontSize: 14),
-          hintText: isEmail ? 'Digite seu e-mail' : 'Digite seu $label',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
-          filled: true,
-          fillColor: Colors.grey[200],
-        ),
-        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
-      ),
-    );
-  }
-
+  
   Widget _buildTermsCheckbox(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
     return Row(

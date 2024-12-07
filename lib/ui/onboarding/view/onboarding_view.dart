@@ -137,11 +137,12 @@ class _OnboardingViewState extends State<OnboardingView> {
       left: 0,
       right: 0,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.end, // Alinha os botões à direita
         children: [
+          // Botão de voltar (aparece apenas se não estiver na primeira página)
           if (_currentPage > 0)
             Padding(
-              padding: const EdgeInsets.only(left: 16),
+              padding: const EdgeInsets.only(left: 0),
               child: FloatingActionButton(
                 onPressed: _goToPreviousPage,
                 mini: true,
@@ -152,19 +153,20 @@ class _OnboardingViewState extends State<OnboardingView> {
                 ),
               ),
             ),
-          if (_currentPage < steps.length - 1)
-            Padding(
-              padding: const EdgeInsets.only(right: 16),
-              child: FloatingActionButton(
-                onPressed: _goToNextPage,
-                mini: true,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                child: const Icon(
-                  Icons.arrow_forward,
-                  color: Colors.white,
-                ),
+          SizedBox(width: 10),
+          // Botão de avançar (sempre à direita)
+          Padding(
+            padding: const EdgeInsets.only(right: 30),
+            child: FloatingActionButton(
+              onPressed: _goToNextPage,
+              mini: true,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: const Icon(
+                Icons.arrow_forward,
+                color: Colors.white,
               ),
             ),
+          ),
         ],
       ),
     );

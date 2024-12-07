@@ -1,8 +1,4 @@
-import 'package:aranduapp/core/log/Log.dart';
 import 'package:flutter/material.dart';
-
-import 'package:aranduapp/ui/edit_profile/service/EditProfileService.dart';
-import 'package:aranduapp/ui/edit_profile/model/EditProfileRequest.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -51,15 +47,4 @@ class EditProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getRefreshTokenFuture() async {
-    try {
-      // Exemplo de simulação de uma operação assíncrona:
-      await Future.delayed(const Duration(seconds: 2));
-      // Aqui você deve chamar o serviço real que renova o token de autenticação.
-      // Exemplo:
-      // await LoginService.refreshToken();
-    } catch (e) {
-      throw Exception('Erro ao renovar o token: $e');
-    }
-  }
 }

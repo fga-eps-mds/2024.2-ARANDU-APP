@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:local_auth/local_auth.dart';
 
 import 'package:aranduapp/ui/edit_profile/service/EditProfileService.dart';
 import 'package:aranduapp/ui/edit_profile/model/EditProfileRequest.dart';
-import 'package:aranduapp/ui/home/view/HomeView.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -23,4 +21,34 @@ class EditProfileViewModel extends ChangeNotifier {
         lastNameController = TextEditingController(),
         emailController = TextEditingController(),
         passwordController = TextEditingController();
+
+  Future<void> editprofileWithEmailAndPassword() async {
+    // TODO use mutex to make this
+    if (isLoading) {
+      return;
+    }
+
+    try {
+      isLoading = true;
+      super.notifyListeners();
+
+      if (!formKey.currentState!.validate()) {
+        throw Exception('Valores inválidos');
+      }
+
+      await EditProfileService.edit(
+          EditProfileRequest(emailController.text, passwordController.text));
+    } catch (e) {
+      rethrow;
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
+
+    Future<void> getRefreshTokenFuture() async {
+      // TODO
+      //return await LoginService.refreshToken();
+      throw UnimplementedError();
+    }
+  }
 }

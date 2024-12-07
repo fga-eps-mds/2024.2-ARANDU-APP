@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:aranduapp/ui/shared/ProfileCard.dart';
+import 'package:provider/provider.dart';
+
+import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/CustomTextField.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
@@ -10,218 +12,114 @@ class EditProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EditProfile(context),
-      child: const _EditProfile(),
+      create: (context) => EditProfileViewModel(context),
+      child: const EditProfileScreen(),
     );
   }
 }
 
-class EditProfile extends StatelessWidget {
-  EditProfile({Key? key}) : super(key: key);
+class EditProfileScreen extends StatefulWidget {
+  const EditProfileScreen({Key? key}) : super(key: key);
 
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  @override
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends State<EditProfileScreen> {
+  Future<void>? _future;
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<EditProfileViewModel>(context);
+
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color.fromARGB(
-              255, 255, 255, 255), // Define o fundo transparente
-          elevation: 0, // Remove a sombra da AppBar
-          title: Center(
-            child: Text(
-              'Editar perfil',
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.notifications), // Ícone de notificação
-              onPressed: () {
-                // Ação quando o ícone de notificação for pressionado
+      appBar: AppBar(
+        title: const Text('Editar Perfil'),
+      ),
+      body: _future == null
+          ? const Center(child: CircularProgressIndicator())
+          : FutureBuilder(
+              future: _future,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text('Erro: ${snapshot.error}'),
+                  );
+                } else {
+                  return _buildForm(viewModel);
+                }
               },
             ),
-          ],
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {},
-          ),
-        ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+    );
+  }
+
+  Widget _buildForm(EditProfileViewModel viewModel) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: viewModel.formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _icon(context),
-            _nameAndLast(context),
-            _emailAndPassword(context),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-              _deleteButton(context),
-              _saveButton(context),
-            ])
+            CustomTextField(
+              label: 'Primeiro Nome',
+              placeholder: 'Stefani',
+              controller: viewModel.firstNameController,
+            ),
+            const SizedBox(height: 16),
+            CustomTextField(
+              label: 'Último Nome',
+              placeholder: 'Silva',
+              controller: viewModel.lastNameController,
+            ),
+            const SizedBox(height: 16),
+            TextEmail(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              controller: viewModel.emailController,
+            ),
+            const SizedBox(height: 16),
+            TextPassWord(
+              padding: const EdgeInsets.symmetric(horizontal: 0),
+              controller: viewModel.passwordController,
+            ),
+            const SizedBox(height: 32),
+            _saveButton(viewModel),
+            const SizedBox(height: 16),
+            _deleteButton(context),
           ],
-        ));
-  }
-
-  Widget _nameAndLast(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          CustomTextField(
-            label: ' Primeiro Nome',
-            placeholder: 'Stefani',
-            controller: firstNameController,
-          ),
-
-          // Campo Último Nome usando CustomTextFieldq
-          CustomTextField(
-            label: ' Último Nome',
-            placeholder: 'Silva',
-            controller: lastNameController,
-          ),
-        ],
+        ),
       ),
     );
   }
 
-  Widget _emailAndPassword(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: <Widget>[
-          TextEmail(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            controller: emailController,
-          ),
-          TextPassWord(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            controller: passwordController,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _saveButton(BuildContext context) {
-    return SingleChildScrollView(
-      child: ElevatedButton(
-        onPressed: () {
-          print('Primeiro Nome: ${firstNameController.text}');
-          print('Último Nome: ${lastNameController.text}');
-          print('E-mail: ${emailController.text}');
-        },
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(200, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(8, 145, 178, 1),
-                Color.fromRGBO(127, 219, 229, 1)
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: const Text(
-              'Salvar',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-      ),
+  Widget _saveButton(EditProfileViewModel viewModel) {
+    return ElevatedButton(
+      onPressed: () async {
+        if (viewModel.isLoading) return;
+        try {
+          await viewModel.editprofileWithEmailAndPassword();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Perfil atualizado com sucesso!')),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Erro: $e')),
+          );
+        }
+      },
+      child: const Text('Salvar'),
     );
   }
 
   Widget _deleteButton(BuildContext context) {
-    return SingleChildScrollView(
-      child: ElevatedButton(
-        onPressed: () {
-          _showDeleteConfirmationDialog(context);
-        },
-        style: ElevatedButton.styleFrom(
-          fixedSize: Size(200, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          backgroundColor: Colors.transparent,
-          shadowColor: Colors.transparent,
-        ),
-        child: Ink(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(144, 11, 9, 1),
-                Color.fromRGBO(236, 34, 31, 1)
-              ],
-              begin: Alignment.bottomLeft,
-              end: Alignment.topLeft,
-            ),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            child: const Text(
-              'Deletar Conta',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+    return ElevatedButton(
+      onPressed: () => _showDeleteConfirmationDialog(context),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.red,
       ),
-    );
-  }
-
-  Widget _icon(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-          left: 16.0), // Adiciona espaço da borda esquerda
-      child: Row(
-        children: [
-          // Ícone circular
-          CircleAvatar(
-            radius: 30, // Tamanho do círculo
-          ),
-          SizedBox(width: 16), // Espaço entre a imagem e o texto
-          // Texto com o nome e o cargo
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Stefani",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Estudante",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+      child: const Text('Deletar Conta'),
     );
   }
 
@@ -242,9 +140,14 @@ class EditProfile extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                print('Conta deletada');
                 Navigator.of(context).pop();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Conta deletada com sucesso!')),
+                );
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
               child: const Text('Deletar'),
             ),
           ],

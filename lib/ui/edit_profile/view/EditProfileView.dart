@@ -5,6 +5,18 @@ import 'package:aranduapp/ui/shared/CustomTextField.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 
 class EditProfile extends StatelessWidget {
+  const EditProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (context) => EditProfile(context),
+      child: const _EditProfile(),
+    );
+  }
+}
+
+class EditProfile extends StatelessWidget {
   EditProfile({Key? key}) : super(key: key);
 
   final TextEditingController firstNameController = TextEditingController();

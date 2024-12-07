@@ -1,8 +1,6 @@
 import 'package:aranduapp/config/ThemeApp.dart';
 import 'package:aranduapp/ui/welcome/view/WelcomeView.dart';
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/login/view/LoginView.dart';
-import 'package:aranduapp/ui/edit_profile/view/EditProfileView.dart';
 
 void main() {
   runApp(const MyApp());

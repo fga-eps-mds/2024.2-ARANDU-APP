@@ -53,18 +53,9 @@ class _RegisterAccountState extends State<_RegisterAccount> {
   }
 
   Widget _buildHeader(RegisterAccountViewModel viewModel) {
-    return Stack(
+    return const Stack(
       children: [
-        // Padrão de losangos
-        Container(
-          height: 100,
-          color: Colors.white,
-          child: CustomPaint(
-            size: const Size(double.infinity, 100),
-            painter: DiamondPainter(),
-          ),
-        ),
-        const Expanded(
+        Expanded(
           child: Center(
             child: Padding(
               padding: EdgeInsets.only(top: 25.0),
@@ -75,6 +66,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       ],
     );
   }
+
 
   Widget _buildForm(RegisterAccountViewModel viewModel) {
     return Expanded(
@@ -94,10 +86,10 @@ class _RegisterAccountState extends State<_RegisterAccount> {
                 ),
               ),
               const SizedBox(height: 30),
-              TextName(controller: viewModel.firstNameController, padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
-              TextEmail(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.emailController),
-              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.passwordController),
-              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20), controller: viewModel.confPasswordController),
+              TextName(controller: viewModel.firstNameController, padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
+              TextEmail(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), controller: viewModel.emailController),
+              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), controller: viewModel.passwordController),
+              TextPassWord(padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0), controller: viewModel.confPasswordController),
               const SizedBox(height: 10),
               _buildTermsCheckbox(context),
               const SizedBox(height: 20),
@@ -139,26 +131,31 @@ class _RegisterAccountState extends State<_RegisterAccount> {
   }
 
   Widget _buildRegisterButton(BuildContext context, RegisterAccountViewModel viewModel) {
-    return ElevatedButton(
-      onPressed: () {
-        viewModel
-          .register()
-          .catchError((e) => showDialog<Object>(
-                context: context,
-                builder: (BuildContext context) =>
-                    ErrorPopUp(content: Text('$e')),
-                    ));
-        // Ação ao clicar no botão de cadastro
-      },
-      child: const Text(
-        'Registrar',
-      ),
+    return SizedBox(
+      width: 291,
+      height: 64,
+      child: ElevatedButton(
+        onPressed: () {
+          viewModel
+            .register()
+            .catchError((e) => showDialog<Object>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      ErrorPopUp(content: Text('$e')),
+            ));
+          // Ação ao clicar no botão de cadastro
+        },
+        child: Consumer<RegisterAccountViewModel>(
+          builder: (context, value, child) => value.isLoading
+            ? const CircularProgressIndicator(value: null)
+            : const Text('Registrar'),         
+      )),
     );
   }
 
   Widget _buildDividerWithText() {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         Expanded(child: Divider()),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -204,33 +201,5 @@ class _RegisterAccountState extends State<_RegisterAccount> {
         'Já tem uma conta? faça login',
       ),
     );
-  }
-}
-
-// Custom Painter para os losangos
-class DiamondPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color.fromARGB(255, 161, 115, 77)
-      ..style = PaintingStyle.fill;
-
-    const diamondWidth = 40.0;
-    const diamondHeight = 20.0;
-
-    for (double x = -diamondWidth; x < size.width; x += diamondWidth) {
-      final path = Path()
-        ..moveTo(x + diamondWidth / 2, 0)
-        ..lineTo(x + diamondWidth, diamondHeight)
-        ..lineTo(x + 3 * diamondWidth / 2, 0)
-        ..lineTo(x + diamondWidth, -diamondHeight)
-        ..close();
-      canvas.drawPath(path, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }

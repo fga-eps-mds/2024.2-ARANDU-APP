@@ -18,19 +18,19 @@ class _OnboardingViewState extends State<OnboardingView> {
     {
       'title': 'Lorem',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Seja bem vindo ao Arandu!!! Sou um ambiente voltado para aprendizado de forma gratuita',
       'imageAsset': 'assets/images/Component1.png',
     },
     {
       'title': 'Lorem',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Aqui você encontrará livros interativos de diversas disciplinas com objetivo de entregar praticidade e qualidade no aprendizado.',
       'imageAsset': 'assets/images/Component2.png',
     },
     {
       'title': 'Lorem',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais. \n Bons estudos !!!',
       'imageAsset': 'assets/images/Component3.png',
     },
   ];

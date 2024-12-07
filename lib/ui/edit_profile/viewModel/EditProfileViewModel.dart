@@ -23,7 +23,6 @@ class EditProfileViewModel extends ChangeNotifier {
         passwordController = TextEditingController();
 
   Future<void> editprofileWithEmailAndPassword() async {
-    // TODO use mutex to make this
     if (isLoading) {
       return;
     }
@@ -44,11 +43,17 @@ class EditProfileViewModel extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
 
-    Future<void> getRefreshTokenFuture() async {
-      // TODO
-      //return await LoginService.refreshToken();
-      throw UnimplementedError();
+  Future<void> getRefreshTokenFuture() async {
+    try {
+      // Exemplo de simulação de uma operação assíncrona:
+      await Future.delayed(const Duration(seconds: 2));
+      // Aqui você deve chamar o serviço real que renova o token de autenticação.
+      // Exemplo:
+      // await LoginService.refreshToken();
+    } catch (e) {
+      throw Exception('Erro ao renovar o token: $e');
     }
   }
 }

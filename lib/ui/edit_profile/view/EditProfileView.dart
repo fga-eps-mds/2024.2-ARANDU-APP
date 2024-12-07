@@ -29,9 +29,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Future<void>? _future;
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        _future = Provider.of<EditProfileViewModel>(context, listen: false)
+            .getRefreshTokenFuture();
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Editar Perfil'),
@@ -116,9 +126,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget _deleteButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => _showDeleteConfirmationDialog(context),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.red,
-      ),
       child: const Text('Deletar Conta'),
     );
   }
@@ -145,9 +152,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   const SnackBar(content: Text('Conta deletada com sucesso!')),
                 );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
               child: const Text('Deletar'),
             ),
           ],

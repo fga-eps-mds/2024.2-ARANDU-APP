@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class TitleSlogan extends StatelessWidget{
+class TitleSlogan extends StatelessWidget {
   const TitleSlogan({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-
-  return SizedBox(
-    width: 196,
-    height: 80,
-    child: Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          width: 96, 
-          height: 96,
-          decoration: const BoxDecoration(
-            color: Colors.yellow, 
-            shape: BoxShape.circle,
+    return SizedBox(
+      width: 400,
+      height: 96,
+      child: Stack(
+        alignment: Alignment.topCenter,
+        children: [
+          Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
           ),
-        ),
-        const Text(
-          "Arandú",
-          style: TextStyle(
-            color:  Colors.white, 
-            fontSize: 20,
+          Text(
+            "Arandú",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontFamily: GoogleFonts.amarante().fontFamily ,
+              fontSize: 64,
+            ),
           ),
-        ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
   }
-
 }

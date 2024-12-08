@@ -11,9 +11,10 @@ class RegisterAccountViewModel extends ChangeNotifier {
   final TextEditingController passwordController = TextEditingController();
 
   final TextEditingController confPasswordController = TextEditingController();
+
   bool isLoading = false;
-  bool isTermsAccepted = false; // Adicionado
-  // Método para alternar a aceitação dos termos
+  bool isTermsAccepted = false; 
+
   void toggleTermsAccepted(bool value) {
     isTermsAccepted = value;
     notifyListeners();

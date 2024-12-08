@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/ui/shared/PhraseLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/OrDivider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -122,9 +124,9 @@ class _LoginState extends State<_Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _loginButtonSection(context, viewModel),
-                _orDivider(),
+                const OrDivider(),
                 _loggingInWithOther(),
-                _createAccountLink(context),
+                const TextAndLink(text: 'É novo pro aqui?', link: 'Cria a sua conta', page: RegisterAccount()),
               ],
             )),
           ],
@@ -198,58 +200,6 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _createAccountLink(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 13),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'É novo por aqui?',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const RegisterAccount(),
-                ),
-              );
-            },
-            child: SizedBox(
-              child: Text(
-                ' Crie a sua conta',
-                style: Theme.of(context).textTheme.bodySmall!.apply(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _orDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        children: <Widget>[
-          const Expanded(child: Divider()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'ou',
-              style: Theme.of(context).textTheme.bodyMedium!.apply(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-            ),
-          ),
-          const Expanded(child: Divider()),
-        ],
-      ),
-    );
-  }
 
 
 

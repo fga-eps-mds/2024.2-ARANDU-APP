@@ -18,7 +18,8 @@ class AppInterceptors extends Interceptor {
         }
 
         handler.next(options);
-        
+
+
       } catch (e) {
         Log.e(e);
       }

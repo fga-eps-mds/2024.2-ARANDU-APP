@@ -39,10 +39,7 @@ class LoginViewModel extends ChangeNotifier {
         throw Exception('Valores inválidos');
       }
 
-
       await LoginService.login(LoginRequest(emailController.text, passwordController.text));
-
-      _moveToHome();
 
     } catch (e) {
       rethrow;
@@ -65,18 +62,9 @@ class LoginViewModel extends ChangeNotifier {
       if (!value) 
         throw Exception();
       
-      _moveToHome();
    }
 
 
-   void _moveToHome(){
-
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const HomeView(),
-            ),
-        );
-   }
 
 }
 

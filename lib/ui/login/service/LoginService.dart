@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/data/local/StorageValue.dart';
+import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/core/network/BaseApi.dart';
 import 'package:aranduapp/ui/login/model/LoginRequest.dart';
 import 'package:aranduapp/ui/login/model/LoginResponse.dart';
@@ -8,18 +9,22 @@ class LoginService {
 
   static Future<Response> login(LoginRequest loginRequest) async {
 
+    Log.d('${loginRequest.email} ${loginRequest.password}');
+
     Response response = await BaseApi.getInstance().post(
-      path: '/asdfsdfsdf',
+      path: '/auth/login',
       data: <String, dynamic> {
         'email' : loginRequest.email,
-        'passwoed': loginRequest.password
+        'password': loginRequest.password
       }
     );
 
     LoginResponse loginResponse = LoginResponse.fromJsonString(response.toString());
 
-    await StorageValue.getInstance().setAuthToken(loginResponse.authToken);
-    await StorageValue.getInstance().setAuthToken(loginResponse.authToken);
+    assert(loginResponse.authToken != null && loginResponse.refreshToken != null);
+
+    await StorageValue.getInstance().setAuthToken(loginResponse.authToken ?? '');
+    await StorageValue.getInstance().setAuthToken(loginResponse.refreshToken??'');
 
 
     return response;

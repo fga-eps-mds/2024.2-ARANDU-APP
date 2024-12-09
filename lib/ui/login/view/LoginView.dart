@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/ui/home/view/HomeView.dart';
 import 'package:aranduapp/ui/shared/PhraseLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -126,7 +127,10 @@ class _LoginState extends State<_Login> {
                 _loginButtonSection(context, viewModel),
                 const OrDivider(),
                 _loggingInWithOther(),
-                const TextAndLink(text: 'É novo pro aqui?', link: 'Cria a sua conta', page: RegisterAccount()),
+                const TextAndLink(
+                    text: 'É novo pro aqui?',
+                    link: 'Cria a sua conta',
+                    page: RegisterAccount()),
               ],
             )),
           ],
@@ -184,13 +188,19 @@ class _LoginState extends State<_Login> {
       height: 64,
       child: ElevatedButton(
           onPressed: () {
-            viewModel
-                .loginWithEmailAndPassword()
-                .catchError((e) => showDialog<Object>(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          ErrorPopUp(content: Text('$e')),
-                    ));
+            viewModel.loginWithEmailAndPassword()
+            .then((_) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const HomeView(),
+                ),
+              );
+            })
+            .catchError((e) => showDialog<Object>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      ErrorPopUp(content: Text('$e')),
+                ));
           },
           child: Consumer<LoginViewModel>(
             builder: (context, value, child) => value.isLoading
@@ -200,25 +210,21 @@ class _LoginState extends State<_Login> {
     );
   }
 
-
-
-
-  Widget _loggingInWithOther(){
-
+  Widget _loggingInWithOther() {
     return GestureDetector(
       onTap: () => Log.d(""),
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), 
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Theme.of(context).colorScheme.outline),
           color: Colors.transparent,
         ),
         child: Icon(
           FontAwesomeIcons.google,
           size: 20,
-          color: Theme.of(context).colorScheme.primary, 
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

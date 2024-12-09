@@ -10,7 +10,7 @@ class BaseApi {
 
   BaseApi._internal()
       : _dio = Dio() {
-    _dio.options.baseUrl = 'http://192.168.1.107:3000';
+    _dio.options.baseUrl = 'https://arandu-user-service.onrender.com/';
     _dio.options.connectTimeout = const Duration(seconds: 5); 
     _dio.options.receiveTimeout = const Duration(seconds: 5);
 

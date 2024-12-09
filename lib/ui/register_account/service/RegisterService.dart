@@ -7,11 +7,11 @@ class RegisterService {
   static Future<void> register(RegisterRequest registerRequest) async {
 
     await BaseApi.getInstance()
-        .post(path: '/asdfsdfsdf', data: <String, dynamic>{
+        .post(path: '/users', data: <String, dynamic>{
       'name': registerRequest.name,
       'email': registerRequest.email,
       'username': registerRequest.userName,
-      'passwoed': registerRequest.password,
+      'password': registerRequest.password,
     });
 
   }

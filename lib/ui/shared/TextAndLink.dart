@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 class TextAndLink extends StatelessWidget {
   final String text;
   final String link;
-  final Widget page;
+  final VoidCallback
+      action; 
 
   const TextAndLink({
     super.key,
     required this.text,
     required this.link,
-    required this.page,
+    required this.action,
   });
 
   @override
@@ -24,13 +25,7 @@ class TextAndLink extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall,
           ),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => page,
-                ),
-              );
-            },
+            onTap: action,
             child: Text(
               ' $link',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -43,4 +38,3 @@ class TextAndLink extends StatelessWidget {
     );
   }
 }
-

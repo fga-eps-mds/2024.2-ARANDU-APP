@@ -1,6 +1,6 @@
 import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/ui/home/view/HomeView.dart';
-import 'package:aranduapp/ui/shared/PhraseLink.dart';
+import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -104,37 +104,29 @@ class _LoginState extends State<_Login> {
 
   Widget _emailAndPassword(LoginViewModel viewModel) {
     return SingleChildScrollView(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Expanded(
-              child: Center(
-                child: TitleSlogan(),
-              ),
-            ),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [_formSection(viewModel), _forgotPasswordLink(context)],
-            )),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _loginButtonSection(context, viewModel),
-                const OrDivider(),
-                _loggingInWithOther(),
-                const TextAndLink(
-                    text: 'É novo pro aqui?',
-                    link: 'Cria a sua conta',
-                    page: RegisterAccount()),
-              ],
-            )),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 80),
+          const TitleSlogan(),
+          const SizedBox(height: 80),
+          const SizedBox(height: 10),
+          _formSection(viewModel),
+          _forgotPasswordLink(),
+          const SizedBox(height: 80),
+          _loginButtonSection(),
+          const OrDivider(),
+          _loggingInWithOther(),
+          TextAndLink(
+              text: 'É novo pro aqui?',
+              link: 'Cria a sua conta',
+              action: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterAccount()),
+                );
+              }),
+        ],
       ),
     );
   }
@@ -157,7 +149,7 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _forgotPasswordLink(BuildContext context) {
+  Widget _forgotPasswordLink() {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -182,21 +174,21 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _loginButtonSection(BuildContext context, LoginViewModel viewModel) {
+  Widget _loginButtonSection() {
+    LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
+
     return SizedBox(
       width: 291,
       height: 64,
       child: ElevatedButton(
           onPressed: () {
-            viewModel.loginWithEmailAndPassword()
-            .then((_) {
+            viewModel.loginWithEmailAndPassword().then((_) {
               Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const HomeView(),
                 ),
               );
-            })
-            .catchError((e) => showDialog<Object>(
+            }).catchError((e) => showDialog<Object>(
                   context: context,
                   builder: (BuildContext context) =>
                       ErrorPopUp(content: Text('$e')),

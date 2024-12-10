@@ -1,6 +1,6 @@
 import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
-import 'package:aranduapp/ui/shared/PhraseLink.dart';
+import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -42,26 +42,23 @@ class _RegisterAccountState extends State<_RegisterAccount> {
   }
 
   Widget _buildForm() {
-    return Expanded(
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const TitleSlogan(),
-                const SizedBox(height: 30),
-                _formSection(),
-                const OrDivider(),
-                _buildGoogleLoginButton(),
-                const SizedBox(height: 20),
-                const TextAndLink(
-                    text: 'Já tem uma conta?', link: 'faça login', page: Login()),
-              ],
-            ),
-          ),
-        ),
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 80),
+          const TitleSlogan(),
+          const SizedBox(height: 10),
+          _formSection(),
+          const OrDivider(),
+          _buildGoogleLoginButton(),
+          TextAndLink(
+              text: 'Já tem uma conta?',
+              link: 'faça login',
+              action: () {
+                Navigator.of(context).pop();
+              }),
+        ],
       ),
     );
   }
@@ -76,16 +73,16 @@ class _RegisterAccountState extends State<_RegisterAccount> {
         TextName(
             label: 'Nome',
             controller: viewModel.nameController,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
         TextName(
             label: 'Nome de Usuário',
             controller: viewModel.userNameController,
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0)),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
         TextEmail(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: viewModel.emailController),
         TextPassWord(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: viewModel.passwordController),
         _buildTermsCheckbox(),
         const SizedBox(height: 20),
@@ -139,7 +136,6 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     );
   }
 
-
   Widget _buildGoogleLoginButton() {
     return GestureDetector(
       onTap: () => Log.d(""),
@@ -160,4 +156,3 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     );
   }
 }
-

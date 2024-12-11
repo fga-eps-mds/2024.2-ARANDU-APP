@@ -1,4 +1,3 @@
-// lib/view/onboarding_page.dart
 import 'package:flutter/material.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,21 +15,21 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   final List<Map<String, String>> steps = [
     {
-      'title': 'Lorem',
+      'title': 'Bem-Vindo(a)!',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Seja bem-vindo(a) ao Arandu! Sou um ambiente educacional voltado para aprendizado de forma gratuita.',
       'imageAsset': 'assets/images/Component1.png',
     },
     {
-      'title': 'Lorem',
+      'title': 'O que você vai encontrar?',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Aqui você encontrará livros interativos de diversas disciplinas com objetivo de entregar praticidade e qualidade no aprendizado.',
       'imageAsset': 'assets/images/Component2.png',
     },
     {
-      'title': 'Lorem',
+      'title': 'Como funciona?',
       'description':
-          'AranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduAranduArandu',
+          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais.\n Bons estudos !',
       'imageAsset': 'assets/images/Component3.png',
     },
   ];
@@ -77,13 +76,22 @@ class _OnboardingViewState extends State<OnboardingView> {
       top: 0,
       left: 0,
       right: 0,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.6,
+      child: SizedBox(
+        height: 530, // Altura fixa para a imagem
         width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imageAsset),
-            fit: BoxFit.cover,
+        child: AnimatedSwitcher(
+          duration: const Duration(seconds: 1), // Duração da animação
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          child: Container(
+            key: ValueKey<String>(imageAsset), // A chave única para cada imagem
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(imageAsset),
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
         ),
       ),
@@ -92,10 +100,10 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _buildOnboardingSteps() {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.6,
+      top: 520, // Posição fixa para os textos
       left: 0,
       right: 0,
-      bottom: 0,
+      bottom: 100, // Limita o espaço para que o botão não sobreponha
       child: PageView.builder(
         controller: _pageController,
         itemCount: steps.length,
@@ -116,12 +124,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                   textAlign: TextAlign.start,
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  step['description']!,
-                  style: GoogleFonts.comfortaa(
-                    fontSize: 18,
+                // Envolvendo o texto com SingleChildScrollView
+                SingleChildScrollView(
+                  child: Text(
+                    step['description']!,
+                    style: GoogleFonts.comfortaa(
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.justify,
                   ),
-                  textAlign: TextAlign.justify,
                 ),
               ],
             ),
@@ -137,36 +148,49 @@ class _OnboardingViewState extends State<OnboardingView> {
       left: 0,
       right: 0,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end, // Alinha os botões à direita
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Botão de voltar (aparece apenas se não estiver na primeira página)
-          if (_currentPage > 0)
+          // Botão "Pular" no canto esquerdo
+          if (_currentPage < steps.length - 1)
             Padding(
-              padding: const EdgeInsets.only(left: 0),
-              child: FloatingActionButton(
-                onPressed: _goToPreviousPage,
-                mini: true,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
+              padding: const EdgeInsets.only(left: 20),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RegisterAccount(),
+                    ),
+                  );
+                },
+                child: const Text(
+                  'Pular',
+                  style: TextStyle(
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
-          SizedBox(width: 10),
-          // Botão de avançar (sempre à direita)
-          Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: FloatingActionButton(
-              onPressed: _goToNextPage,
-              mini: true,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
+          // Botão "Next Page" no canto direito
+          if (_currentPage < steps.length - 1)
+            Padding(
+              padding: const EdgeInsets.only(right: 30),
+              child: FloatingActionButton(
+                onPressed: _goToNextPage,
+                mini: true,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                child: Image.asset(
+                  _currentPage == 1
+                      ? 'assets/images/Buttons2.png' // Imagem para o segundo passo
+                      : 'assets/images/Buttons1.png', // Imagem para os outros passos
+                  width: 60,
+                  height: 60,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
@@ -174,33 +198,24 @@ class _OnboardingViewState extends State<OnboardingView> {
 
   Widget _buildStartButton() {
     return Positioned(
-      bottom: 50,
-      right: 30,
-      child: SizedBox(
-        width: 150,
-        height: 48,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
+      bottom: 48, // Mantido no mesmo nível do "Pular" e "Next Page"
+      right: 30, // Posição fixa à direita
+      child: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RegisterAccount(),
             ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterAccount(),
-              ),
-            );
-          },
-          child: const Text(
-            'Começar',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          );
+        },
+        mini: true,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        child: Image.asset(
+          'assets/images/Buttons3.png', // Imagem para o botão de início
+          width: 60,
+          height: 60,
         ),
       ),
     );

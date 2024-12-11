@@ -18,18 +18,18 @@ class _OnboardingViewState extends State<OnboardingView> {
       'title': 'Bem-Vindo(a)!',
       'description':
           'Seja bem-vindo(a) ao Arandu! Sou um ambiente educacional voltado para aprendizado de forma gratuita.',
-      'imageAsset': 'assets/images/Component1.png',
+      'imageAsset': 'assets/images/Component2.png',
     },
     {
-      'title': 'O que você vai encontrar?',
+      'title': 'O que encontrará?',
       'description':
           'Aqui você encontrará livros interativos de diversas disciplinas com objetivo de entregar praticidade e qualidade no aprendizado.',
-      'imageAsset': 'assets/images/Component2.png',
+      'imageAsset': 'assets/images/Component1.png',
     },
     {
       'title': 'Como funciona?',
       'description':
-          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais.\n Bons estudos !',
+          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais.',
       'imageAsset': 'assets/images/Component3.png',
     },
   ];
@@ -71,167 +71,179 @@ class _OnboardingViewState extends State<OnboardingView> {
     super.dispose();
   }
 
-  Widget _buildOnboardingImage(String imageAsset) {
-    return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      child: SizedBox(
-        height: 530, // Altura fixa para a imagem
-        width: double.infinity,
-        child: AnimatedSwitcher(
-          duration: const Duration(seconds: 1), // Duração da animação
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return FadeTransition(opacity: animation, child: child);
-          },
-          child: Container(
-            key: ValueKey<String>(imageAsset), // A chave única para cada imagem
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(imageAsset),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOnboardingSteps() {
-    return Positioned(
-      top: 520, // Posição fixa para os textos
-      left: 0,
-      right: 0,
-      bottom: 100, // Limita o espaço para que o botão não sobreponha
-      child: PageView.builder(
-        controller: _pageController,
-        itemCount: steps.length,
-        itemBuilder: (context, index) {
-          final step = steps[index];
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  step['title']!,
-                  style: GoogleFonts.comfortaa(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-                const SizedBox(height: 20),
-                // Envolvendo o texto com SingleChildScrollView
-                SingleChildScrollView(
-                  child: Text(
-                    step['description']!,
-                    style: GoogleFonts.comfortaa(
-                      fontSize: 18,
-                    ),
-                    textAlign: TextAlign.justify,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildNavigationButtons() {
-    return Positioned(
-      bottom: 48,
-      left: 0,
-      right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          // Botão "Pular" no canto esquerdo
-          if (_currentPage < steps.length - 1)
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RegisterAccount(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  'Pular',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
-          // Botão "Next Page" no canto direito
-          if (_currentPage < steps.length - 1)
-            Padding(
-              padding: const EdgeInsets.only(right: 30),
-              child: FloatingActionButton(
-                onPressed: _goToNextPage,
-                mini: true,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                child: Image.asset(
-                  _currentPage == 1
-                      ? 'assets/images/Buttons2.png' // Imagem para o segundo passo
-                      : 'assets/images/Buttons1.png', // Imagem para os outros passos
-                  width: 60,
-                  height: 60,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStartButton() {
-    return Positioned(
-      bottom: 48, // Mantido no mesmo nível do "Pular" e "Next Page"
-      right: 30, // Posição fixa à direita
-      child: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const RegisterAccount(),
-            ),
-          );
-        },
-        mini: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: Image.asset(
-          'assets/images/Buttons3.png', // Imagem para o botão de início
-          width: 60,
-          height: 60,
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: null,
-      body: Stack(
-        children: [
-          _buildOnboardingImage(steps[_currentPage]['imageAsset']!),
-          _buildOnboardingSteps(),
-          _buildNavigationButtons(),
-          if (_currentPage == steps.length - 1) _buildStartButton(),
-        ],
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final double imageHeight = constraints.maxHeight * 0.55;
+          final double contentHeight = constraints.maxHeight * 0.55;
+          final double buttonHeight = constraints.maxHeight * 0.15;
+
+          return Stack(
+            children: [
+              // Imagem do Onboarding
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: imageHeight,
+                child: AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  transitionBuilder:
+                      (Widget child, Animation<double> animation) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                  child: Container(
+                    key: ValueKey<String>(steps[_currentPage]['imageAsset']!),
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(steps[_currentPage]['imageAsset']!),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Texto do Onboarding
+              Positioned(
+                top: imageHeight,
+                left: 0,
+                right: 0,
+                height: contentHeight,
+                child: PageView.builder(
+                  controller: _pageController,
+                  itemCount: steps.length,
+                  itemBuilder: (context, index) {
+                    final step = steps[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            step['title']!,
+                            style: GoogleFonts.comfortaa(
+                              textStyle:
+                                  Theme.of(context).textTheme.headlineMedium,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                          const SizedBox(height: 20),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Text(
+                                step['description']!,
+                                style: GoogleFonts.comfortaa(
+                                  textStyle:
+                                      Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              // Botões de navegação
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                height: buttonHeight,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment
+                        .spaceBetween, // Mantém o Pular à esquerda
+                    children: [
+                      if (_currentPage < steps.length - 1)
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterAccount(),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Pular',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      if (_currentPage < steps.length - 1)
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color?>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.pressed)) {
+                                  return Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.5);
+                                }
+                                return Theme.of(context).colorScheme.primary;
+                              },
+                            ),
+                          ),
+                          onPressed: _goToNextPage,
+                          child: const Text(
+                            'Avançar',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      if (_currentPage == steps.length - 1)
+                        // Alteração aqui: Mover o botão "Começar" para a direita
+                        Align(
+                          alignment:
+                              Alignment.centerRight, // Alinha o botão à direita
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.resolveWith<Color?>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.5);
+                                  }
+                                  return Theme.of(context).colorScheme.primary;
+                                },
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterAccount(),
+                                ),
+                              );
+                            },
+                            child: const Text(
+                              'Começar',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }

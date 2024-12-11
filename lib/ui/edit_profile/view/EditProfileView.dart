@@ -30,24 +30,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Define o fundo transparente
-        elevation: 0, // Remove a sombra da AppBar
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Center(
           child: Text(
-            style: TextStyle(
-              color: Colors.black, // Muda a cor do texto
-              fontSize: 24, // Ajusta o tamanho (opcional)
-            ),
             'Editar perfil',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 24,
+            ),
           ),
         ),
         actions: [
           IconButton(
             color: Colors.black,
-            icon: Icon(Icons.notifications), // Ícone de notificação
-            onPressed: () {
-              // Ação quando o ícone de notificação for pressionado
-            },
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
           ),
         ],
         leading: IconButton(
@@ -56,51 +54,62 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           onPressed: () {},
         ),
       ),
-      body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Centraliza verticalmente
-        crossAxisAlignment:
-            CrossAxisAlignment.center, // Centraliza horizontalmente
-        children: [
-          _icon(context),
-          SizedBox(height: 50),
-          _buildForm(viewModel),
-        ],
-      )),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isSmallScreen = constraints.maxWidth < 600;
+          return Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _icon(context),
+                  SizedBox(height: isSmallScreen ? 30 : 50),
+                  _buildForm(viewModel, isSmallScreen),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildForm(EditProfileViewModel viewModel) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: viewModel.formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextName(
-                controller: viewModel.firstNameController,
-                padding: const EdgeInsets.symmetric(vertical: 16)),
-            SizedBox(height: 20),
-            TextEmail(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.emailController,
-            ),
-            SizedBox(height: 20),
-            TextPassWord(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.passwordController,
-            ),
-            SizedBox(height: 56),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _saveButton(viewModel),
-                _deleteButton(context),
-              ],
-            ),
-          ],
-        ),
+  Widget _buildForm(EditProfileViewModel viewModel, bool isSmallScreen) {
+    return Form(
+      key: viewModel.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextName(
+            controller: viewModel.firstNameController,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          SizedBox(height: 20),
+          TextEmail(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            controller: viewModel.emailController,
+          ),
+          SizedBox(height: 20),
+          TextPassWord(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            controller: viewModel.passwordController,
+          ),
+          SizedBox(height: isSmallScreen ? 40 : 56),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: _saveButton(viewModel),
+              ),
+              SizedBox(width: isSmallScreen ? 10 : 20),
+              Expanded(
+                child: _deleteButton(context),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -121,7 +130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         }
       },
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(150, 50), // Largura: 200, Altura: 50
+        minimumSize: Size(0, 50),
       ),
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
@@ -135,7 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     return ElevatedButton(
       onPressed: () => _showDeleteConfirmationDialog(context),
       style: ElevatedButton.styleFrom(
-        minimumSize: Size(150, 50), // Largura: 200, Altura: 50
+        minimumSize: Size(0, 50),
       ),
       child: const Text('Deletar Conta'),
     );
@@ -143,17 +152,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Widget _icon(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-          left: 16.0), // Adiciona espaço da borda esquerda
+      padding: const EdgeInsets.only(left: 16.0),
       child: Row(
         children: [
-          // Ícone circular
           CircleAvatar(
-            radius: 30, // Tamanho do círculo
+            radius: 30,
             backgroundColor: Colors.grey,
           ),
-          SizedBox(width: 16), // Espaço entre a imagem e o texto
-          // Texto com o nome e o cargo
+          SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

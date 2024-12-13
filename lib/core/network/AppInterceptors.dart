@@ -14,7 +14,6 @@ class AppInterceptors extends Interceptor {
 
         if ( token != null) {
           options.headers['Authorization'] = 'Bearer $token';
-          Log.e(token);
         }
 
         handler.next(options);
@@ -22,6 +21,7 @@ class AppInterceptors extends Interceptor {
 
       } catch (e) {
         Log.e(e);
+        rethrow;
       }
     } 
 }

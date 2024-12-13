@@ -53,13 +53,13 @@ Widget page(BuildContext context) {
               height: 64,
               child: ElevatedButton(
                   onPressed: () {
-                  viewModel.forgetPassword().then((Value){
+                    viewModel.forgetPassword().then((value) {
                       Log.d("Deu certo!");
-                  }).catchError((e) => showDialog<Object>(
-                    context: context,
-                    builder: (BuildContext context) =>
-                      ErrorPopUp(content: Text('$e')),  
-                  ));
+                    }).catchError((e) => showDialog<Object>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              ErrorPopUp(content: Text('$e')),
+                        ));
                   },
                   child: Consumer<RecoverAccountViewModel>(
                     builder: (context, value, child) => value.isLoading

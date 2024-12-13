@@ -154,7 +154,7 @@ class _LoginState extends State<_Login> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const RecoverAccount(),
+            builder: (context) =>  RecoverAccount(),
           ),
         );
       },

@@ -47,13 +47,18 @@ Widget page(BuildContext context) {
             child: SizedBox(
               width: 291,
               height: 64,
-              child:
-                  ElevatedButton(onPressed: () {}, child: const Text('Enviar')),
+              child: ElevatedButton(
+                  onPressed: () {},
+                  child: Consumer<RecoverAccountViewModel>(
+                    builder: (context, value, child) => value.isLoading
+                        ? const CircularProgressIndicator(value: null)
+                        : const Text('Enviar'),
+                  )),
             ),
           ),
           TextAndLink(
             text: 'Já tem uma conta?',
-            link: ' Click aqui',
+            link: 'Faça login',
             action: () {
               Navigator.of(context).pop();
             },

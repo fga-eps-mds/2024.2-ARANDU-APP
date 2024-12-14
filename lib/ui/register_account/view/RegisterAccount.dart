@@ -1,7 +1,7 @@
-import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
+import 'package:aranduapp/ui/shared/arabescos.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aranduapp/core/log/Log.dart';
@@ -46,6 +46,12 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TrianglesAndRhombus(),
+            ],
+          ),
           const SizedBox(height: 80),
           const TitleSlogan(),
           const SizedBox(height: 10),

@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/shared/CustomInputDecoration.dart';
 import 'package:flutter/material.dart';
 
 class TextName extends StatelessWidget {
@@ -20,10 +21,11 @@ class TextName extends StatelessWidget {
         validator: (value) =>
             value == null || value.trim().length < 3 ? '$label inválido' : null,
         controller: controller,
-        decoration: InputDecoration(
-            prefixIcon: Icon(Icons.person_outline,
-                color: Theme.of(context).colorScheme.primary),
-            labelText: label),
+        decoration: customInputDecoration(
+          prefixIcon: Icon(Icons.person_outline,
+              color: Theme.of(context).colorScheme.primary),
+          labelText: label,
+        ),
       ),
     );
   }

@@ -25,7 +25,7 @@ class LoginService {
     await StorageValue.getInstance()
         .setAuthToken(loginResponse.authToken ?? '');
     await StorageValue.getInstance()
-        .setAuthToken(loginResponse.refreshToken ?? '');
+        .setRefreshToken(loginResponse.refreshToken ?? '');
 
     return response;
   }
@@ -33,7 +33,7 @@ class LoginService {
   static Future<void> refreshToken() async {
     Log.d('init reresh token');
 
-    await BaseApi.getInstance().post(path: '/auth/validate-token');
+    await BaseApi.getInstance().get(path: '/auth/validate-token');
 
     String? refresh = await StorageValue.getInstance().getRefreshToken();
 

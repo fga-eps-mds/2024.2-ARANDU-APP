@@ -91,8 +91,15 @@ class _LoginState extends State<_Login> {
             width: 291,
             height: 64,
             child: ElevatedButton(
-              onPressed: () {
-                viewModel.loginWithDeviceAuth();
+              onPressed: () async {
+                viewModel.loginWithDeviceAuth().then((ok) {
+                  if (ok)
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const HomeView(),
+                      ),
+                    );
+                });
               },
               child: const Text('Usar senha do celular'),
             ),
@@ -154,7 +161,7 @@ class _LoginState extends State<_Login> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  RecoverAccount(),
+            builder: (context) => RecoverAccount(),
           ),
         );
       },

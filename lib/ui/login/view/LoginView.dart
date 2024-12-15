@@ -1,6 +1,7 @@
 import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/ui/home/view/HomeView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
+import 'package:aranduapp/ui/shared/arabescos.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -106,7 +107,14 @@ class _LoginState extends State<_Login> {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          const Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TrianglesAndRhombus(),
+            ],
+          ),
           const SizedBox(height: 80),
           const TitleSlogan(),
           const SizedBox(height: 80),
@@ -154,7 +162,7 @@ class _LoginState extends State<_Login> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) =>  RecoverAccount(),
+            builder: (context) => const RecoverAccount(),
           ),
         );
       },

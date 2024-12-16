@@ -10,7 +10,7 @@ class OnboardingView extends StatelessWidget {
     {
       'title': 'Bem-Vindo(a)!',
       'description':
-          'Seja bem vindo ao Arandu! Sou um ambiente voltado para aprendizado de forma gratuita',
+          'Seja bem vindo ao Arandu!!! Sou um ambiente voltado para aprendizado de forma gratuita',
       'imageAsset': 'assets/images/Component1.1.png',
     },
     {

@@ -10,11 +10,11 @@ class OnboardingView extends StatelessWidget {
     {
       'title': 'Bem-Vindo(a)!',
       'description':
-          'Seja bem vindo ao Arandu! Sou um ambiente voltado para aprendizado de forma gratuita.',
+          'Seja bem vindo ao Arandu! Sou um ambiente voltado para aprendizado de forma gratuita',
       'imageAsset': 'assets/images/Component1.1.png',
     },
     {
-      'title': 'O que você encontra?',
+      'title': 'o que você encontra?',
       'description':
           'Aqui você encontrará livros interativos de diversas disciplinas com objetivo de entregar praticidade e qualidade no aprendizado.',
       'imageAsset': 'assets/images/Component2.1.png',
@@ -22,7 +22,7 @@ class OnboardingView extends StatelessWidget {
     {
       'title': 'Como funciona?',
       'description':
-          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais. Bons estudos!',
+          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais. \n Bons estudos !!!',
       'imageAsset': 'assets/images/Component3.1.png',
     },
   ];

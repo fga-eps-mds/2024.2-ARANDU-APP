@@ -20,6 +20,7 @@ class Profile extends StatelessWidget {
     );
   }
 
+  /// AppBar
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -68,6 +69,7 @@ class Profile extends StatelessWidget {
     );
   }
 
+  /// Página principal
   Widget _buildPage(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
@@ -75,12 +77,13 @@ class Profile extends StatelessWidget {
         children: [
           _buildProfileHeader(context),
           const SizedBox(height: 16),
-          _buildProfileContent(context),
+          _buildProfileSection(context), // Chama as seções
         ],
       ),
     );
   }
 
+  /// Cabeçalho do Perfil
   Widget _buildProfileHeader(BuildContext context) {
     return ProfileHeader(
       name: "Stefani",
@@ -91,64 +94,69 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// Conteúdo do Perfil com Seções
-  Widget _buildProfileContent(BuildContext context) {
+  /// Seções do Perfil
+  Widget _buildProfileSection(BuildContext context) {
     return Column(
       children: [
-        // Seção 1: Conta
+        // Seção "Conta"
         ProfileSection(
           title: 'Conta',
-          children: const [
-            ProfileItem(
+          items: [
+            ProfileLinkItem(
               icon: Icons.person_outline,
-              text: 'Dados Pessoais',
+              name: 'Dados Pessoais',
+              onTap: () {
+                print("Dados Pessoais");
+              },
             ),
-            ProfileItem(
+            ProfileLinkItem(
               icon: Icons.emoji_events_outlined,
-              text: 'Conquistas',
+              name: 'Conquistas',
+              onTap: () {
+                print("Conquistas");
+              },
             ),
-            ProfileItem(
-              icon: Icons.history,
-              text: 'Histórico',
+            ProfileLinkItem(
+              icon: Icons.history_outlined,
+              name: 'Histórico',
+              onTap: () {
+                print("Histórico");
+              },
             ),
           ],
         ),
         const SizedBox(height: 16),
-
-        // Seção 2: Notificações
+        // Seção "Notificações"
         ProfileSection(
           title: 'Notificações',
-          children: [
-            ProfileItem(
+          items: [
+            ProfileLinkItem(
               icon: Icons.notifications_none_outlined,
-              text: 'Notificação Pop-up',
-              trailing: Switch(
-                value: true,
-                onChanged: (value) {
-                  // Ação do Switch (placeholder)
-                  print('Notificação Pop-up: $value');
-                },
-              ),
+              name: 'Notificação Pop-up',
+              hasSwitch: true,
+              switchValue: true,
+              onSwitchChanged: (value) {
+                print("Switch Notificação: $value");
+              },
             ),
           ],
         ),
         const SizedBox(height: 16),
-
-        // Seção 3: Outros
+        // Seção "Outros"
         ProfileSection(
           title: 'Outros',
-          children: const [
-            ProfileItem(
+          items: [
+            ProfileLinkItem(
               icon: Icons.email_outlined,
-              text: 'Contate-nos',
+              name: 'Contate-nos',
             ),
-            ProfileItem(
+            ProfileLinkItem(
               icon: Icons.privacy_tip_outlined,
-              text: 'Política de Privacidade',
+              name: 'Política de Privacidade',
             ),
-            ProfileItem(
+            ProfileLinkItem(
               icon: Icons.settings_outlined,
-              text: 'Configurações',
+              name: 'Configurações',
             ),
           ],
         ),

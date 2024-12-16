@@ -9,37 +9,18 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ProfileAppBar(), // Widget de AppBar separado
+      appBar: _buildAppBar(), // AppBar construído aqui
       body: ChangeNotifierProvider(
         create: (context) => ProfileViewModel(context),
         builder: (context, child) {
-          return _buildPage(context); // Constrói a página principal
+          return _buildPage(context); // Página principal
         },
       ),
     );
   }
 
-  Widget _buildPage(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ProfileHeaderSection(), // Widget para o cabeçalho do perfil
-          const SizedBox(height: 16),
-          ProfileContent(), // Widget para o conteúdo da página
-        ],
-      ),
-    );
-  }
-}
-
-/// 1. Widget para o AppBar
-class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
-  @override
-  Size get preferredSize => const Size.fromHeight(56);
-
-  @override
-  Widget build(BuildContext context) {
+  /// Constrói o AppBar
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -88,28 +69,32 @@ class ProfileAppBar extends StatelessWidget implements PreferredSizeWidget {
       ],
     );
   }
-}
 
-/// 2. Widget para o Cabeçalho do Perfil
-class ProfileHeaderSection extends StatelessWidget {
-  const ProfileHeaderSection({super.key});
+  /// Constrói a Página Principal
+  Widget _buildPage(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildProfileHeader(), // Cabeçalho do perfil
+          const SizedBox(height: 16),
+          _buildProfileContent(), // Conteúdo adicional
+        ],
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  /// Widget do Cabeçalho do Perfil
+  Widget _buildProfileHeader() {
     return ProfileHeader(
       name: "Stefani",
       role: "Estudante",
       onEditPressed: null, // Botão sem ação no momento
     );
   }
-}
 
-/// 3. Widget para o Conteúdo da Página
-class ProfileContent extends StatelessWidget {
-  const ProfileContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
+  /// Widget do Conteúdo Adicional
+  Widget _buildProfileContent() {
     return const Center(
       child: Text(
         "Conteúdo da tela de perfil...",

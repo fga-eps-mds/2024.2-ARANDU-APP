@@ -43,6 +43,7 @@ dependencies:
   local_auth: ^2.3.0
   dio: ^5.7.0
   font_awesome_flutter: ^10.8.0
+  flutter_secure_storage: ^9.2.2
 
 
 dev_dependencies:

@@ -1,34 +1,30 @@
 import 'dart:convert';
 class RegisterRequest {
   final String email;
-  final String firstName;
-  final String lastName;
+  final String name;
+  final String userName;
   final String password;
-  final String confPassword;
   RegisterRequest({
     required this.email,
-    required this.firstName,
-    required this.lastName,
+    required this.name,
+    required this.userName,
     required this.password,
-    required this.confPassword,
   });
   Map<String, dynamic> toJson() {
     return {
+      'name': name,
       'email': email,
-      'firstName': firstName,
-      'lastName': lastName,
+      'username': userName,
       'password': password,
-      'confPassword': confPassword,
     };
   }
   factory RegisterRequest.fromJsonString(String jsonString) {
     final json = jsonDecode(jsonString);
     return RegisterRequest(
       email: json['email'],
-      firstName: json['firstName'],
-      lastName: json['lastName'],
+      name: json['name'],
+      userName: json['userName'],
       password: json['password'],
-      confPassword: json['confPassword'],
     );
   }
 }

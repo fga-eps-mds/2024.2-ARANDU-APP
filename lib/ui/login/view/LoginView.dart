@@ -1,4 +1,6 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/ui/home/view/HomeView.dart';
+import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,6 +14,7 @@ import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/OrDivider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -88,8 +91,15 @@ class _LoginState extends State<_Login> {
             width: 291,
             height: 64,
             child: ElevatedButton(
-              onPressed: () {
-                viewModel.loginWithDeviceAuth();
+              onPressed: () async {
+                viewModel.loginWithDeviceAuth().then((ok) {
+                  if (ok)
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const HomeView(),
+                      ),
+                    );
+                });
               },
               child: const Text('Usar senha do celular'),
             ),
@@ -101,34 +111,29 @@ class _LoginState extends State<_Login> {
 
   Widget _emailAndPassword(LoginViewModel viewModel) {
     return SingleChildScrollView(
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Expanded(
-              child: Center(
-                child: TitleSlogan(),
-              ),
-            ),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [_formSection(viewModel), _forgotPasswordLink(context)],
-            )),
-            Expanded(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _loginButtonSection(context, viewModel),
-                _orDivider(),
-                _loggingInWithOther(),
-                _createAccountLink(context),
-              ],
-            )),
-          ],
-        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          const SizedBox(height: 80),
+          const TitleSlogan(),
+          const SizedBox(height: 80),
+          const SizedBox(height: 10),
+          _formSection(viewModel),
+          _forgotPasswordLink(),
+          const SizedBox(height: 80),
+          _loginButtonSection(),
+          const OrDivider(),
+          _loggingInWithOther(),
+          TextAndLink(
+              text: 'É novo pro aqui?',
+              link: 'Cria a sua conta',
+              action: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const RegisterAccount()),
+                );
+              }),
+        ],
       ),
     );
   }
@@ -151,12 +156,12 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _forgotPasswordLink(BuildContext context) {
+  Widget _forgotPasswordLink() {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => const RecoverAccount(),
+            builder: (context) => RecoverAccount(),
           ),
         );
       },
@@ -176,19 +181,25 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _loginButtonSection(BuildContext context, LoginViewModel viewModel) {
+  Widget _loginButtonSection() {
+    LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
+
     return SizedBox(
       width: 291,
       height: 64,
       child: ElevatedButton(
           onPressed: () {
-            viewModel
-                .loginWithEmailAndPassword()
-                .catchError((e) => showDialog<Object>(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          ErrorPopUp(content: Text('$e')),
-                    ));
+            viewModel.loginWithEmailAndPassword().then((_) {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => const HomeView(),
+                ),
+              );
+            }).catchError((e) => showDialog<Object>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      ErrorPopUp(content: Text('$e')),
+                ));
           },
           child: Consumer<LoginViewModel>(
             builder: (context, value, child) => value.isLoading
@@ -198,77 +209,21 @@ class _LoginState extends State<_Login> {
     );
   }
 
-  Widget _createAccountLink(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 13),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'É novo por aqui?',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => const RegisterAccount(),
-                ),
-              );
-            },
-            child: SizedBox(
-              child: Text(
-                ' Crie a sua conta',
-                style: Theme.of(context).textTheme.bodySmall!.apply(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _orDivider() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        children: <Widget>[
-          const Expanded(child: Divider()),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            child: Text(
-              'ou',
-              style: Theme.of(context).textTheme.bodyMedium!.apply(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-            ),
-          ),
-          const Expanded(child: Divider()),
-        ],
-      ),
-    );
-  }
-
-
-
-  Widget _loggingInWithOther(){
-
+  Widget _loggingInWithOther() {
     return GestureDetector(
       onTap: () => Log.d(""),
       child: Container(
         width: 50,
         height: 50,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10), 
-          border: Border.all(color: Colors.grey),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
           color: Colors.transparent,
         ),
         child: Icon(
           FontAwesomeIcons.google,
           size: 20,
-          color: Theme.of(context).colorScheme.primary, 
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

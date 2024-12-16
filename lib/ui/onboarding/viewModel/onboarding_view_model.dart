@@ -1,5 +1,5 @@
+import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
 
 class OnboardingViewModel extends ChangeNotifier {
   final PageController pageController = PageController();
@@ -17,10 +17,10 @@ class OnboardingViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void navigateToRegister(BuildContext context) {
+  void navigateToNextPage(BuildContext context) {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const RegisterAccount()),
+      MaterialPageRoute(builder: (context) => const Login()),
     );
   }
 }

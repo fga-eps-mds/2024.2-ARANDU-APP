@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
 import 'package:provider/provider.dart';
 import '../viewModel/onboarding_view_model.dart';
 
@@ -165,7 +164,7 @@ class OnboardingView extends StatelessWidget {
           children: [
             if (viewModel.currentPage < steps.length - 1)
               TextButton(
-                onPressed: () => viewModel.navigateToRegister(context),
+                onPressed: () => viewModel.navigateToNextPage(context),
                 child: Text(
                   'Pular',
                   style: Theme.of(context).textTheme.bodyLarge?.apply(
@@ -191,7 +190,7 @@ class OnboardingView extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: () => viewModel.navigateToRegister(context),
+                onPressed: () => viewModel.navigateToNextPage(context),
                 child: Text(
                   'Começar',
                   style: Theme.of(context).textTheme.bodyLarge?.apply(

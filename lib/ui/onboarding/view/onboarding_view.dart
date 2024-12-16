@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../viewModel/onboarding_view_model.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
-  @override
-  _OnboardingViewState createState() => _OnboardingViewState();
-}
-
-class _OnboardingViewState extends State<OnboardingView> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  final List<Map<String, String>> steps = [
+  final List<Map<String, String>> steps = const [
     {
       'title': 'Bem-Vindo(a)!',
       'description':
@@ -34,83 +27,39 @@ class _OnboardingViewState extends State<OnboardingView> {
     },
   ];
 
-// Vai para a próxima página do onboarding
-  void _goToNextPage() {
-    if (_currentPage < steps.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
-  }
-
-// Volta para a página anterior do onboarding
-  void _goToPreviousPage() {
-    if (_currentPage > 0) {
-      _pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
-  }
-
-// Atualiza a página atual com base no controlador
-  void _updateCurrentPage() {
-    _pageController.addListener(() {
-      int page = _pageController.page?.toInt() ?? 0;
-      if (_currentPage != page) {
-        setState(() {
-          _currentPage = page;
-        });
-      }
-    });
-  }
-
-// Navega para a página de registro
-  void _navigateToRegister() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const RegisterAccount()),
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _updateCurrentPage();
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-// Garante responsividade do código em qualquer tela
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: null,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final double imageHeight = constraints.maxHeight * 0.60;
-          final double contentHeight = constraints.maxHeight * 0.55;
-          final double buttonHeight = constraints.maxHeight * 0.15;
+    return ChangeNotifierProvider(
+      create: (_) => OnboardingViewModel(),
+      child: Consumer<OnboardingViewModel>(
+        builder: (context, viewModel, _) {
+          return Scaffold(
+            appBar: null,
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final double imageHeight = constraints.maxHeight * 0.60;
+                final double contentHeight = constraints.maxHeight * 0.55;
+                final double buttonHeight = constraints.maxHeight * 0.15;
 
-          return Stack(
-            children: [
-              _buildSemicirclePage(context),
-              _buildImageSection(imageHeight),
-              _buildContentSection(contentHeight),
-              _buildNavigationButtons(buttonHeight),
-            ],
+                return Stack(
+                  children: [
+                    _buildSemicirclePage(context),
+                    _buildImageSection(viewModel, steps, imageHeight),
+                    _buildContentSection(viewModel, steps, contentHeight),
+                    _buildNavigationButtons(
+                        context, viewModel, steps, buttonHeight),
+                  ],
+                );
+              },
+            ),
           );
         },
       ),
     );
   }
 
-  Widget _buildImageSection(double height) {
+  Widget _buildImageSection(OnboardingViewModel viewModel,
+      List<Map<String, String>> steps, double height) {
     return Positioned(
       top: 0,
       left: 0,
@@ -122,10 +71,10 @@ class _OnboardingViewState extends State<OnboardingView> {
           return FadeTransition(opacity: animation, child: child);
         },
         child: Container(
-          key: ValueKey<String>(steps[_currentPage]['imageAsset']!),
+          key: ValueKey<String>(steps[viewModel.currentPage]['imageAsset']!),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(steps[_currentPage]['imageAsset']!),
+              image: AssetImage(steps[viewModel.currentPage]['imageAsset']!),
               fit: BoxFit.cover,
             ),
           ),
@@ -134,15 +83,17 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  Widget _buildContentSection(double height) {
+  Widget _buildContentSection(OnboardingViewModel viewModel,
+      List<Map<String, String>> steps, double height) {
     return Positioned(
       top: height,
       left: 0,
       right: 0,
       height: height,
       child: PageView.builder(
-        controller: _pageController,
+        controller: viewModel.pageController,
         itemCount: steps.length,
+        onPageChanged: viewModel.updateCurrentPage,
         itemBuilder: (context, index) {
           final step = steps[index];
           return Padding(
@@ -152,10 +103,9 @@ class _OnboardingViewState extends State<OnboardingView> {
               children: [
                 Text(
                   step['title']!,
-                  style: GoogleFonts.comfortaa(
-                    textStyle: Theme.of(context).textTheme.headlineMedium,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                   textAlign: TextAlign.justify,
                 ),
                 const SizedBox(height: 20),
@@ -163,9 +113,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                   child: SingleChildScrollView(
                     child: Text(
                       step['description']!,
-                      style: GoogleFonts.comfortaa(
-                        textStyle: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.justify,
                     ),
                   ),
@@ -200,8 +148,11 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-// Constrói todos os botões presentes no onboarding
-  Widget _buildNavigationButtons(double height) {
+  Widget _buildNavigationButtons(
+      BuildContext context,
+      OnboardingViewModel viewModel,
+      List<Map<String, String>> steps,
+      double height) {
     return Positioned(
       bottom: 0,
       left: 0,
@@ -212,9 +163,9 @@ class _OnboardingViewState extends State<OnboardingView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (_currentPage < steps.length - 1)
+            if (viewModel.currentPage < steps.length - 1)
               TextButton(
-                onPressed: _navigateToRegister,
+                onPressed: () => viewModel.navigateToRegister(context),
                 child: Text(
                   'Pular',
                   style: Theme.of(context).textTheme.bodyLarge?.apply(
@@ -222,12 +173,12 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                 ),
               ),
-            if (_currentPage < steps.length - 1)
+            if (viewModel.currentPage < steps.length - 1)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: _goToNextPage,
+                onPressed: viewModel.goToNextPage,
                 child: Text(
                   'Avançar',
                   style: Theme.of(context).textTheme.bodyLarge?.apply(
@@ -235,12 +186,12 @@ class _OnboardingViewState extends State<OnboardingView> {
                       ),
                 ),
               ),
-            if (_currentPage == steps.length - 1)
+            if (viewModel.currentPage == steps.length - 1)
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
-                onPressed: _navigateToRegister,
+                onPressed: () => viewModel.navigateToRegister(context),
                 child: Text(
                   'Começar',
                   style: Theme.of(context).textTheme.bodyLarge?.apply(

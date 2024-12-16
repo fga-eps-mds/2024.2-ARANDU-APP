@@ -9,17 +9,16 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(), // AppBar construído aqui
+      appBar: _buildAppBar(),
       body: ChangeNotifierProvider(
         create: (context) => ProfileViewModel(context),
         builder: (context, child) {
-          return _buildPage(context); // Página principal
+          return _buildPage(context);
         },
       ),
     );
   }
 
-  /// Constrói o AppBar
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
@@ -70,21 +69,19 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// Constrói a Página Principal
   Widget _buildPage(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildProfileHeader(), // Cabeçalho do perfil
+          _buildProfileHeader(),
           const SizedBox(height: 16),
-          _buildProfileContent(), // Conteúdo adicional
+          _buildProfileContent(),
         ],
       ),
     );
   }
 
-  /// Widget do Cabeçalho do Perfil
   Widget _buildProfileHeader() {
     return ProfileHeader(
       name: "Stefani",
@@ -93,7 +90,6 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// Widget do Conteúdo Adicional
   Widget _buildProfileContent() {
     return const Center(
       child: Text(

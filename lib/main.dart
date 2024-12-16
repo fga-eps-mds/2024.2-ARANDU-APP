@@ -1,5 +1,6 @@
 import 'package:aranduapp/config/ThemeApp.dart';
 import 'package:aranduapp/ui/login/view/LoginView.dart';
+import 'package:aranduapp/ui/profile/view/ProfileView.dart';
 import 'package:aranduapp/ui/welcome/view/WelcomeView.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeApp.themeData(),
       darkTheme: ThemeApp.darkThemeData(),
       debugShowCheckedModeBanner: false,
-      home: const Login(),
+      home: const Profile(),
     );
   }
 }

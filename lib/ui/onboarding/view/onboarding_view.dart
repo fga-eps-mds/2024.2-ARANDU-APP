@@ -1,20 +1,11 @@
-// lib/view/onboarding_page.dart
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../viewModel/onboarding_view_model.dart';
 
-class OnboardingView extends StatefulWidget {
+class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});
 
-  @override
-  _OnboardingViewState createState() => _OnboardingViewState();
-}
-
-class _OnboardingViewState extends State<OnboardingView> {
-  final PageController _pageController = PageController();
-  int _currentPage = 0;
-
-  final List<Map<String, String>> steps = [
+  final List<Map<String, String>> steps = const [
     {
       'title': 'Bem-Vindo(a)!',
       'description':
@@ -35,93 +26,96 @@ class _OnboardingViewState extends State<OnboardingView> {
     },
   ];
 
-  void _goToNextPage() {
-    if (_currentPage < steps.length - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
-  }
-
-  void _goToPreviousPage() {
-    if (_currentPage > 0) {
-      _pageController.previousPage(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-      );
-    }
-  }
-
   @override
-  void initState() {
-    super.initState();
-    _pageController.addListener(() {
-      int page = _pageController.page?.toInt() ?? 0;
-      if (_currentPage != page) {
-        setState(() {
-          _currentPage = page;
-        });
-      }
-    });
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => OnboardingViewModel(),
+      child: Consumer<OnboardingViewModel>(
+        builder: (context, viewModel, _) {
+          return Scaffold(
+            appBar: null,
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final double imageHeight = constraints.maxHeight * 0.60;
+                final double contentHeight = constraints.maxHeight * 0.55;
+                final double buttonHeight = constraints.maxHeight * 0.15;
+
+                return Stack(
+                  children: [
+                    _buildSemicirclePage(context),
+                    _buildImageSection(viewModel, steps, imageHeight),
+                    _buildContentSection(viewModel, steps, contentHeight),
+                    _buildNavigationButtons(
+                        context, viewModel, steps, buttonHeight),
+                  ],
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildOnboardingImage(String imageAsset) {
+  Widget _buildImageSection(OnboardingViewModel viewModel,
+      List<Map<String, String>> steps, double height) {
     return Positioned(
       top: 0,
       left: 0,
       right: 0,
-      child: Container(
-        height: MediaQuery.of(context).size.height * 0.6,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(imageAsset),
-            fit: BoxFit.cover,
+      height: height,
+      child: AnimatedSwitcher(
+        duration: const Duration(seconds: 1),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return FadeTransition(opacity: animation, child: child);
+        },
+        child: Container(
+          key: ValueKey<String>(steps[viewModel.currentPage]['imageAsset']!),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(steps[viewModel.currentPage]['imageAsset']!),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildOnboardingSteps() {
+  Widget _buildContentSection(OnboardingViewModel viewModel,
+      List<Map<String, String>> steps, double height) {
     return Positioned(
-      top: MediaQuery.of(context).size.height * 0.6,
+      top: height,
       left: 0,
       right: 0,
-      bottom: 0,
+      height: height,
       child: PageView.builder(
-        controller: _pageController,
+        controller: viewModel.pageController,
         itemCount: steps.length,
+        onPageChanged: viewModel.updateCurrentPage,
         itemBuilder: (context, index) {
           final step = steps[index];
           return Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
+              children: [
                 Text(
                   step['title']!,
-                  style: GoogleFonts.comfortaa(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  textAlign: TextAlign.justify,
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  step['description']!,
-                  style: GoogleFonts.comfortaa(
-                    fontSize: 18,
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Text(
+                      step['description']!,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.justify,
+                    ),
                   ),
-                  textAlign: TextAlign.justify,
                 ),
               ],
             ),
@@ -131,92 +125,81 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  Widget _buildNavigationButtons() {
+  Widget _buildSemicirclePage(BuildContext context) {
     return Positioned(
-      bottom: 48,
-      left: 0,
-      right: 0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end, // Alinha os botões à direita
-        children: [
-          // Botão de voltar (aparece apenas se não estiver na primeira página)
-          if (_currentPage > 0)
-            Padding(
-              padding: const EdgeInsets.only(left: 0),
-              child: FloatingActionButton(
-                onPressed: _goToPreviousPage,
-                mini: true,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                child: const Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          SizedBox(width: 10),
-          // Botão de avançar (sempre à direita)
-          Padding(
-            padding: const EdgeInsets.only(right: 30),
-            child: FloatingActionButton(
-              onPressed: _goToNextPage,
-              mini: true,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              child: const Icon(
-                Icons.arrow_forward,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildStartButton() {
-    return Positioned(
-      bottom: 50,
-      right: 30,
-      child: SizedBox(
-        width: 150,
-        height: 48,
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const RegisterAccount(),
-              ),
-            );
-          },
-          child: const Text(
-            'Começar',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
+      top: 0,
+      left: -MediaQuery.of(context).size.width * 0.3, // Desloca para a esquerda
+      child: Container(
+        width:
+            MediaQuery.of(context).size.width * 1.3, // Largura maior que a tela
+        height:
+            MediaQuery.of(context).size.height * 0.4, // Altura do semicírculo
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary,
+          borderRadius: BorderRadius.only(
+            bottomLeft:
+                Radius.circular(MediaQuery.of(context).size.height * 0.5),
+            bottomRight:
+                Radius.circular(MediaQuery.of(context).size.height * 0.5),
           ),
         ),
       ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: null,
-      body: Stack(
-        children: [
-          _buildOnboardingImage(steps[_currentPage]['imageAsset']!),
-          _buildOnboardingSteps(),
-          _buildNavigationButtons(),
-          if (_currentPage == steps.length - 1) _buildStartButton(),
-        ],
+  Widget _buildNavigationButtons(
+      BuildContext context,
+      OnboardingViewModel viewModel,
+      List<Map<String, String>> steps,
+      double height) {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: height,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (viewModel.currentPage < steps.length - 1)
+              TextButton(
+                onPressed: () => viewModel.navigateToNextPage(context),
+                child: Text(
+                  'Pular',
+                  style: Theme.of(context).textTheme.bodyLarge?.apply(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                ),
+              ),
+            if (viewModel.currentPage < steps.length - 1)
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: viewModel.goToNextPage,
+                child: Text(
+                  'Avançar',
+                  style: Theme.of(context).textTheme.bodyLarge?.apply(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+              ),
+            if (viewModel.currentPage == steps.length - 1)
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () => viewModel.navigateToNextPage(context),
+                child: Text(
+                  'Começar',
+                  style: Theme.of(context).textTheme.bodyLarge?.apply(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

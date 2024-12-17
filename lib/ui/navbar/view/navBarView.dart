@@ -35,8 +35,8 @@ Widget page(BuildContext context) {
     bottomNavigationBar: BottomNavigationBar(
       currentIndex: viewModel.selectedIndex,
       onTap: viewModel.changeTab,
-      selectedItemColor: Colors.cyan[400],
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      unselectedItemColor: Colors.black,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

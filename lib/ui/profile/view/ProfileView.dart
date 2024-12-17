@@ -28,24 +28,8 @@ class Profile extends StatelessWidget {
   /// AppBar
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
-      elevation: 0,
-      leading: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceVariant,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Center(
-            child: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
-        ),
-      ),
+      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+      scrolledUnderElevation: 0,
       title: Text(
         'Perfil',
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -55,12 +39,8 @@ class Profile extends StatelessWidget {
       centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.all(1.0),
+          padding: const EdgeInsets.only(right: 16.0),
           child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceVariant,
-              borderRadius: BorderRadius.circular(12),
-            ),
             child: const Center(
               child: Icon(
                 Icons.notifications_none_outlined,

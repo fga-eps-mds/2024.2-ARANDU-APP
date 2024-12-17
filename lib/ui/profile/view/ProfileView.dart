@@ -1,8 +1,13 @@
+// MVVM
 import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
+// Componentes
 import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/shared/ProfileSection.dart';
+// Bibliotecas
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+// Paginas
+import 'package:aranduapp/ui/edit_profile/view/EditProfileView.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -50,7 +55,7 @@ class Profile extends StatelessWidget {
       centerTitle: true,
       actions: [
         Padding(
-          padding: const EdgeInsets.all(2.0),
+          padding: const EdgeInsets.all(1.0),
           child: Container(
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceVariant,
@@ -60,7 +65,7 @@ class Profile extends StatelessWidget {
               child: Icon(
                 Icons.notifications_none_outlined,
                 color: Colors.black,
-                size: 40,
+                size: 32,
               ),
             ),
           ),
@@ -89,7 +94,10 @@ class Profile extends StatelessWidget {
       name: "Stefani",
       role: "Estudante",
       onEditPressed: () {
-        print('Editar perfil');
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const EditProfile()),
+        );
       },
     );
   }

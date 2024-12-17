@@ -11,13 +11,39 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       body: Center(
-        child: Column(
+        child: SingleChildScrollView(
+          
+          
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 95),
+            _logo(context),
+            const SizedBox(height: 130),
+            _startButton(context)          
+          ],
+        )
+        )
+        
+      )
+    );
+  }
+
+  Widget _logo(BuildContext context){
+    Size screenSize = MediaQuery.of(context).size;
+
+    double circleDiameter = screenSize.height * 0.3; 
+    double nameSize = screenSize.height * 0.075;
+
+    return Center(
+        child: SingleChildScrollView(
+          child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
 
             //Cículo com gradiente com possível logo sobreposta
             Stack(
@@ -27,8 +53,8 @@ class WelcomeView extends StatelessWidget {
 
 
                 Container(
-                  width: 278,
-                  height: 278,
+                  width: circleDiameter,
+                  height: circleDiameter,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primary,
                     shape: BoxShape.circle,
@@ -43,14 +69,25 @@ class WelcomeView extends StatelessWidget {
             Text(
               "Arandú",
               style: GoogleFonts.amarante(
-                fontSize: 60,
+                fontSize: nameSize,
                 fontWeight: FontWeight.w500, 
               ),
             ),
-            const Spacer(),
+                    
+          ],
+        )
+        )
+        
+      );
+  }
 
-            //Botão de começar com gradiente
-            GestureDetector(
+  Widget _startButton(BuildContext context){
+    Size screenSize = MediaQuery.of(context).size;
+
+    double paddingHorizontal = screenSize.width * 0.05; // 10% da largura da tela
+    double paddingVertical = screenSize.height * 0.025; // 5% da altura da tela
+    return SingleChildScrollView(
+      child: GestureDetector(
               onTap: () => {
 
 
@@ -65,7 +102,7 @@ class WelcomeView extends StatelessWidget {
 
 
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal:120, vertical: 15),
+                padding: EdgeInsets.symmetric(horizontal:paddingHorizontal, vertical:paddingVertical),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: Theme.of(context).colorScheme.primary,
@@ -82,11 +119,9 @@ class WelcomeView extends StatelessWidget {
               ),
           
             ),
-            const SizedBox(height:50),          
-          ],
-        )
-      )
     );
   }
+
+  
   
 }

@@ -1,9 +1,7 @@
-import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/ui/home/view/HomeView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
 
@@ -15,6 +13,7 @@ import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -34,6 +33,40 @@ class _Login extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _LoginState();
+  }
+}
+
+class GoogleLoginButton extends StatelessWidget {
+  const GoogleLoginButton({super.key});
+
+  Future<void> _launchGoogleSignIn() async {
+    final Uri url = Uri.parse('http://localhost/auth/google');
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Não foi possível abrir a URL: $url');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: _launchGoogleSignIn,
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Theme.of(context).colorScheme.outline),
+          color: Colors.transparent,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            'assets/images/Google.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -123,10 +156,10 @@ class _LoginState extends State<_Login> {
           const SizedBox(height: 80),
           _loginButtonSection(),
           const OrDivider(),
-          _loggingInWithOther(),
+          const GoogleLoginButton(),
           TextAndLink(
-              text: 'É novo pro aqui?',
-              link: 'Cria a sua conta',
+              text: 'Não tem uma conta?',
+              link: 'Registre-se',
               action: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -206,26 +239,6 @@ class _LoginState extends State<_Login> {
                 ? const CircularProgressIndicator(value: null)
                 : const Text('Entrar'),
           )),
-    );
-  }
-
-  Widget _loggingInWithOther() {
-    return GestureDetector(
-      onTap: () => Log.d(""),
-      child: Container(
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: Theme.of(context).colorScheme.outline),
-          color: Colors.transparent,
-        ),
-        child: Icon(
-          FontAwesomeIcons.google,
-          size: 20,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
     );
   }
 }

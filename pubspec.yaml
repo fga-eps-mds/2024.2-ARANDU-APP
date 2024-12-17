@@ -44,6 +44,8 @@ dependencies:
   dio: ^5.7.0
   font_awesome_flutter: ^10.8.0
   flutter_secure_storage: ^9.2.2
+  url_launcher: ^6.2.1
+
 
 
 dev_dependencies:
@@ -72,6 +74,7 @@ flutter:
     - assets/images/Component1.png
     - assets/images/Component2.png
     - assets/images/Component3.png
+    - assets/images/Google.png
 
 
 

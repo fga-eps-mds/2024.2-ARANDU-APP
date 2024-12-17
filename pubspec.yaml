@@ -45,6 +45,7 @@ dependencies:
   font_awesome_flutter: ^10.8.0
   flutter_secure_storage: ^9.2.2
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -71,6 +72,10 @@ flutter:
     - assets/images/Component1.png
     - assets/images/Component2.png
     - assets/images/Component3.png
+
+
+
+    
 
   # To add assets to your application, add an assets section, like this:
   # assets:

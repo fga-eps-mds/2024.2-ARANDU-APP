@@ -1,5 +1,5 @@
 import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/home/view/HomeView.dart';
+import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -93,12 +93,7 @@ class _LoginState extends State<_Login> {
             child: ElevatedButton(
               onPressed: () async {
                 viewModel.loginWithDeviceAuth().then((ok) {
-                  if (ok)
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const HomeView(),
-                      ),
-                    );
+                  viewModel.goNextPage();
                 });
               },
               child: const Text('Usar senha do celular'),
@@ -190,11 +185,9 @@ class _LoginState extends State<_Login> {
       child: ElevatedButton(
           onPressed: () {
             viewModel.loginWithEmailAndPassword().then((_) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const HomeView(),
-                ),
-              );
+
+              viewModel.goNextPage();
+
             }).catchError((e) => showDialog<Object>(
                   context: context,
                   builder: (BuildContext context) =>

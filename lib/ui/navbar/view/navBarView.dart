@@ -1,5 +1,4 @@
 import 'package:aranduapp/ui/home/view/HomeView.dart';
-//import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aranduapp/ui/navbar/model/navBarViewModel.dart';
@@ -34,8 +33,8 @@ Widget page(BuildContext context) {
     bottomNavigationBar: BottomNavigationBar(
       currentIndex: viewModel.selectedIndex,
       onTap: viewModel.changeTab,
-      selectedItemColor: Colors.cyan[400],
-      unselectedItemColor: Colors.grey,
+      selectedItemColor: Theme.of(context).colorScheme.primary,
+      unselectedItemColor:Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

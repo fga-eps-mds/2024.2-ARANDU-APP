@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/register_account/viewModel/RegisterViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
@@ -5,17 +6,39 @@ import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
+import 'package:provider/provider.dart';
+
+class DubleRegisterAccountViewModel extends RegisterAccountViewModel {
+  @override
+  Future<void> register() async {
+    isLoading = true;
+    notifyListeners();
+    await Future.delayed(const Duration(milliseconds: 500));
+    isLoading = false;
+    notifyListeners();
+  }
+}
 
 void main() {
   group('RegisterAccount Widget Tests', () {
+    late DubleRegisterAccountViewModel fakeViewModel;
+
+    setUp(() {
+      fakeViewModel = DubleRegisterAccountViewModel();
+    });
+
     testWidgets('Verifica se os widgets básicos estão presentes',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: RegisterAccount(),
+        ChangeNotifierProvider<RegisterAccountViewModel>.value(
+          value: fakeViewModel,
+          child: const MaterialApp(
+            home: RegisterAccount(),
+          ),
         ),
       );
-      // Verifica a presença dos itens.
+
+      // Verifica a presença dos itens
       expect(find.byType(TitleSlogan), findsOneWidget);
       expect(find.byType(TextName), findsNWidgets(2));
       expect(find.byType(TextEmail), findsOneWidget);
@@ -26,8 +49,11 @@ void main() {
     testWidgets('Interação com o formulário de registro',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: RegisterAccount(),
+        ChangeNotifierProvider<RegisterAccountViewModel>.value(
+          value: fakeViewModel,
+          child: const MaterialApp(
+            home: RegisterAccount(),
+          ),
         ),
       );
 
@@ -49,24 +75,27 @@ void main() {
       // Interação com o checkbox
       await tester.tap(find.byType(Checkbox));
       await tester.pump();
-      expect(tester.widget<Checkbox>(find.byType(Checkbox)).value, isTrue);
+      expect(fakeViewModel.isTermsAccepted, isTrue);
 
-      // Interações com o botão
+      // Interação com o botão
       await tester.tap(find.byType(ElevatedButton));
       await tester.pump();
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(fakeViewModel.isLoading, isTrue);
     });
 
     testWidgets('Teste do botão de login com o Google',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
-          home: RegisterAccount(),
+        ChangeNotifierProvider<RegisterAccountViewModel>.value(
+          value: fakeViewModel,
+          child: const MaterialApp(
+            home: RegisterAccount(),
+          ),
         ),
       );
 
-      // Interações com o botão do google
+      // Interação com o botão do Google
       final googleButton = find.byType(GestureDetector);
       expect(googleButton, findsOneWidget);
 

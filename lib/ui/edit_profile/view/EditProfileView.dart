@@ -30,26 +30,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         title: Center(
           child: Text(
             'Editar perfil',
             style: TextStyle(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
               fontSize: 24,
             ),
           ),
         ),
         actions: [
           IconButton(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.primary,
             icon: Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
         leading: IconButton(
-          color: Colors.black,
+          color: Theme.of(context).colorScheme.primary,
           icon: Icon(Icons.arrow_back),
           onPressed: () {},
         ),
@@ -64,7 +64,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _icon(context),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6.0), // Move para cima
+                    child: _icon(context),
+                  ),
                   SizedBox(height: isSmallScreen ? 30 : 50),
                   _buildForm(viewModel, isSmallScreen),
                 ],
@@ -96,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             padding: const EdgeInsets.symmetric(vertical: 16),
             controller: viewModel.passwordController,
           ),
-          SizedBox(height: isSmallScreen ? 40 : 56),
+          SizedBox(height: isSmallScreen ? 100 : 56),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -157,7 +160,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         children: [
           CircleAvatar(
             radius: 30,
-            backgroundColor: Colors.grey,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
           ),
           SizedBox(width: 16),
           Column(
@@ -174,7 +177,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 "Estudante",
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],

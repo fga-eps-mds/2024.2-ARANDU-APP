@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 class ProfileHeader extends StatelessWidget {
   final String name;
   final String role;
-  final VoidCallback? onEditPressed;
 
   const ProfileHeader({
     Key? key,
     required this.name,
     required this.role,
-    this.onEditPressed, // Botão pode não ter ação inicialmente
   }) : super(key: key);
 
   @override
@@ -57,27 +55,6 @@ class ProfileHeader extends StatelessWidget {
                 ],
               ),
             ],
-          ),
-          // Botão Editar
-          ElevatedButton(
-            onPressed: onEditPressed ?? () {}, // Não faz nada se nulo
-            style: ElevatedButton.styleFrom(
-              backgroundColor:
-                  Theme.of(context).colorScheme.primary, // Cor do botão
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              elevation: 2,
-            ),
-            child: Text(
-              "Editar",
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
           ),
         ],
       ),

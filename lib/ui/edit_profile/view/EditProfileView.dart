@@ -1,5 +1,7 @@
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
+import 'package:aranduapp/ui/profile/view/ProfileView.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
+import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +53,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         leading: IconButton(
           color: Theme.of(context).colorScheme.primary,
           icon: Icon(Icons.arrow_back),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
       body: LayoutBuilder(
@@ -61,13 +65,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(16.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6.0), // Move para cima
-                    child: _icon(context),
-                  ),
+                  _buildProfileHeader(context),
                   SizedBox(height: isSmallScreen ? 30 : 50),
                   _buildForm(viewModel, isSmallScreen),
                 ],
@@ -117,6 +116,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
+  Widget _buildProfileHeader(BuildContext context) {
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      ProfileHeader(
+        name: "Stefani",
+        role: "Estudante",
+      ),
+    ]);
+  }
+
   Widget _saveButton(EditProfileViewModel viewModel) {
     return ElevatedButton(
       onPressed: () async {
@@ -150,40 +158,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         minimumSize: Size(0, 50),
       ),
       child: const Text('Deletar Conta'),
-    );
-  }
-
-  Widget _icon(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 30,
-            backgroundColor: Theme.of(context).colorScheme.onSurface,
-          ),
-          SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "NOME",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                "Estudante",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 

@@ -76,15 +76,38 @@ class Profile extends StatelessWidget {
 
   /// Cabeçalho do Perfil
   Widget _buildProfileHeader(BuildContext context) {
-    return ProfileHeader(
-      name: "Stefani",
-      role: "Estudante",
-      onEditPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const EditProfile()),
-        );
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ProfileHeader(
+          name: "Stefani",
+          role: "Estudante",
+        ),
+        Padding(
+          padding: const EdgeInsets.only(right: 16.0), // Margem direita
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const EditProfile()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              elevation: 2,
+            ),
+            child: Text(
+              "Editar",
+              style: TextStyle(
+                fontSize: 16,
+                color: Theme.of(context).colorScheme.onPrimary,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 

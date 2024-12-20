@@ -1,5 +1,4 @@
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
-import 'package:aranduapp/ui/profile/view/ProfileView.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
@@ -19,14 +18,9 @@ class EditProfile extends StatelessWidget {
   }
 }
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+class EditProfileScreen extends StatelessWidget {
+  const EditProfileScreen({super.key});
 
-  @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
@@ -46,13 +40,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: [
           IconButton(
             color: Theme.of(context).colorScheme.primary,
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {},
           ),
         ],
         leading: IconButton(
           color: Theme.of(context).colorScheme.primary,
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -61,16 +55,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       body: LayoutBuilder(
         builder: (context, constraints) {
           final isSmallScreen = constraints.maxWidth < 600;
-          return Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  _buildProfileHeader(context),
-                  SizedBox(height: isSmallScreen ? 30 : 50),
-                  _buildForm(viewModel, isSmallScreen),
-                ],
-              ),
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              children: [
+                _buildProfileHeader(context),
+                SizedBox(height: isSmallScreen ? 30 : 50),
+                _buildForm(context, viewModel, isSmallScreen),
+              ],
             ),
           );
         },
@@ -78,7 +70,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     );
   }
 
-  Widget _buildForm(EditProfileViewModel viewModel, bool isSmallScreen) {
+  Widget _buildForm(BuildContext context, EditProfileViewModel viewModel,
+      bool isSmallScreen) {
     return Form(
       key: viewModel.formKey,
       child: Column(
@@ -86,16 +79,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         children: [
           TextName(
             controller: viewModel.firstNameController,
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 0),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextEmail(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 0),
             controller: viewModel.emailController,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextPassWord(
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 0),
             controller: viewModel.passwordController,
           ),
           SizedBox(height: isSmallScreen ? 100 : 56),
@@ -103,7 +96,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Expanded(
-                child: _saveButton(viewModel),
+                child: _saveButton(context, viewModel),
               ),
               SizedBox(width: isSmallScreen ? 10 : 20),
               Expanded(
@@ -117,15 +110,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Widget _buildProfileHeader(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      ProfileHeader(
-        name: "Stefani",
-        role: "Estudante",
-      ),
-    ]);
+    return const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ProfileHeader(
+            name: "Stefani",
+            role: "Estudante",
+          ),
+        ]);
   }
 
-  Widget _saveButton(EditProfileViewModel viewModel) {
+  Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
     return ElevatedButton(
       onPressed: () async {
         if (viewModel.isLoading) return;

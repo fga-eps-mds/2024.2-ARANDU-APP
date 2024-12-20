@@ -1,12 +1,8 @@
-// MVVM
-import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
-// Componentes
-import 'package:aranduapp/ui/shared/ProfileHeader.dart';
-//import 'package:aranduapp/ui/shared/ProfileSection.dart';
-// Bibliotecas
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// Paginas
+import 'package:flutter/material.dart';
+
+import 'package:aranduapp/ui/shared/ProfileHeader.dart';
+import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
 import 'package:aranduapp/ui/edit_profile/view/EditProfileView.dart';
 
 class Profile extends StatelessWidget {
@@ -57,19 +53,15 @@ class Profile extends StatelessWidget {
   /// Página principal
   Widget _buildPage(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildProfileHeader(context),
-          const SizedBox(height: 80),
-          _buildLogoutButton(
-            context,
-            () {
-              // Lógica de logout
-              print('Usuário deslogado!');
-            },
-          ),
-        ],
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _buildProfileHeader(context),
+            const SizedBox(height: 80),
+            _buildLogoutButton(context),
+          ],
+        ),
       ),
     );
   }
@@ -99,11 +91,9 @@ class Profile extends StatelessWidget {
             ),
             child: Text(
               "Editar",
-              style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context).colorScheme.onPrimary,
-                fontWeight: FontWeight.w400,
-              ),
+              style: Theme.of(context).textTheme.bodySmall!.apply(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
             ),
           ),
         ),
@@ -112,30 +102,13 @@ class Profile extends StatelessWidget {
   }
 
   /// Botão Deslogar
-  Widget _buildLogoutButton(BuildContext context, VoidCallback onPressed) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: SizedBox(
-        width: double.infinity,
-        child: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: colorScheme.error,
-            foregroundColor: colorScheme.onError,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12), // Bordas arredondadas
-            ),
-            elevation: 6,
-          ),
-          child: const Text('Deslogar'),
-        ),
+  Widget _buildLogoutButton(BuildContext context) {
+    return SizedBox(
+      width: 291,
+      height: 64,
+      child: ElevatedButton(
+        onPressed: () => {},
+        child: const Text('Deslogar'),
       ),
     );
   }

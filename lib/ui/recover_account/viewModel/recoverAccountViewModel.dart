@@ -4,26 +4,20 @@ import 'package:aranduapp/ui/recover_account/service/RecoverAccountService.dart'
 import 'package:flutter/material.dart';
 
 class RecoverAccountViewModel extends ChangeNotifier {
-  final BuildContext context;
+  GlobalKey<FormState> formKey;
 
-  final formKey;
-
-  final emailController;
-
+  TextEditingController emailController;
 
   bool isLoading;
 
-  RecoverAccountViewModel(this.context)
+  RecoverAccountViewModel()
       : formKey = GlobalKey<FormState>(),
         emailController = TextEditingController(),
         isLoading = false;
 
-
-
   Future<void> forgetPassword() async {
-
     // TODO use mutex to make this
-    if (isLoading){
+    if (isLoading) {
       return;
     }
 
@@ -35,18 +29,13 @@ class RecoverAccountViewModel extends ChangeNotifier {
         throw Exception('Valores inválidos');
       }
 
-      await RecoverAccountService.forgetPassword(RecoverAccountRequest(emailController.text));
-
+      await RecoverAccountService.forgetPassword(
+          RecoverAccountRequest(emailController.text));
     } catch (e) {
       rethrow;
     } finally {
       isLoading = false;
       super.notifyListeners();
     }
-
-
-
-
-
   }
 }

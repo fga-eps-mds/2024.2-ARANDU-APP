@@ -1,10 +1,10 @@
-import 'package:aranduapp/ui/shared/TextName.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
+import 'package:aranduapp/ui/shared/ProfileHeader.dart';
+import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
@@ -18,61 +18,109 @@ class EditProfile extends StatelessWidget {
   }
 }
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
-
-  @override
-  State<EditProfileScreen> createState() => _EditProfileScreenState();
-}
-
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class EditProfileScreen extends StatelessWidget {
+  const EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Perfil'),
-      ),
-      body: _buildForm(viewModel)
-    );
-  }
-
-  Widget _buildForm(EditProfileViewModel viewModel) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: viewModel.formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-
-            TextName(
-              controller: viewModel.firstNameController,
-              padding: const EdgeInsets.symmetric(vertical: 16)
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            'Editar perfil',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 24,
             ),
-
-            TextEmail(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.emailController,
-            ),
-
-            TextPassWord(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.passwordController,
-            ),
-
-            const SizedBox(height: 32),
-            _saveButton(viewModel),
-            const SizedBox(height: 16),
-            _deleteButton(context),
-          ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            color: Theme.of(context).colorScheme.primary,
+            icon: const Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+        ],
+        leading: IconButton(
+          color: Theme.of(context).colorScheme.primary,
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
       ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isSmallScreen = constraints.maxWidth < 600;
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Column(
+              children: [
+                _buildProfileHeader(context),
+                SizedBox(height: isSmallScreen ? 30 : 50),
+                _buildForm(context, viewModel, isSmallScreen),
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _saveButton(EditProfileViewModel viewModel) {
+  Widget _buildForm(BuildContext context, EditProfileViewModel viewModel,
+      bool isSmallScreen) {
+    return Form(
+      key: viewModel.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextName(
+            controller: viewModel.firstNameController,
+            padding: const EdgeInsets.symmetric(vertical: 0),
+          ),
+          const SizedBox(height: 20),
+          TextEmail(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            controller: viewModel.emailController,
+          ),
+          const SizedBox(height: 20),
+          TextPassWord(
+            padding: const EdgeInsets.symmetric(vertical: 0),
+            controller: viewModel.passwordController,
+          ),
+          SizedBox(height: isSmallScreen ? 100 : 56),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: _saveButton(context, viewModel),
+              ),
+              SizedBox(width: isSmallScreen ? 10 : 20),
+              Expanded(
+                child: _deleteButton(context),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader(BuildContext context) {
+    return const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ProfileHeader(
+            name: "Stefani",
+            role: "Estudante",
+          ),
+        ]);
+  }
+
+  Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
     return ElevatedButton(
       onPressed: () async {
         if (viewModel.isLoading) return;
@@ -87,19 +135,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(0, 50),
+      ),
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
             ? const CircularProgressIndicator(value: null)
             : const Text('Salvar'),
       ),
-
     );
   }
 
   Widget _deleteButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => _showDeleteConfirmationDialog(context),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(0, 50),
+      ),
       child: const Text('Deletar Conta'),
     );
   }

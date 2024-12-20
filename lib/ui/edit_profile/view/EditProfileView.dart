@@ -1,10 +1,9 @@
-import 'package:aranduapp/ui/shared/TextName.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
+import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
@@ -26,48 +25,94 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Editar Perfil'),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        title: Center(
+          child: Text(
+            'Editar perfil',
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontSize: 24,
+            ),
+          ),
+        ),
+        actions: [
+          IconButton(
+            color: Theme.of(context).colorScheme.primary,
+            icon: Icon(Icons.notifications),
+            onPressed: () {},
+          ),
+        ],
+        leading: IconButton(
+          color: Theme.of(context).colorScheme.primary,
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {},
+        ),
       ),
-      body: _buildForm(viewModel)
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          final isSmallScreen = constraints.maxWidth < 600;
+          return Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6.0), // Move para cima
+                    child: _icon(context),
+                  ),
+                  SizedBox(height: isSmallScreen ? 30 : 50),
+                  _buildForm(viewModel, isSmallScreen),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
-  Widget _buildForm(EditProfileViewModel viewModel) {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(16.0),
-      child: Form(
-        key: viewModel.formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-
-            TextName(
-              controller: viewModel.firstNameController,
-              padding: const EdgeInsets.symmetric(vertical: 16)
-            ),
-
-            TextEmail(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.emailController,
-            ),
-
-            TextPassWord(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              controller: viewModel.passwordController,
-            ),
-
-            const SizedBox(height: 32),
-            _saveButton(viewModel),
-            const SizedBox(height: 16),
-            _deleteButton(context),
-          ],
-        ),
+  Widget _buildForm(EditProfileViewModel viewModel, bool isSmallScreen) {
+    return Form(
+      key: viewModel.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          TextName(
+            controller: viewModel.firstNameController,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          SizedBox(height: 20),
+          TextEmail(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            controller: viewModel.emailController,
+          ),
+          SizedBox(height: 20),
+          TextPassWord(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            controller: viewModel.passwordController,
+          ),
+          SizedBox(height: isSmallScreen ? 100 : 56),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Expanded(
+                child: _saveButton(viewModel),
+              ),
+              SizedBox(width: isSmallScreen ? 10 : 20),
+              Expanded(
+                child: _deleteButton(context),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -87,20 +132,58 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(0, 50),
+      ),
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
             ? const CircularProgressIndicator(value: null)
             : const Text('Salvar'),
       ),
-
     );
   }
 
   Widget _deleteButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => _showDeleteConfirmationDialog(context),
+      style: ElevatedButton.styleFrom(
+        minimumSize: Size(0, 50),
+      ),
       child: const Text('Deletar Conta'),
+    );
+  }
+
+  Widget _icon(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Row(
+        children: [
+          CircleAvatar(
+            radius: 30,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
+          ),
+          SizedBox(width: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "NOME",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "Estudante",
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

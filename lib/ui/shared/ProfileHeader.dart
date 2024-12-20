@@ -27,8 +27,9 @@ class ProfileHeader extends StatelessWidget {
               Container(
                 width: 80,
                 height: 80,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE5E1E1), // Cor cinza claro
+                decoration: BoxDecoration(
+                  color:
+                      Theme.of(context).colorScheme.primary, // Cor cinza claro
                   shape: BoxShape.circle,
                 ),
               ),
@@ -39,10 +40,10 @@ class ProfileHeader extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -61,18 +62,19 @@ class ProfileHeader extends StatelessWidget {
           ElevatedButton(
             onPressed: onEditPressed ?? () {}, // Não faz nada se nulo
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD1410A), // Cor do botão
+              backgroundColor:
+                  Theme.of(context).colorScheme.primary, // Cor do botão
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               elevation: 2,
             ),
-            child: const Text(
+            child: Text(
               "Editar",
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.onPrimary,
                 fontWeight: FontWeight.w400,
               ),
             ),

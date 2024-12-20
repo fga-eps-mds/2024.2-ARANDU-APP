@@ -2,7 +2,7 @@
 import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
 // Componentes
 import 'package:aranduapp/ui/shared/ProfileHeader.dart';
-import 'package:aranduapp/ui/shared/ProfileSection.dart';
+//import 'package:aranduapp/ui/shared/ProfileSection.dart';
 // Bibliotecas
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,12 +28,12 @@ class Profile extends StatelessWidget {
   /// AppBar
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
       scrolledUnderElevation: 0,
       title: Text(
         'Perfil',
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
       ),
       centerTitle: true,
@@ -41,10 +41,10 @@ class Profile extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: Container(
-            child: const Center(
+            child: Center(
               child: Icon(
                 Icons.notifications_none_outlined,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.primary,
                 size: 32,
               ),
             ),
@@ -61,8 +61,14 @@ class Profile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildProfileHeader(context),
-          const SizedBox(height: 16),
-          _buildProfileSection(context), // Chama as seções
+          const SizedBox(height: 80),
+          _buildLogoutButton(
+            context,
+            () {
+              // Lógica de logout
+              print('Usuário deslogado!');
+            },
+          ),
         ],
       ),
     );
@@ -82,73 +88,32 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// Seções do Perfil
-  Widget _buildProfileSection(BuildContext context) {
-    return Column(
-      children: [
-        // Seção "Conta"
-        ProfileSection(
-          title: 'Conta',
-          items: [
-            ProfileLinkItem(
-              icon: Icons.person_outline,
-              name: 'Dados Pessoais',
-              onTap: () {
-                print("Dados Pessoais");
-              },
+  /// Botão Deslogar
+  Widget _buildLogoutButton(BuildContext context, VoidCallback onPressed) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: colorScheme.error,
+            foregroundColor: colorScheme.onError,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            textStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
             ),
-            ProfileLinkItem(
-              icon: Icons.emoji_events_outlined,
-              name: 'Conquistas',
-              onTap: () {
-                print("Conquistas");
-              },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12), // Bordas arredondadas
             ),
-            ProfileLinkItem(
-              icon: Icons.history_outlined,
-              name: 'Histórico',
-              onTap: () {
-                print("Histórico");
-              },
-            ),
-          ],
+            elevation: 6,
+          ),
+          child: const Text('Deslogar'),
         ),
-        const SizedBox(height: 16),
-        // Seção "Notificações"
-        ProfileSection(
-          title: 'Notificações',
-          items: [
-            ProfileLinkItem(
-              icon: Icons.notifications_none_outlined,
-              name: 'Notificação Pop-up',
-              hasSwitch: true,
-              switchValue: true,
-              onSwitchChanged: (value) {
-                print("Switch Notificação: $value");
-              },
-            ),
-          ],
-        ),
-        const SizedBox(height: 16),
-        // Seção "Outros"
-        ProfileSection(
-          title: 'Outros',
-          items: [
-            ProfileLinkItem(
-              icon: Icons.email_outlined,
-              name: 'Contate-nos',
-            ),
-            ProfileLinkItem(
-              icon: Icons.privacy_tip_outlined,
-              name: 'Política de Privacidade',
-            ),
-            ProfileLinkItem(
-              icon: Icons.settings_outlined,
-              name: 'Configurações',
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

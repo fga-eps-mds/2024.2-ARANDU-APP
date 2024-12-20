@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeApp.themeData(),
       darkTheme: ThemeApp.darkThemeData(),
       debugShowCheckedModeBanner: false,
-      home: const NavbarView(),
+      home: WelcomeView(),
     );
   }
 }

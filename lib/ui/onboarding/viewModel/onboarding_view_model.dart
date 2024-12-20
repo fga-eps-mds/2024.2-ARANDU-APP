@@ -1,31 +1,26 @@
-// lib/view_model/onboarding_view_model.dart
+import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingViewModel extends ChangeNotifier {
-  int _currentStep = 0;
+  final PageController pageController = PageController();
+  int currentPage = 0;
 
-  // Dados do onboarding removidos
-
-  int get currentStep => _currentStep;
-  int get totalSteps => 3; // Definindo um número fixo de etapas
-
-  void nextStep() {
-    if (_currentStep < totalSteps - 1) {
-      _currentStep++;
-      notifyListeners();
-    }
+  void goToNextPage() {
+    pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeIn,
+    );
   }
 
-  void previousStep() {
-    if (_currentStep > 0) {
-      _currentStep--;
-      notifyListeners();
-    }
+  void updateCurrentPage(int page) {
+    currentPage = page;
+    notifyListeners();
   }
 
-  void completeOnboarding() {
-    // Aqui você pode armazenar o estado para indicar que o onboarding foi concluído.
-    // Por exemplo, usando SharedPreferences ou outro armazenamento local.
-    print("Onboarding concluído!");
+  void navigateToNextPage(BuildContext context) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Login()),
+    );
   }
 }

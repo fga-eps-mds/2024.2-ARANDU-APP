@@ -54,7 +54,7 @@ class WelcomeView extends StatelessWidget {
               onTap: () => {
 
 
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => const OnboardingView(),
                 ),

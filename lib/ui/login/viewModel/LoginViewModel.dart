@@ -1,10 +1,9 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:aranduapp/ui/login/service/LoginService.dart';
 import 'package:aranduapp/ui/login/model/LoginRequest.dart';
-
-import 'package:aranduapp/ui/home/view/HomeView.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final BuildContext context;
@@ -45,13 +44,21 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getRefreshTokenFuture() async {
-    await LoginService.refreshToken();
+  Future<void> validateToken() async {
+    await LoginService.validateToken();
   }
 
   Future<bool> loginWithDeviceAuth() async {
     Log.d('init loginWithDeviceAuth');
     return await LocalAuthentication()
         .authenticate(localizedReason: 'Toque com o dedo no sensor para logar');
+  }
+
+  void goNextPage() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const NavbarView(),
+      ),
+    );
   }
 }

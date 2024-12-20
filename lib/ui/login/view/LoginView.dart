@@ -44,7 +44,7 @@ class _LoginState extends State<_Login> {
   void initState() {
     super.initState();
     _future = Provider.of<LoginViewModel>(context, listen: false)
-        .getRefreshTokenFuture();
+        .validateToken();
   }
 
   @override

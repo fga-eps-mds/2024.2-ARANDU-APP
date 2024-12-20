@@ -5,8 +5,6 @@ import 'package:local_auth/local_auth.dart';
 import 'package:aranduapp/ui/login/service/LoginService.dart';
 import 'package:aranduapp/ui/login/model/LoginRequest.dart';
 
-import 'package:aranduapp/ui/home/view/HomeView.dart';
-
 class LoginViewModel extends ChangeNotifier {
   final BuildContext context;
 
@@ -46,10 +44,8 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getRefreshTokenFuture() async {
-    await Future.delayed(const Duration(seconds: 2));
-
-    //await LoginService.refreshToken();
+  Future<void> validateToken() async {
+    await LoginService.validateToken();
   }
 
   Future<bool> loginWithDeviceAuth() async {

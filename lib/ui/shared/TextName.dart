@@ -17,8 +17,14 @@ class TextName extends StatelessWidget {
     return Padding(
       padding: padding,
       child: TextFormField(
-        validator: (value) =>
-            value == null || value.trim().length < 3 ? '$label inválido' : null,
+        validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return 'Campo Obrigatório';
+            } else if (value.trim().length < 3) {
+              return 'Nome inválido (Ex: Ana)';
+            }
+            return null;
+        },
         controller: controller,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.person_outline,

@@ -22,7 +22,14 @@ class TextEmail extends StatelessWidget{
     return Padding(
       padding: padding, 
       child: TextFormField(
-        validator: (value) => value == null|| emailRegex.hasMatch(value) ? null : 'E-mail inválido',
+        validator: (value) { 
+          if (value == null || value.trim().isEmpty) {
+            return 'Campo Obrigatório';
+          } else if (!emailRegex.hasMatch(value.trim())) {
+            return 'E-mail inválido (Ex: exemplo@gmail.com)';
+          }
+          return null;
+        },
         controller: controller,
         decoration: InputDecoration ( 
           prefixIcon: Icon ( Icons.email_outlined, color: Theme.of(context).colorScheme.primary),

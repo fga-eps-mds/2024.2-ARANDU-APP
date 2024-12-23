@@ -28,10 +28,10 @@ void main() {
     }
 
     // Teste de validação para diferentes casos
-    await testEmail("", "E-mail inválido"); // Campo vazio
-    await testEmail("joaozinhi", "E-mail inválido"); // Sem '@'
-    await testEmail("joaozinhi@", "E-mail inválido"); // Sem domínio
-    await testEmail("joao@domain", "E-mail inválido"); // Sem extensão
+    await testEmail("", "Campo Obrigatório"); // Campo vazio
+    await testEmail("joaozinhi", "E-mail inválido (Ex: exemplo@gmail.com)"); // Sem '@'
+    await testEmail("joaozinhi@", "E-mail inválido (Ex: exemplo@gmail.com)"); // Sem domínio
+    await testEmail("joao@domain", "E-mail inválido (Ex: exemplo@gmail.com)"); // Sem extensão
     await testEmail("joao@example.com", null); // Entrada válida
   });
 }

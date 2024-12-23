@@ -1,3 +1,4 @@
+
 import 'package:aranduapp/ui/login/view/LoginView.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
@@ -121,7 +122,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       height: 64,
       child: ElevatedButton(
           onPressed: () {
-            viewModel.register().catchError((e) => showDialog<Object>(
+            viewModel.register(context).catchError((e) => showDialog<Object>(
                   context: context,
                   builder: (BuildContext context) =>
                       ErrorPopUp(content: Text('$e')),

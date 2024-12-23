@@ -26,9 +26,9 @@ void main() {
     }
 
     // Teste de validação para diferentes casos de nome
-    await testName("", 'Nome inválido'); // Campo vazio
-    await testName("  a", 'Nome inválido'); // Nome com menos de 3 caracteres
-    await testName("Jo", 'Nome inválido'); // Nome com 2 caracteres
+    await testName("", 'Campo Obrigatório'); // Campo vazio
+    await testName("  a", 'Nome inválido (Ex: Ana)'); // Nome com menos de 3 caracteres
+    await testName("Jo", 'Nome inválido (Ex: Ana)'); // Nome com 2 caracteres
     await testName("João", null); // Nome válido
     await testName("Maria", null); // Outro nome válido
   });

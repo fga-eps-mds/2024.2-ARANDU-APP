@@ -1,5 +1,5 @@
 import 'package:aranduapp/config/ThemeApp.dart';
-import 'package:aranduapp/ui/login/view/LoginView.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/welcome/view/WelcomeView.dart';
 import 'package:flutter/material.dart';
 

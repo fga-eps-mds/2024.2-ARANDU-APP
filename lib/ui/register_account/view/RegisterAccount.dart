@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/login/view/LoginView.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';

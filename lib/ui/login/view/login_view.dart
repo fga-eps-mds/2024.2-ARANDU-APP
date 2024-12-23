@@ -1,11 +1,10 @@
 import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
+import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
 
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
@@ -23,21 +22,21 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(context),
-      child: const _Login(),
+      child: const LoginScreen(),
     );
   }
 }
 
-class _Login extends StatefulWidget {
-  const _Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginState();
+    return _LoginScreenState();
   }
 }
 
-class _LoginState extends State<_Login> {
+class _LoginScreenState extends State<LoginScreen> {
   late Future<void> _future;
 
   @override
@@ -156,7 +155,7 @@ class _LoginState extends State<_Login> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => RecoverAccount(),
+            builder: (context) => const RecoverAccount(),
           ),
         );
       },

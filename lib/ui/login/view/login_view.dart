@@ -73,7 +73,11 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _authDevice(LoginViewModel viewModel) {
     Log.d("Mostrando tela de autorização do dispositivo");
 
-    viewModel.loginWithDeviceAuth().then((_) => viewModel.goToHome());
+    viewModel.loginWithDeviceAuth().then((ok) {
+      if (ok) {
+        viewModel.goToHome();
+      }
+    });
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,

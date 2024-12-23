@@ -72,6 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _authDevice(LoginViewModel viewModel) {
+
+    Log.d("Mostrando tela de autorização do dispositivo");
+    
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -92,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ElevatedButton(
               onPressed: () async {
                 viewModel.loginWithDeviceAuth().then((ok) {
-                  viewModel.goNextPage();
+                  viewModel.goToHome();
                 });
               },
               child: const Text('Usar senha do celular'),
@@ -185,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () {
             viewModel.loginWithEmailAndPassword().then((_) {
 
-              viewModel.goNextPage();
+              viewModel.goToHome();
 
             }).catchError((e) => showDialog<Object>(
                   context: context,

@@ -16,7 +16,6 @@ void main() {
     mockViewModel = MockLoginViewModel();
     when(mockViewModel.formKey).thenReturn(GlobalKey<FormState>());
     when(mockViewModel.emailController).thenReturn(TextEditingController());
-    when(mockViewModel.isLoading).thenReturn(false);
   });
 
   testWidgets('Displays loading screen while waiting for Future',
@@ -42,8 +41,9 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 
+
   testWidgets('login with auth device', (WidgetTester tester) async {
-    when(mockViewModel.loginWithDeviceAuth()).thenAnswer((_) async => true);
+    when(mockViewModel.loginWithDeviceAuth()).thenAnswer((_) async => false);
 
     await tester.pumpWidget(
       ChangeNotifierProvider<LoginViewModel>.value(
@@ -56,9 +56,14 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    verify(mockViewModel.loginWithDeviceAuth()).called(1);
+    when(mockViewModel.loginWithDeviceAuth()).thenAnswer((_) async => true);
+    final button = find.text('Usar senha do celular');
+    expect(button, findsOneWidget);
+    await tester.tap(button);
 
     await tester.pumpAndSettle();
+
     verify(mockViewModel.goToHome()).called(1);
+    verify(mockViewModel.loginWithDeviceAuth()).called(2);
   });
 }

@@ -42,8 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _future = Provider.of<LoginViewModel>(context, listen: false)
-        .validateToken();
+    _future =
+        Provider.of<LoginViewModel>(context, listen: false).validateToken();
   }
 
   @override
@@ -57,7 +57,6 @@ class _LoginScreenState extends State<LoginScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return _loadingScreen(viewModel);
               } else if (!snapshot.hasError) {
-                viewModel.loginWithDeviceAuth();
                 return _authDevice(viewModel);
               } else {
                 return _emailAndPassword(viewModel);
@@ -72,9 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _authDevice(LoginViewModel viewModel) {
-
     Log.d("Mostrando tela de autorização do dispositivo");
-    
+
+    viewModel.loginWithDeviceAuth().then((_) => viewModel.goToHome());
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -187,9 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
           onPressed: () {
             viewModel.loginWithEmailAndPassword().then((_) {
-
               viewModel.goToHome();
-
             }).catchError((e) => showDialog<Object>(
                   context: context,
                   builder: (BuildContext context) =>

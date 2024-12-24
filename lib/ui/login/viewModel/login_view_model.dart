@@ -54,11 +54,18 @@ class LoginViewModel extends ChangeNotifier {
         .authenticate(localizedReason: 'Toque com o dedo no sensor para logar');
   }
 
-  void goNextPage() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const NavbarView(),
-      ),
-    );
+  void goToHome() {
+    try {
+      if (context.mounted) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const NavbarView(),
+          ),
+        );
+      }
+    } catch (e) {
+      Log.e(e);
+      rethrow;
+    }
   }
 }

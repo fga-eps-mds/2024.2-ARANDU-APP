@@ -1,11 +1,10 @@
 import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/login/viewModel/LoginViewModel.dart';
+import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
 
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
@@ -23,28 +22,28 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(context),
-      child: const _Login(),
+      child: const LoginScreen(),
     );
   }
 }
 
-class _Login extends StatefulWidget {
-  const _Login({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    return _LoginState();
+    return _LoginScreenState();
   }
 }
 
-class _LoginState extends State<_Login> {
+class _LoginScreenState extends State<LoginScreen> {
   late Future<void> _future;
 
   @override
   void initState() {
     super.initState();
-    _future = Provider.of<LoginViewModel>(context, listen: false)
-        .validateToken();
+    _future =
+        Provider.of<LoginViewModel>(context, listen: false).validateToken();
   }
 
   @override
@@ -58,7 +57,6 @@ class _LoginState extends State<_Login> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return _loadingScreen(viewModel);
               } else if (!snapshot.hasError) {
-                viewModel.loginWithDeviceAuth();
                 return _authDevice(viewModel);
               } else {
                 return _emailAndPassword(viewModel);
@@ -73,6 +71,14 @@ class _LoginState extends State<_Login> {
   }
 
   Widget _authDevice(LoginViewModel viewModel) {
+    Log.d("Mostrando tela de autorização do dispositivo");
+
+    viewModel.loginWithDeviceAuth().then((ok) {
+      if (ok) {
+        viewModel.goToHome();
+      }
+    });
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -93,7 +99,7 @@ class _LoginState extends State<_Login> {
             child: ElevatedButton(
               onPressed: () async {
                 viewModel.loginWithDeviceAuth().then((ok) {
-                  viewModel.goNextPage();
+                  viewModel.goToHome();
                 });
               },
               child: const Text('Usar senha do celular'),
@@ -156,7 +162,7 @@ class _LoginState extends State<_Login> {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => RecoverAccount(),
+            builder: (context) => const RecoverAccount(),
           ),
         );
       },
@@ -185,9 +191,7 @@ class _LoginState extends State<_Login> {
       child: ElevatedButton(
           onPressed: () {
             viewModel.loginWithEmailAndPassword().then((_) {
-
-              viewModel.goNextPage();
-
+              viewModel.goToHome();
             }).catchError((e) => showDialog<Object>(
                   context: context,
                   builder: (BuildContext context) =>

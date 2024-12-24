@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/login/view/LoginView.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingViewModel extends ChangeNotifier {

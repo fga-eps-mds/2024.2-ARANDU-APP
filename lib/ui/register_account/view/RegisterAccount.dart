@@ -15,12 +15,14 @@ import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 
 class RegisterAccount extends StatelessWidget {
-  const RegisterAccount({super.key});
+  final RegisterAccountViewModel? viewModel;
+
+  const RegisterAccount({super.key, this.viewModel});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => RegisterAccountViewModel(),
+      create: (context) => viewModel ?? RegisterAccountViewModel(),
       child: const _RegisterAccount(),
     );
   }
@@ -138,6 +140,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
 
   Widget _buildGoogleLoginButton() {
     return GestureDetector(
+      key: const Key('specificGestureDetectorKey'),
       onTap: () => Log.d(""),
       child: Container(
         width: 50,

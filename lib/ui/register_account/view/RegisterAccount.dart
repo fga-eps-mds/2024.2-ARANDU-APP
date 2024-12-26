@@ -116,28 +116,46 @@ class _RegisterAccountState extends State<_RegisterAccount> {
 
   Widget _buildRegisterButton() {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
-    return SizedBox(
-      width: 291,
-      height: 64,
-      child: ElevatedButton(
-          onPressed: () async {
-            try {
-              await viewModel.register(context);
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Cadastro concluído com sucesso!")));
-            } catch(e) {
-              showDialog<Object>(
-                context: context,
-                builder: (BuildContext context) => ErrorPopUp(content: Text('$e')), 
-                //Ação ao clicar no botão de cadastro
-              );
-            }
-          },
-          child: Consumer<RegisterAccountViewModel>(
-            builder: (context, value, child) => value.isLoading
+
+    return ListenableBuilder(
+
+      listenable: viewModel.registercomand,
+      builder: (context, child) {
+        if (viewModel.registercomand.isError) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showDialog<Object>(
+              context: context,
+              builder: (BuildContext context) => ErrorPopUp(
+                content: Text(
+                    viewModel.registercomand.result!.asError!.error.toString()),
+              ),
+            );
+          });
+        }
+
+        if (viewModel.registercomand.isOk) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text(
+                      'conta criada com sucesso!!!')),
+            );
+          });
+        }
+
+        return SizedBox(
+          width: 291,
+          height: 64,
+          child: ElevatedButton(
+            onPressed: () async {
+              viewModel.registercomand.execute();
+            },
+            child: viewModel.registercomand.running
                 ? const CircularProgressIndicator(value: null)
                 : const Text('Registrar'),
-          )),
+          ),
+        );
+      },
     );
   }
 

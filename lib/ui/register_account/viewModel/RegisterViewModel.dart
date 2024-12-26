@@ -1,4 +1,5 @@
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
+import 'package:aranduapp/core/state/command.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import '../model/RegisterRequest.dart';
 import '../service/RegisterService.dart';
@@ -12,42 +13,37 @@ class RegisterAccountViewModel extends ChangeNotifier {
 
   final TextEditingController confPasswordController = TextEditingController();
 
-  bool isLoading = false;
   bool isTermsAccepted = false;
+
+  late Command0<void> registercomand;
+
+  RegisterAccountViewModel() {
+    registercomand = Command0<void>(_register);
+  }
+
+  Future<Result<void>> _register() async {
+
+    if (!isTermsAccepted) {
+      return Result.error(
+          'Você deve aceitar os termos de privacidade e políticas de uso.');
+    }
+
+    if (!formKey.currentState!.validate()) {
+      Result.error('Por favor, preencha todos os campos corretamente');
+    }
+
+    await RegisterService.register(RegisterRequest(
+      email: emailController.text,
+      name: nameController.text,
+      userName: userNameController.text,
+      password: passwordController.text,
+    ));
+
+    return Result.value(null);
+  }
 
   void toggleTermsAccepted(bool value) {
     isTermsAccepted = value;
     notifyListeners();
-  }
-
-  Future<void> register(BuildContext context) async {
-    if (isLoading) return;
-    // Valida se os termos foram aceitos
-    if (!isTermsAccepted) {
-      throw Exception(
-          'Você deve aceitar os termos de privacidade e políticas de uso.');
-    }
-    try {
-      isLoading = true;
-      notifyListeners();
-      // Valida os campos do formulário
-      if (!formKey.currentState!.validate()) {
-        throw Exception('Por favor, preencha todos os campos corretamente');
-      }
-      // Criação do objeto de requisição
-      final request = RegisterRequest(
-        email: emailController.text,
-        name: nameController.text,
-        userName: userNameController.text,
-        password: passwordController.text,
-      );
-      // Chamada do serviço de registro
-      await RegisterService.register(request);
-    } catch (e) {
-      rethrow;
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
   }
 }

@@ -46,6 +46,7 @@ dependencies:
   flutter_secure_storage: ^9.2.2
   mockito: ^5.4.4
   build_runner: ^2.4.13
+  async: ^2.11.0
 
 
 dev_dependencies:

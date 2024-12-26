@@ -19,9 +19,11 @@ class TextName extends StatelessWidget {
       child: TextFormField(
         validator: (value) {
             if (value == null || value.trim().isEmpty) {
-              return 'Campo Obrigatório';
+              return '$label Obrigatório.';
+            } else if (value.trim().length < 2) {
+              return 'Opa, seu $label está pequeno!\nacrescente mais caracteres. (Ex: Ana)';
             } else if (value.trim().length < 3) {
-              return 'Nome inválido (Ex: Ana)';
+              return 'Opa, seu $label está pequeno!\nacrescente mais um caractere. (Ex: Ana)';
             }
             return null;
         },

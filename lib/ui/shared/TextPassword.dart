@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TextPassWord extends StatefulWidget {
+  final String label;
   final TextEditingController controller;
   final EdgeInsetsGeometry padding;
 
-  const TextPassWord(
-      {super.key, required this.padding, required this.controller});
+  const TextPassWord({
+    super.key, 
+    this.label = 'Senha',
+    required this.padding, 
+    required this.controller,
+  });
 
   @override
   State<StatefulWidget> createState() {
@@ -23,9 +28,9 @@ class _TextPassWord extends State<TextPassWord> {
       child: TextFormField(
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Campo Obrigatório';
+            return '${widget.label} Obrigatória.';
           } else if (value.length < 8) {
-            return 'Mínimo 8 caracteres (Ex: @abd1234)';
+            return '${widget.label} deve ter no mínimo 8 caracteres. (Ex: @abd1234)';
           }
           return null;
         },
@@ -43,7 +48,8 @@ class _TextPassWord extends State<TextPassWord> {
                         ? Icons.visibility_off_outlined
                         : Icons.visibility_outlined,
                     color: Theme.of(context).colorScheme.primary)),
-            labelText: 'Senha'),
+            labelText: widget.label,
+        ),
       ),
     );
   }

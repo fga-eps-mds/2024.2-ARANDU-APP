@@ -121,13 +121,18 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       width: 291,
       height: 64,
       child: ElevatedButton(
-          onPressed: () {
-            viewModel.register(context).catchError((e) => showDialog<Object>(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      ErrorPopUp(content: Text('$e')),
-                ));
-            // Ação ao clicar no botão de cadastro
+          onPressed: () async {
+            try {
+              await viewModel.register(context);
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Cadastro concluído com sucesso!")));
+            } catch(e) {
+              showDialog<Object>(
+                context: context,
+                builder: (BuildContext context) => ErrorPopUp(content: Text('$e')), 
+                //Ação ao clicar no botão de cadastro
+              );
+            }
           },
           child: Consumer<RegisterAccountViewModel>(
             builder: (context, value, child) => value.isLoading

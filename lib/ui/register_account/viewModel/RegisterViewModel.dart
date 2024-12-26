@@ -43,13 +43,8 @@ class RegisterAccountViewModel extends ChangeNotifier {
       );
       // Chamada do serviço de registro
       await RegisterService.register(request);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Cadastro concluído com sucesso!")));
     } catch (e) {
-      showDialog<Object>(
-        context: context,
-        builder: (BuildContext context) => ErrorPopUp(content: Text('$e')),
-      );
+      throw e;
     } finally {
       isLoading = false;
       notifyListeners();

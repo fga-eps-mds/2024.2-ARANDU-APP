@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextEmail extends StatelessWidget{
 
-
+  final String label;
   final TextEditingController controller;
   final EdgeInsetsGeometry padding;
 
@@ -11,8 +11,9 @@ class TextEmail extends StatelessWidget{
 
   const TextEmail ({
     super.key,
+    this.label = 'E-mail',
     required this.padding,
-    required this.controller
+    required this.controller,
   });
 
 
@@ -24,17 +25,16 @@ class TextEmail extends StatelessWidget{
       child: TextFormField(
         validator: (value) { 
           if (value == null || value.trim().isEmpty) {
-            return 'Campo Obrigatório';
+            return '$label Obrigatório.';
           } else if (!emailRegex.hasMatch(value.trim())) {
-            return 'E-mail inválido (Ex: exemplo@gmail.com)';
+            return 'Opa, $label inválido! (Ex: exemplo@gmail.com)';
           }
           return null;
         },
         controller: controller,
         decoration: InputDecoration ( 
           prefixIcon: Icon ( Icons.email_outlined, color: Theme.of(context).colorScheme.primary),
-          labelText: 'E-mail'
-        ),
+          labelText: label),
       ),
     );
   }

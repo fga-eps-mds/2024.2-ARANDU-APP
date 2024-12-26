@@ -33,9 +33,9 @@ void main() {
     }
 
     // Testa senhas inválidas, válidas e campo vazio
-    await testPassword('12345', "Mínimo 8 caracteres (Ex: @abd1234)"); // Senha muito curta
+    await testPassword('12345', "Senha deve ter no mínimo 8 caracteres. (Ex: @abd1234)"); // Senha muito curta
     await testPassword('validPassword123', null); // Senha válida
-    await testPassword('', 'Campo Obrigatório'); // Campo vazio
+    await testPassword('', 'Senha Obrigatória.'); // Campo vazio
   });
 
   // Testa a funcionalidade de visibilidade da senha

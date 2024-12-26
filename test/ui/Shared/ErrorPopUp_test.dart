@@ -29,6 +29,8 @@ void main() {
     // Rebuild após o tap para processar a navegação
     await tester.pumpAndSettle();
 
-    expect(find.text('OK'), findsNothing); // O popup desapareceu
+    expect(find.text('OK'), findsNothing);
+    expect(find.byIcon(Icons.error), findsNothing);
+    expect(find.text('Este é um erro'), findsNothing); // O popup desapareceu
   });
 }

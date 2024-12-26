@@ -1,9 +1,9 @@
+import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:flutter/material.dart';
 import '../model/RegisterRequest.dart';
 import '../service/RegisterService.dart';
 
 class RegisterAccountViewModel extends ChangeNotifier {
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -13,14 +13,14 @@ class RegisterAccountViewModel extends ChangeNotifier {
   final TextEditingController confPasswordController = TextEditingController();
 
   bool isLoading = false;
-  bool isTermsAccepted = false; 
+  bool isTermsAccepted = false;
 
   void toggleTermsAccepted(bool value) {
     isTermsAccepted = value;
     notifyListeners();
   }
 
-  Future<void> register() async {
+  Future<void> register(BuildContext context) async {
     if (isLoading) return;
     // Valida se os termos foram aceitos
     if (!isTermsAccepted) {
@@ -43,10 +43,11 @@ class RegisterAccountViewModel extends ChangeNotifier {
       );
       // Chamada do serviço de registro
       await RegisterService.register(request);
+    } catch (e) {
+      rethrow;
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
 }
-

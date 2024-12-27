@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:aranduapp/core/log/Log.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/register_account/viewModel/RegisterViewModel.dart';
+import 'package:aranduapp/ui/register_account/viewModel/register_view_model.dart';
 
 import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
@@ -21,27 +21,20 @@ class RegisterAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => RegisterAccountViewModel(),
-      child: const _RegisterAccount(),
+      child:  const RegisterAccountScreen(),
     );
   }
 }
 
-class _RegisterAccount extends StatefulWidget {
-  const _RegisterAccount({Key? key}) : super(key: key);
+class RegisterAccountScreen extends StatelessWidget {
+  const RegisterAccountScreen({super.key});
 
-  @override
-  State<StatefulWidget> createState() {
-    return _RegisterAccountState();
-  }
-}
-
-class _RegisterAccountState extends State<_RegisterAccount> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _buildForm());
+    return Scaffold(body: _buildForm(context));
   }
 
-  Widget _buildForm() {
+  Widget _buildForm(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -49,9 +42,9 @@ class _RegisterAccountState extends State<_RegisterAccount> {
           const SizedBox(height: 80),
           const TitleSlogan(),
           const SizedBox(height: 10),
-          _formSection(),
+          _formSection(context),
           const OrDivider(),
-          _buildGoogleLoginButton(),
+          _buildGoogleLoginButton(context),
           TextAndLink(
               text: 'Já tem uma conta?',
               link: 'faça login',
@@ -63,7 +56,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     );
   }
 
-  Widget _formSection() {
+  Widget _formSection(BuildContext context) {
     RegisterAccountViewModel viewModel =
         Provider.of<RegisterAccountViewModel>(context);
 
@@ -84,14 +77,14 @@ class _RegisterAccountState extends State<_RegisterAccount> {
         TextPassWord(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: viewModel.passwordController),
-        _buildTermsCheckbox(),
+        _buildTermsCheckbox(context),
         const SizedBox(height: 20),
-        _buildRegisterButton(),
+        _buildRegisterButton(context),
       ]),
     );
   }
 
-  Widget _buildTermsCheckbox() {
+  Widget _buildTermsCheckbox(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
     return Row(
       children: [
@@ -114,7 +107,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     );
   }
 
-  Widget _buildRegisterButton() {
+  Widget _buildRegisterButton(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
 
     return ListenableBuilder(
@@ -159,7 +152,7 @@ class _RegisterAccountState extends State<_RegisterAccount> {
     );
   }
 
-  Widget _buildGoogleLoginButton() {
+  Widget _buildGoogleLoginButton(BuildContext context) {
     return GestureDetector(
       onTap: () => Log.d(""),
       child: Container(
@@ -178,4 +171,6 @@ class _RegisterAccountState extends State<_RegisterAccount> {
       ),
     );
   }
+
 }
+

@@ -1,8 +1,8 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import '../model/RegisterRequest.dart';
-import '../service/RegisterService.dart';
+import '../model/register_request.dart';
+import '../service/register_service.dart';
 
 class RegisterAccountViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -10,8 +10,6 @@ class RegisterAccountViewModel extends ChangeNotifier {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController userNameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-
-  final TextEditingController confPasswordController = TextEditingController();
 
   bool isTermsAccepted = false;
 

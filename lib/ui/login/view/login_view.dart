@@ -7,7 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
 
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
-import 'package:aranduapp/ui/register_account/view/RegisterAccount.dart';
+import 'package:aranduapp/ui/register_account/view/register_account_view.dart';
 
 import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';

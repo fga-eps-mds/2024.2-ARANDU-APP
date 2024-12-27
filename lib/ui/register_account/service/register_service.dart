@@ -1,5 +1,5 @@
 import 'package:aranduapp/core/network/base_api.dart';
-import '../model/RegisterRequest.dart';
+import '../model/register_request.dart';
 
 class RegisterService {
   static Future<void> register(RegisterRequest registerRequest) async {

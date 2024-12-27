@@ -55,14 +55,21 @@ class RecoverAccountScreen extends StatelessWidget {
                   width: 291,
                   height: 64,
                   child: ElevatedButton(
-                    onPressed: () {
-                      viewModel.forgetPassword().then((value) {
+                    onPressed: () async {
+                      try {
+                        await viewModel.forgetPassword();
                         Log.d("Deu certo!");
-                      }).catchError((e) => showDialog<Object>(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                ErrorPopUp(content: Text('$e')),
-                          ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Estamos quase lá! Confira seu e-mail para redefinir sua senha.')),
+                        );
+                      } catch (e) {
+                        showDialog<Object>(
+                          context: context,
+                          builder: (BuildContext context) =>
+                              ErrorPopUp(content: Text('$e')),
+                        );
+                      }
                     },
                     child: viewModel.isLoading
                         ? const CircularProgressIndicator(value: null)

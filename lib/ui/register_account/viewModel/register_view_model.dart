@@ -13,10 +13,10 @@ class RegisterAccountViewModel extends ChangeNotifier {
 
   bool isTermsAccepted = false;
 
-  late Command0<void> registercomand;
+  late Command0<void> registerCommand;
 
   RegisterAccountViewModel() {
-    registercomand = Command0<void>(_register);
+    registerCommand = Command0<void>(_register);
   }
 
   Future<Result<void>> _register() async {

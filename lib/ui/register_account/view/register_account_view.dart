@@ -21,7 +21,7 @@ class RegisterAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => RegisterAccountViewModel(),
-      child:  const RegisterAccountScreen(),
+      child: const RegisterAccountScreen(),
     );
   }
 }
@@ -64,10 +64,12 @@ class RegisterAccountScreen extends StatelessWidget {
       key: viewModel.formKey,
       child: Column(children: [
         TextName(
+            key: const Key('nameField'),
             label: 'Nome',
             controller: viewModel.nameController,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
         TextName(
+            key: const Key('userNameField'),
             label: 'Nome de Usuário',
             controller: viewModel.userNameController,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
@@ -111,27 +113,24 @@ class RegisterAccountScreen extends StatelessWidget {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
 
     return ListenableBuilder(
-
-      listenable: viewModel.registercomand,
+      listenable: viewModel.registerCommand,
       builder: (context, child) {
-        if (viewModel.registercomand.isError) {
+        if (viewModel.registerCommand.isError) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             showDialog<Object>(
               context: context,
               builder: (BuildContext context) => ErrorPopUp(
-                content: Text(
-                    viewModel.registercomand.result!.asError!.error.toString()),
+                content: Text(viewModel.registerCommand.result!.asError!.error
+                    .toString()),
               ),
             );
           });
         }
 
-        if (viewModel.registercomand.isOk) {
+        if (viewModel.registerCommand.isOk) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text(
-                      'conta criada com sucesso!!!')),
+              const SnackBar(content: Text('conta criada com sucesso!!!')),
             );
           });
         }
@@ -141,9 +140,9 @@ class RegisterAccountScreen extends StatelessWidget {
           height: 64,
           child: ElevatedButton(
             onPressed: () async {
-              viewModel.registercomand.execute();
+              viewModel.registerCommand.execute();
             },
-            child: viewModel.registercomand.running
+            child: viewModel.registerCommand.running
                 ? const CircularProgressIndicator(value: null)
                 : const Text('Registrar'),
           ),
@@ -171,6 +170,4 @@ class RegisterAccountScreen extends StatelessWidget {
       ),
     );
   }
-
 }
-

@@ -1,4 +1,5 @@
 import 'package:aranduapp/ui/shared/or_divider.dart';
+import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
 import 'package:flutter/material.dart';
@@ -137,14 +138,23 @@ class RegisterAccountScreen extends StatelessWidget {
         return SizedBox(
           width: 291,
           height: 64,
-          child: ElevatedButton(
-            onPressed: () async {
-              viewModel.registerCommand.execute();
-            },
-            child: viewModel.registerCommand.running
-                ? const CircularProgressIndicator(value: null)
-                : const Text('Registrar'),
-          ),
+          child: Requestbutton(
+              command: viewModel.registerCommand,
+              onErrorCallback: (String e) {
+                showDialog<Object>(
+                  context: context,
+                  builder: (BuildContext context) =>
+                      ErrorPopUp(content: Text(e)),
+                );
+              },
+              onSuccessCallback: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text(
+                          'Bem-vindo(a) a bordo! Sua conta foi criada com sucesso!')),
+                );
+              },
+              nameButton: 'Enviar'),
         );
       },
     );

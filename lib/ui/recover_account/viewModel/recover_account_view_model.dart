@@ -15,10 +15,10 @@ class RecoverAccountViewModel extends ChangeNotifier {
   RecoverAccountViewModel()
       : formKey = GlobalKey<FormState>(),
         emailController = TextEditingController() {
-    recoverCommand = Command0(forgetPassword);
+    recoverCommand = Command0(_forgetPassword);
   }
 
-  Future<Result<void>> forgetPassword() async {
+  Future<Result<void>> _forgetPassword() async {
     if (!formKey.currentState!.validate()) {
       Result.error('Valores inválidos');
     }

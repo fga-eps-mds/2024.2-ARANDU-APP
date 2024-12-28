@@ -1,5 +1,7 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/navbar/view/navBarView.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:aranduapp/ui/login/service/LoginService.dart';
@@ -7,6 +9,7 @@ import 'package:aranduapp/ui/login/model/LoginRequest.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final BuildContext context;
+  late Command0<void> loginCommand;
 
   bool isLoading;
 
@@ -18,26 +21,28 @@ class LoginViewModel extends ChangeNotifier {
       : isLoading = false,
         formKey = GlobalKey<FormState>(),
         emailController = TextEditingController(),
-        passwordController = TextEditingController();
+        passwordController = TextEditingController() {
+    loginCommand = Command0<void>(loginWithEmailAndPassword);
+  }
 
-  Future<void> loginWithEmailAndPassword() async {
-    // TODO use mutex to make this
+  Future<Result<void>> loginWithEmailAndPassword() async {
     if (isLoading) {
-      return;
+      return Result.value(null);
     }
 
     try {
       isLoading = true;
-      super.notifyListeners();
+      notifyListeners();
 
       if (!formKey.currentState!.validate()) {
-        throw Exception('Valores inválidos');
+        return Result.error(Exception('Valores inválidos'));
       }
 
       await LoginService.login(
           LoginRequest(emailController.text, passwordController.text));
+      return Result.value(null);
     } catch (e) {
-      rethrow;
+      return Result.error(e);
     } finally {
       isLoading = false;
       notifyListeners();

@@ -8,6 +8,7 @@ import 'dart:async' as _i4;
 import 'package:aranduapp/ui/login/viewModel/login_view_model.dart' as _i3;
 import 'package:flutter/material.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:async/async.dart' as _i5;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -134,14 +135,17 @@ class MockLoginViewModel extends _i1.Mock implements _i3.LoginViewModel {
       ) as bool);
 
   @override
-  _i4.Future<void> loginWithEmailAndPassword() => (super.noSuchMethod(
+  _i4.Future<_i5.Result<void>> loginWithEmailAndPassword() =>
+      (super.noSuchMethod(
         Invocation.method(
           #loginWithEmailAndPassword,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue:
+            _i4.Future<_i5.Result<void>>.value(_i5.Result<void>.value(null)),
+        returnValueForMissingStub:
+            _i4.Future<_i5.Result<void>>.value(_i5.Result<void>.value(null)),
+      ) as _i4.Future<_i5.Result<void>>);
 
   @override
   _i4.Future<void> validateToken() => (super.noSuchMethod(

@@ -1,3 +1,9 @@
+import 'package:aranduapp/core/state/command.dart';
+import 'package:aranduapp/ui/shared/TextAndLink.dart';
+import 'package:aranduapp/ui/shared/TextEmail.dart';
+import 'package:aranduapp/ui/shared/TitleSlogan.dart';
+import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -6,75 +12,75 @@ import 'package:provider/provider.dart';
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/recover_account/viewModel/recover_account_view_model.dart';
 
-@GenerateNiceMocks([MockSpec<RecoverAccountViewModel>()])
+@GenerateNiceMocks([MockSpec<RecoverAccountViewModel>(), MockSpec<Command0>()])
 import 'recover_account_test.mocks.dart';
 
 void main() {
   late MockRecoverAccountViewModel mockViewModel;
+  late Command0 mockCommand0;
 
   setUp(() {
     mockViewModel = MockRecoverAccountViewModel();
+    mockCommand0 = MockCommand0();
+
+    when(mockCommand0.execute()).thenAnswer((_) async => Result.value(null));
+    when(mockViewModel.recoverCommand).thenReturn(mockCommand0);
+
     when(mockViewModel.formKey).thenReturn(GlobalKey<FormState>());
     when(mockViewModel.emailController).thenReturn(TextEditingController());
-    when(mockViewModel.isLoading).thenReturn(false);
+
   });
 
-  testWidgets('Testa estado do botão enviar quando isLoading é verdadeiro',
+  Widget createLoginScreen(MockRecoverAccountViewModel mockViewModel) {
+    return ChangeNotifierProvider<RecoverAccountViewModel>.value(
+      value: mockViewModel,
+      builder: (context, child) {
+        return const MaterialApp(
+          home: RecoverAccountScreen(),
+        );
+      },
+    );
+  }
+
+
+  testWidgets('Register Account screen displays fields and send button',
       (WidgetTester tester) async {
-    when(mockViewModel.isLoading).thenReturn(true);
 
-    await tester.pumpWidget(
-      ChangeNotifierProvider<RecoverAccountViewModel>.value(
-        value: mockViewModel,
-        child: const MaterialApp(
-          home: RecoverAccountScreen(),
-        ),
-      ),
-    );
-
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.text('Enviar'), findsNothing);
-  });
-
-  testWidgets('Testa estado do botão enviar quando isLoading é falso',
-      (WidgetTester tester) async {
-    when(mockViewModel.isLoading).thenReturn(false);
-
-    await tester.pumpWidget(
-      ChangeNotifierProvider<RecoverAccountViewModel>.value(
-        value: mockViewModel,
-        child: const MaterialApp(
-          home: RecoverAccountScreen(),
-        ),
-      ),
-    );
-
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-    expect(find.text('Enviar'), findsOneWidget);
-  });
-
-  testWidgets('Teste envio da requisição', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ChangeNotifierProvider<RecoverAccountViewModel>.value(
-        value: mockViewModel,
-        child: const MaterialApp(
-          home: RecoverAccountScreen(),
-        ),
-      ),
-    );
-
-    final emailField = find.byType(TextFormField);
-    expect(emailField, findsOneWidget);
-
-    await tester.enterText(emailField, 'fulano@gmail.com');
+    await tester.pumpWidget(createLoginScreen(mockViewModel));
     await tester.pump();
 
+    expect(find.byType(TitleSlogan), findsOneWidget);
+    expect(find.byType(TextEmail), findsOneWidget);
+    expect(find.byType(Requestbutton), findsOneWidget);
+    expect(find.byType(TextAndLink), findsOneWidget);
+  });
+
+
+
+  testWidgets('Recover account sending request', (WidgetTester tester) async {
+    await tester.pumpWidget(createLoginScreen(mockViewModel));
+
     final sendButton = find.text('Enviar');
-    expect(sendButton, findsOneWidget);
 
     await tester.tap(sendButton);
     await tester.pump();
 
-    verify(mockViewModel.forgetPassword()).called(1);
+    verify(mockCommand0.execute()).called(1);
   });
+
+
+  testWidgets('Recover account user input', (WidgetTester tester) async {
+
+    await tester.pumpWidget(createLoginScreen(mockViewModel));
+
+    const email = 'test@example.com';
+
+
+    await tester.enterText(find.byType(TextEmail), email);
+    await tester.pumpAndSettle();
+
+    expect(mockViewModel.emailController.text, email);
+  });
+
+
 }

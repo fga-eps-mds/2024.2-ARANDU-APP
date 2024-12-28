@@ -1,6 +1,8 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/recover_account/model/RecoverAccountRequest.dart';
 import 'package:aranduapp/ui/recover_account/service/RecoverAccountService.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 class RecoverAccountViewModel extends ChangeNotifier {
@@ -8,34 +10,22 @@ class RecoverAccountViewModel extends ChangeNotifier {
 
   TextEditingController emailController;
 
-  bool isLoading;
+  late Command0<void> recoverCommand;
 
   RecoverAccountViewModel()
       : formKey = GlobalKey<FormState>(),
-        emailController = TextEditingController(),
-        isLoading = false;
+        emailController = TextEditingController() {
+    recoverCommand = Command0(_forgetPassword);
+  }
 
-  Future<void> forgetPassword() async {
-    // TODO use mutex to make this
-    if (isLoading) {
-      return;
+  Future<Result<void>> _forgetPassword() async {
+    if (!formKey.currentState!.validate()) {
+      Result.error('Valores inválidos');
     }
 
-    try {
-      isLoading = true;
-      super.notifyListeners();
+    await RecoverAccountService.forgetPassword(
+        RecoverAccountRequest(emailController.text));
 
-      if (!formKey.currentState!.validate()) {
-        throw Exception('Valores inválidos');
-      }
-
-      await RecoverAccountService.forgetPassword(
-          RecoverAccountRequest(emailController.text));
-    } catch (e) {
-      rethrow;
-    } finally {
-      isLoading = false;
-      super.notifyListeners();
-    }
+    return Result.value(null);
   }
 }

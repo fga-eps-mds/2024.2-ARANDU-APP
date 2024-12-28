@@ -3,7 +3,6 @@ import 'package:aranduapp/ui/register_account/view/register_account_view.dart';
 import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 import 'package:aranduapp/ui/shared/TitleSlogan.dart';
 import 'package:async/async.dart';

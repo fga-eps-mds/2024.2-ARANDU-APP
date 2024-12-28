@@ -4,6 +4,7 @@ import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/TitleSlogan.dart';
+import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -51,31 +52,23 @@ class RecoverAccountScreen extends StatelessWidget {
                   ])),
               Padding(
                 padding: const EdgeInsets.only(top: 80),
-                child: SizedBox(
-                  width: 291,
-                  height: 64,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      try {
-                        await viewModel.forgetPassword();
-                        Log.d("Deu certo!");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('Estamos quase lá! Confira seu e-mail para redefinir sua senha.')),
-                        );
-                      } catch (e) {
-                        showDialog<Object>(
-                          context: context,
-                          builder: (BuildContext context) =>
-                              ErrorPopUp(content: Text('$e')),
-                        );
-                      }
+                child: Requestbutton(
+                    command: viewModel.recoverCommand,
+                    onErrorCallback: (String e) {
+                      showDialog<Object>(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            ErrorPopUp(content: Text(e)),
+                      );
                     },
-                    child: viewModel.isLoading
-                        ? const CircularProgressIndicator(value: null)
-                        : const Text('Enviar'),
-                  ),
-                ),
+                    onSuccessCallback: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text(
+                                'Estamos quase lá! Confira seu e-mail para redefinir sua senha.')),
+                      );
+                    },
+                    nameButton: 'Enviar'),
               ),
               TextAndLink(
                 text: 'Já tem uma conta?',

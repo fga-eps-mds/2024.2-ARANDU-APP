@@ -1,7 +1,7 @@
-import 'package:aranduapp/ui/home/view/HomeView.dart';
+import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:aranduapp/ui/navbar/model/navBarViewModel.dart';
+import 'package:aranduapp/ui/navbar/model/nav_bar_view_model.dart';
 
 class NavbarView extends StatelessWidget {
   const NavbarView({super.key});
@@ -34,7 +34,7 @@ Widget page(BuildContext context) {
       currentIndex: viewModel.selectedIndex,
       onTap: viewModel.changeTab,
       selectedItemColor: Theme.of(context).colorScheme.primary,
-      unselectedItemColor:Theme.of(context).colorScheme.onSurface,
+      unselectedItemColor: Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

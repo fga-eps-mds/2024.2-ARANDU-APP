@@ -1,7 +1,6 @@
-import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/recover_account/model/RecoverAccountRequest.dart';
-import 'package:aranduapp/ui/recover_account/service/RecoverAccountService.dart';
+import 'package:aranduapp/ui/recover_account/model/recover_account_request.dart';
+import 'package:aranduapp/ui/recover_account/service/recover_account_service.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 

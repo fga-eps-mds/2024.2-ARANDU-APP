@@ -6,7 +6,7 @@
 import 'dart:async' as _i6;
 
 import 'package:aranduapp/core/state/command.dart' as _i3;
-import 'package:aranduapp/ui/recover_account/viewModel/recover_account_view_model.dart'
+import 'package:aranduapp/ui/recover_account/view_model/recover_account_view_model.dart'
     as _i5;
 import 'package:async/async.dart' as _i4;
 import 'package:flutter/material.dart' as _i1;

@@ -1,10 +1,10 @@
-import 'package:aranduapp/ui/shared/TextName.dart';
+import 'package:aranduapp/ui/shared/text_name.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:aranduapp/ui/edit_profile/viewModel/EditProfileViewModel.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/edit_profile/view_model/edit_profile_view_model.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 
 class EditProfile extends StatelessWidget {
   const EditProfile({super.key});
@@ -26,16 +26,14 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<EditProfileViewModel>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Editar Perfil'),
-      ),
-      body: _buildForm(viewModel)
-    );
+        appBar: AppBar(
+          title: const Text('Editar Perfil'),
+        ),
+        body: _buildForm(viewModel));
   }
 
   Widget _buildForm(EditProfileViewModel viewModel) {
@@ -46,22 +44,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             TextName(
-              controller: viewModel.firstNameController,
-              padding: const EdgeInsets.symmetric(vertical: 16)
-            ),
-
+                controller: viewModel.firstNameController,
+                padding: const EdgeInsets.symmetric(vertical: 16)),
             TextEmail(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.emailController,
             ),
-
             TextPassWord(
               padding: const EdgeInsets.symmetric(vertical: 16),
               controller: viewModel.passwordController,
             ),
-
             const SizedBox(height: 32),
             _saveButton(viewModel),
             const SizedBox(height: 16),
@@ -87,13 +80,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           );
         }
       },
-
       child: Consumer<EditProfileViewModel>(
         builder: (context, value, child) => value.isLoading
             ? const CircularProgressIndicator(value: null)
             : const Text('Salvar'),
       ),
-
     );
   }
 

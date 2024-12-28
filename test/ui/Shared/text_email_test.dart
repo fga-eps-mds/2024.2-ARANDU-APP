@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/shared/TextEmail.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -29,9 +29,12 @@ void main() {
 
     // Teste de validação para diferentes casos
     await testEmail("", "E-mail Obrigatório."); // Campo vazio
-    await testEmail("joaozinhi", "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem '@'
-    await testEmail("joaozinhi@", "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem domínio
-    await testEmail("joao@domain", "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem extensão
+    await testEmail("joaozinhi",
+        "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem '@'
+    await testEmail("joaozinhi@",
+        "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem domínio
+    await testEmail("joao@domain",
+        "Opa, E-mail inválido!\n(Ex: exemplo@gmail.com)"); // Sem extensão
     await testEmail("joao@example.com", null); // Entrada válida
   });
 }

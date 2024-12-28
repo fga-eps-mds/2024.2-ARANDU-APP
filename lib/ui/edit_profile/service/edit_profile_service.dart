@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/edit_profile/model/EditProfileRequest.dart';
+import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:dio/dio.dart';
 
 class EditProfileService {

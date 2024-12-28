@@ -1,5 +1,6 @@
 import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
+import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -185,25 +186,22 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _loginButtonSection() {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
-    return SizedBox(
-      width: 291,
-      height: 64,
-      child: ElevatedButton(
-          onPressed: () {
-            viewModel.loginWithEmailAndPassword().then((_) {
-              viewModel.goToHome();
-            }).catchError((e) => showDialog<Object>(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      ErrorPopUp(content: Text('$e')),
-                ));
-          },
-          child: Consumer<LoginViewModel>(
-            builder: (context, value, child) => value.isLoading
-                ? const CircularProgressIndicator(value: null)
-                : const Text('Entrar'),
-          )),
-    );
+    return Requestbutton(
+        command: viewModel.loginCommand,
+        onErrorCallback: (String e) {
+          showDialog<Object>(
+            context: context,
+            builder: (BuildContext context) => ErrorPopUp(content: Text(e)),
+          );
+        },
+        onSuccessCallback: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text(
+                    'Bem-vindo(a) a bordo! Seu login foi feito com sucesso!')),
+          );
+        },
+        nameButton: 'Entrar');
   }
 
   Widget _loggingInWithOther() {

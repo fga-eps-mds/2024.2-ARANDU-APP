@@ -1,19 +1,19 @@
-import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/shared/TextAndLink.dart';
+import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
+import 'package:aranduapp/ui/login/view_model/login_view_model.dart';
 
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/register_account/view/register_account_view.dart';
 
-import 'package:aranduapp/ui/shared/TitleSlogan.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
-import 'package:aranduapp/ui/shared/OrDivider.dart';
+import 'package:aranduapp/ui/shared/title_slogan.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/error_pop_up.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
+import 'package:aranduapp/ui/shared/or_divider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});

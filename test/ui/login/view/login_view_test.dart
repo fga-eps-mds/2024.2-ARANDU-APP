@@ -1,7 +1,7 @@
 import 'package:aranduapp/ui/login/view/login_view.dart';
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/login/view_model/login_view_model.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -95,8 +95,7 @@ void main() {
     expect(mockViewModel.passwordController.text, password);
   });
 
-  testWidgets('Login is successful',
-      (WidgetTester tester) async {
+  testWidgets('Login is successful', (WidgetTester tester) async {
     when(mockViewModel.validateToken())
         .thenAnswer((_) async => throw Exception('Token validation failed'));
 
@@ -113,6 +112,6 @@ void main() {
     verify(mockViewModel.goToHome()).called(1);
   });
 
-  testWidgets('Displays error when login fails', (WidgetTester tester) async {
-  });
+  testWidgets(
+      'Displays error when login fails', (WidgetTester tester) async {});
 }

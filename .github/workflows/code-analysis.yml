@@ -30,7 +30,7 @@ jobs:
       - name: Execute tests
         run: |
               flutter test --coverage
-              ls 
+              ls coverage/
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

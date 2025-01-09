@@ -1,4 +1,4 @@
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/app_interceptors.dart';
 
 import 'package:dio/dio.dart';

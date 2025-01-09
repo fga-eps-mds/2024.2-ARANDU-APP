@@ -1,5 +1,5 @@
-import 'package:aranduapp/core/data/local/StorageValue.dart';
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/data/local/storage_value.dart';
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/token_manager/auth_service.dart';
 import 'package:aranduapp/core/network/token_manager/model/refresh_token_response.dart';
 import 'package:dio/dio.dart';
@@ -27,8 +27,7 @@ class AppInterceptors extends Interceptor {
       try {
         Log.i('Token expirado. Tentando atualizar o token...');
 
-        RefreshTokenResponse tokens =
-            await AuthService().refreshToken();
+        RefreshTokenResponse tokens = await AuthService().refreshToken();
 
         final requestOptions = err.requestOptions;
 

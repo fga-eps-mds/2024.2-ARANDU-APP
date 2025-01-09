@@ -1,9 +1,9 @@
-import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
+import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/navbar/view/nav_bar_view.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:aranduapp/ui/login/service/LoginService.dart';
-import 'package:aranduapp/ui/login/model/LoginRequest.dart';
+import 'package:aranduapp/ui/login/service/login_service.dart';
+import 'package:aranduapp/ui/login/model/login_request.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final BuildContext context;

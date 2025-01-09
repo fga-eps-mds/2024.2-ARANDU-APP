@@ -39,4 +39,4 @@ jobs:
               -Dsonar.organization=fga-eps-mds-1 \
               -Dsonar.sources=./lib \
               -Dsonar.tests=./test \
-              -Dsonar.dart.lcov.reportPaths=coverage/lcov.info
+              -Dsonar.coverageReportPaths=coverage/lcov.info

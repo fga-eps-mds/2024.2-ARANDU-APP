@@ -8,69 +8,45 @@ import 'package:aranduapp/ui/login/service/LoginService.dart';
 import 'package:aranduapp/ui/login/model/LoginRequest.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final BuildContext context;
-  late Command0<void> loginCommand;
 
-  bool isLoading;
+  late Command0<void> loginCommand;
+  late Command0<void> validadeTokenCommand;
 
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
-  LoginViewModel(this.context)
-      : isLoading = false,
-        formKey = GlobalKey<FormState>(),
+  LoginViewModel()
+      : formKey = GlobalKey<FormState>(),
         emailController = TextEditingController(),
         passwordController = TextEditingController() {
+
     loginCommand = Command0<void>(loginWithEmailAndPassword);
+
+    validadeTokenCommand = Command0<void>(validateToken);
+    validadeTokenCommand.execute();
   }
 
   Future<Result<void>> loginWithEmailAndPassword() async {
-    if (isLoading) {
-      return Result.value(null);
+    if (!formKey.currentState!.validate()) {
+      return Result.error(Exception('Valores inválidos'));
     }
 
-    try {
-      isLoading = true;
-      notifyListeners();
+    await LoginService.login(
+        LoginRequest(emailController.text, passwordController.text));
 
-      if (!formKey.currentState!.validate()) {
-        return Result.error(Exception('Valores inválidos'));
-      }
-
-      await LoginService.login(
-          LoginRequest(emailController.text, passwordController.text));
-      return Result.value(null);
-    } catch (e) {
-      return Result.error(e);
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    return Result.value(null);
   }
 
-  Future<void> validateToken() async {
+  Future<Result<void>> validateToken() async {
     await LoginService.validateToken();
+
+    return Result.value(null);
   }
 
   Future<bool> loginWithDeviceAuth() async {
     Log.d('init loginWithDeviceAuth');
     return await LocalAuthentication()
         .authenticate(localizedReason: 'Toque com o dedo no sensor para logar');
-  }
-
-  void goToHome() {
-    try {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const NavbarView(),
-          ),
-        );
-      }
-    } catch (e) {
-      Log.e(e);
-      rethrow;
-    }
   }
 }

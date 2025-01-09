@@ -40,5 +40,4 @@ jobs:
               -Dsonar.sources=./lib \
               -Dsonar.tests=./test \
               -Dsonar.exclusions=**/test/**,**/*.g.dart \
-              -Dsonar.dart.lcov.reportPaths=coverage/lcov.info \
-              -Dsonar.verbose=true
+              -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info 

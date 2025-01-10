@@ -1,6 +1,4 @@
-import 'package:aranduapp/core/log/Log.dart';
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
@@ -28,43 +26,35 @@ class EditProfileScreen extends StatelessWidget {
     EditProfileViewModel viewModel = Provider.of<EditProfileViewModel>(context);
 
     return Scaffold(
-        // appBar: AppBar(
-        //   backgroundColor: Theme.of(context).colorScheme.surface,
-        //   elevation: 0,
-        //   title: Center(
-        //     child: Text(
-        //       'Editar perfil',
-        //       style: TextStyle(
-        //         color: Theme.of(context).colorScheme.onSurface,
-        //         fontSize: 24,
-        //       ),
-        //     ),
-        //   ),
-        //   actions: [
-        //     IconButton(
-        //       color: Theme.of(context).colorScheme.primary,
-        //       icon: const Icon(Icons.notifications),
-        //       onPressed: () {},
-        //     ),
-        //   ],
-        //   leading: IconButton(
-        //     color: Theme.of(context).colorScheme.primary,
-        //     icon: const Icon(Icons.arrow_back),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //   ),
-        // ),
-      body: SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-      child: Column(
-        children: [
-          _buildProfileHeader(context),
-          const SizedBox(height: 50),
-          _buildForm(context, viewModel),
-        ],
-      ),
-    ));
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          elevation: 0,
+          title: Center(
+            child: Text(
+              'Editar perfil',
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          leading: IconButton(
+            color: Theme.of(context).colorScheme.primary,
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              _buildForm(context, viewModel),
+            ],
+          ),
+        ));
   }
 
   Widget _buildForm(BuildContext context, EditProfileViewModel viewModel) {
@@ -97,25 +87,13 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileHeader(BuildContext context) {
-    return const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          ProfileHeader(
-            name: "Stefani",
-            role: "Estudante",
-          ),
-        ]);
-  }
-
   Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
     return Requestbutton(
         command: viewModel.editCommand,
         nameButton: "Salvar",
         onErrorCallback: (e) {
-          showDialog<Object>(
-            context: context,
-            builder: (BuildContext context) => ErrorPopUp(content: Text(e)),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e)),
           );
         },
         onSuccessCallback: () {

@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,43 @@ class Profile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildProfileHeader(context),
+            const SizedBox(height: 80),
+            SizedBox(
+              width: double.infinity,
+              height: 60,
+              child: Card(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const EditPassword(),
+                          ),
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.lock_reset,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 32,
+                          ),
+                          const Text('Trocar senha'),
+                          Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 32,
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 80),
             _buildLogoutButton(context),
           ],

@@ -44,6 +44,7 @@ abstract class Command<T> extends ChangeNotifier {
   }
 }
 
+//
 class Command0<T> extends Command<T> {
   final Future<Result<T>> Function() action;
 

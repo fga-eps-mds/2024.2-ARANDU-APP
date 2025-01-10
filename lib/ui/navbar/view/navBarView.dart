@@ -1,4 +1,6 @@
 import 'package:aranduapp/ui/home/view/HomeView.dart';
+import 'package:aranduapp/ui/profile/view/ProfileView.dart';
+//import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aranduapp/ui/navbar/model/navBarViewModel.dart';
@@ -25,7 +27,7 @@ Widget page(BuildContext context) {
     const HomeView(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
     const Center(child: Text('Dashbord', style: TextStyle(fontSize: 20))),
-    const Center(child: Text('Profile', style: TextStyle(fontSize: 20))),
+    const Profile(),
   ];
 
   return Scaffold(
@@ -34,7 +36,7 @@ Widget page(BuildContext context) {
       currentIndex: viewModel.selectedIndex,
       onTap: viewModel.changeTab,
       selectedItemColor: Theme.of(context).colorScheme.primary,
-      unselectedItemColor:Theme.of(context).colorScheme.onSurface,
+      unselectedItemColor: Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

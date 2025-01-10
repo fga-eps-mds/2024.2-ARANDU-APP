@@ -52,4 +52,14 @@ class BaseApi {
       rethrow;
     }
   }
+
+
+  Future<Response> patch({required String path, Object? data}) async {
+    try {
+      return await _dio.patch(path, data: data);
+    } catch (e) {
+      Log.e(e);
+      rethrow;
+    }
+  }
 }

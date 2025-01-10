@@ -1,13 +1,23 @@
 import 'package:aranduapp/config/ThemeApp.dart';
 import 'package:aranduapp/ui/welcome/view/WelcomeView.dart';
+import 'package:aranduapp/ui/onboarding/viewModel/onboarding_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:aranduapp/core/data/local/StorageValue.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await OnboardingViewModel().incrementNumber();
+
+  int viewCount = await StorageValue.getInstance().getOnboardingCount() ?? 0;
+
+  runApp(MyApp(viewCount: viewCount));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final int viewCount;
+
+  const MyApp({super.key, required this.viewCount});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeApp.themeData(),
       darkTheme: ThemeApp.darkThemeData(),
       debugShowCheckedModeBanner: false,
-      home: WelcomeView(),
+      home: viewCount >= 3 ? const Login() : WelcomeView(),
     );
   }
 }

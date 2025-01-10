@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
-import 'package:aranduapp/ui/edit_profile/view/EditProfileView.dart';
+import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -76,7 +76,7 @@ class Profile extends StatelessWidget {
           role: "Estudante",
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 16.0), // Margem direita
+          padding: const EdgeInsets.only(right: 16.0),
           child: ElevatedButton(
             onPressed: () {
               Navigator.push(

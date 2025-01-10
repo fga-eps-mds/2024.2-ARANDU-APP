@@ -89,25 +89,13 @@ class RegisterAccountScreen extends StatelessWidget {
 
   Widget _buildTermsCheckbox(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
-    return Row(
-      children: [
-        Checkbox(
+
+    return Checkbox(
           value: viewModel.isTermsAccepted,
           onChanged: (value) {
-            // Ação ao clicar no checkbox
-            if (value != null) {
-              viewModel.toggleTermsAccepted(value);
-            }
-          },
-        ),
-        Expanded(
-          child: Text(
-            'Aceite os termos de privacidade',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-      ],
-    );
+              viewModel.setToggleTermsAccepted(value??false);
+          });
+
   }
 
   Widget _buildRegisterButton(BuildContext context) {

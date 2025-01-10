@@ -40,7 +40,7 @@ class RegisterAccountViewModel extends ChangeNotifier {
     return Result.value(null);
   }
 
-  void toggleTermsAccepted(bool value) {
+  void setToggleTermsAccepted(bool value) {
     isTermsAccepted = value;
     notifyListeners();
   }

@@ -64,6 +64,7 @@ class BaseApi {
   }
 
 
+
   Future<Response> put({required String path, Object? data}) async {
     try {
       return await _dio.put(path, data: data);
@@ -72,4 +73,5 @@ class BaseApi {
       rethrow;
     }
   }
+
 }

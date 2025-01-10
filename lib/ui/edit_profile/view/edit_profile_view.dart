@@ -26,6 +26,7 @@ class EditProfileScreen extends StatelessWidget {
     EditProfileViewModel viewModel = Provider.of<EditProfileViewModel>(context);
 
     return Scaffold(
+
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
@@ -55,6 +56,7 @@ class EditProfileScreen extends StatelessWidget {
             ],
           ),
         ));
+
   }
 
   Widget _buildForm(BuildContext context, EditProfileViewModel viewModel) {
@@ -87,13 +89,16 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
+
   Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
     return Requestbutton(
         command: viewModel.editCommand,
         nameButton: "Salvar",
         onErrorCallback: (e) {
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(e)),
+
           );
         },
         onSuccessCallback: () {

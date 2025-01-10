@@ -27,7 +27,7 @@ class RegisterAccountViewModel extends ChangeNotifier {
     }
 
     if (!formKey.currentState!.validate()) {
-      Result.error('Por favor, preencha todos os campos corretamente');
+      return Result.error('Por favor, preencha todos os campos corretamente');
     }
 
     await RegisterService.register(RegisterRequest(
@@ -40,7 +40,7 @@ class RegisterAccountViewModel extends ChangeNotifier {
     return Result.value(null);
   }
 
-  void toggleTermsAccepted(bool value) {
+  void setToggleTermsAccepted(bool value) {
     isTermsAccepted = value;
     notifyListeners();
   }

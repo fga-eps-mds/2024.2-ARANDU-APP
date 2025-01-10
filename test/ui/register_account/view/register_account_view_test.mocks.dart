@@ -184,9 +184,9 @@ class MockRegisterAccountViewModel extends _i2.Mock
       ) as bool);
 
   @override
-  void toggleTermsAccepted(bool? value) => super.noSuchMethod(
+  void setToggleTermsAccepted(bool? value) => super.noSuchMethod(
         Invocation.method(
-          #toggleTermsAccepted,
+          #setToggleTermsAccepted,
           [value],
         ),
         returnValueForMissingStub: null,

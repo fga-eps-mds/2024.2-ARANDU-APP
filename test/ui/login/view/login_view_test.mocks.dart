@@ -3,10 +3,12 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i6;
 
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart' as _i3;
-import 'package:flutter/material.dart' as _i2;
+import 'package:aranduapp/core/state/command.dart' as _i2;
+import 'package:aranduapp/ui/login/viewModel/login_view_model.dart' as _i5;
+import 'package:async/async.dart' as _i4;
+import 'package:flutter/material.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -22,8 +24,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeBuildContext_0 extends _i1.SmartFake implements _i2.BuildContext {
-  _FakeBuildContext_0(
+class _FakeCommand0_0<T> extends _i1.SmartFake implements _i2.Command0<T> {
+  _FakeCommand0_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -32,8 +34,8 @@ class _FakeBuildContext_0 extends _i1.SmartFake implements _i2.BuildContext {
         );
 }
 
-class _FakeGlobalKey_1<T extends _i2.State<_i2.StatefulWidget>>
-    extends _i1.SmartFake implements _i2.GlobalKey<T> {
+class _FakeGlobalKey_1<T extends _i3.State<_i3.StatefulWidget>>
+    extends _i1.SmartFake implements _i3.GlobalKey<T> {
   _FakeGlobalKey_1(
     Object parent,
     Invocation parentInvocation,
@@ -44,8 +46,18 @@ class _FakeGlobalKey_1<T extends _i2.State<_i2.StatefulWidget>>
 }
 
 class _FakeTextEditingController_2 extends _i1.SmartFake
-    implements _i2.TextEditingController {
+    implements _i3.TextEditingController {
   _FakeTextEditingController_2(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeResult_3<T> extends _i1.SmartFake implements _i4.Result<T> {
+  _FakeResult_3(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -57,51 +69,67 @@ class _FakeTextEditingController_2 extends _i1.SmartFake
 /// A class which mocks [LoginViewModel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockLoginViewModel extends _i1.Mock implements _i3.LoginViewModel {
+class MockLoginViewModel extends _i1.Mock implements _i5.LoginViewModel {
   @override
-  _i2.BuildContext get context => (super.noSuchMethod(
-        Invocation.getter(#context),
-        returnValue: _FakeBuildContext_0(
+  _i2.Command0<void> get loginCommand => (super.noSuchMethod(
+        Invocation.getter(#loginCommand),
+        returnValue: _FakeCommand0_0<void>(
           this,
-          Invocation.getter(#context),
+          Invocation.getter(#loginCommand),
         ),
-        returnValueForMissingStub: _FakeBuildContext_0(
+        returnValueForMissingStub: _FakeCommand0_0<void>(
           this,
-          Invocation.getter(#context),
+          Invocation.getter(#loginCommand),
         ),
-      ) as _i2.BuildContext);
+      ) as _i2.Command0<void>);
 
   @override
-  bool get isLoading => (super.noSuchMethod(
-        Invocation.getter(#isLoading),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  set isLoading(bool? _isLoading) => super.noSuchMethod(
+  set loginCommand(_i2.Command0<void>? _loginCommand) => super.noSuchMethod(
         Invocation.setter(
-          #isLoading,
-          _isLoading,
+          #loginCommand,
+          _loginCommand,
         ),
         returnValueForMissingStub: null,
       );
 
   @override
-  _i2.GlobalKey<_i2.FormState> get formKey => (super.noSuchMethod(
-        Invocation.getter(#formKey),
-        returnValue: _FakeGlobalKey_1<_i2.FormState>(
+  _i2.Command0<void> get validadeTokenCommand => (super.noSuchMethod(
+        Invocation.getter(#validadeTokenCommand),
+        returnValue: _FakeCommand0_0<void>(
           this,
-          Invocation.getter(#formKey),
+          Invocation.getter(#validadeTokenCommand),
         ),
-        returnValueForMissingStub: _FakeGlobalKey_1<_i2.FormState>(
+        returnValueForMissingStub: _FakeCommand0_0<void>(
           this,
-          Invocation.getter(#formKey),
+          Invocation.getter(#validadeTokenCommand),
         ),
-      ) as _i2.GlobalKey<_i2.FormState>);
+      ) as _i2.Command0<void>);
 
   @override
-  _i2.TextEditingController get emailController => (super.noSuchMethod(
+  set validadeTokenCommand(_i2.Command0<void>? _validadeTokenCommand) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #validadeTokenCommand,
+          _validadeTokenCommand,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i3.GlobalKey<_i3.FormState> get formKey => (super.noSuchMethod(
+        Invocation.getter(#formKey),
+        returnValue: _FakeGlobalKey_1<_i3.FormState>(
+          this,
+          Invocation.getter(#formKey),
+        ),
+        returnValueForMissingStub: _FakeGlobalKey_1<_i3.FormState>(
+          this,
+          Invocation.getter(#formKey),
+        ),
+      ) as _i3.GlobalKey<_i3.FormState>);
+
+  @override
+  _i3.TextEditingController get emailController => (super.noSuchMethod(
         Invocation.getter(#emailController),
         returnValue: _FakeTextEditingController_2(
           this,
@@ -111,10 +139,10 @@ class MockLoginViewModel extends _i1.Mock implements _i3.LoginViewModel {
           this,
           Invocation.getter(#emailController),
         ),
-      ) as _i2.TextEditingController);
+      ) as _i3.TextEditingController);
 
   @override
-  _i2.TextEditingController get passwordController => (super.noSuchMethod(
+  _i3.TextEditingController get passwordController => (super.noSuchMethod(
         Invocation.getter(#passwordController),
         returnValue: _FakeTextEditingController_2(
           this,
@@ -124,7 +152,7 @@ class MockLoginViewModel extends _i1.Mock implements _i3.LoginViewModel {
           this,
           Invocation.getter(#passwordController),
         ),
-      ) as _i2.TextEditingController);
+      ) as _i3.TextEditingController);
 
   @override
   bool get hasListeners => (super.noSuchMethod(
@@ -134,43 +162,167 @@ class MockLoginViewModel extends _i1.Mock implements _i3.LoginViewModel {
       ) as bool);
 
   @override
-  _i4.Future<void> loginWithEmailAndPassword() => (super.noSuchMethod(
+  _i6.Future<_i4.Result<void>> loginWithEmailAndPassword() =>
+      (super.noSuchMethod(
         Invocation.method(
           #loginWithEmailAndPassword,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i6.Future<_i4.Result<void>>.value(_FakeResult_3<void>(
+          this,
+          Invocation.method(
+            #loginWithEmailAndPassword,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Result<void>>.value(_FakeResult_3<void>(
+          this,
+          Invocation.method(
+            #loginWithEmailAndPassword,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i4.Result<void>>);
 
   @override
-  _i4.Future<void> validateToken() => (super.noSuchMethod(
+  _i6.Future<_i4.Result<void>> validateToken() => (super.noSuchMethod(
         Invocation.method(
           #validateToken,
           [],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i6.Future<_i4.Result<void>>.value(_FakeResult_3<void>(
+          this,
+          Invocation.method(
+            #validateToken,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Result<void>>.value(_FakeResult_3<void>(
+          this,
+          Invocation.method(
+            #validateToken,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i4.Result<void>>);
 
   @override
-  _i4.Future<bool> loginWithDeviceAuth() => (super.noSuchMethod(
+  _i6.Future<bool> loginWithDeviceAuth() => (super.noSuchMethod(
         Invocation.method(
           #loginWithDeviceAuth,
           [],
         ),
-        returnValue: _i4.Future<bool>.value(false),
-        returnValueForMissingStub: _i4.Future<bool>.value(false),
-      ) as _i4.Future<bool>);
+        returnValue: _i6.Future<bool>.value(false),
+        returnValueForMissingStub: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
 
   @override
-  void goToHome() => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
-          #goToHome,
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(dynamic listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
           [],
         ),
         returnValueForMissingStub: null,
       );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [Command0].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
+  @override
+  _i6.Future<_i4.Result<T>> Function() get action => (super.noSuchMethod(
+        Invocation.getter(#action),
+        returnValue: () => _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+        returnValueForMissingStub: () =>
+            _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+      ) as _i6.Future<_i4.Result<T>> Function());
+
+  @override
+  bool get isError => (super.noSuchMethod(
+        Invocation.getter(#isError),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get isOk => (super.noSuchMethod(
+        Invocation.getter(#isOk),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get running => (super.noSuchMethod(
+        Invocation.getter(#running),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i6.Future<_i4.Result<T>> execute() => (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [],
+        ),
+        returnValue: _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i4.Result<T>>);
 
   @override
   void addListener(dynamic listener) => super.noSuchMethod(

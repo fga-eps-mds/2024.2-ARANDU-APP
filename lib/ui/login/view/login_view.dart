@@ -1,5 +1,7 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
+import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,61 +23,49 @@ class Login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => LoginViewModel(context),
+      create: (context) => LoginViewModel(),
       child: const LoginScreen(),
     );
   }
 }
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _LoginScreenState();
-  }
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  late Future<void> _future;
-
-  @override
-  void initState() {
-    super.initState();
-    _future =
-        Provider.of<LoginViewModel>(context, listen: false).validateToken();
-  }
 
   @override
   Widget build(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
     return Scaffold(
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return _loadingScreen(viewModel);
-              } else if (!snapshot.hasError) {
-                return _authDevice(viewModel);
-              } else {
-                return _emailAndPassword(viewModel);
-              }
-            }));
+      body: ListenableBuilder(
+        listenable: viewModel.validadeTokenCommand,
+        builder: (context, child) {
+          if (viewModel.validadeTokenCommand.isOk) {
+            return _authDevice(viewModel, context);
+          } else if (viewModel.validadeTokenCommand.isError) {
+            return _emailAndPassword(viewModel, context);
+          } else {
+            return _loadingScreen(viewModel, context);
+          }
+        },
+      ),
+    );
   }
 
-  Widget _loadingScreen(LoginViewModel viewModel) {
+  Widget _loadingScreen(LoginViewModel viewModel, BuildContext context) {
     return const Center(
       child: CircularProgressIndicator(value: null),
     );
   }
 
-  Widget _authDevice(LoginViewModel viewModel) {
+  Widget _authDevice(LoginViewModel viewModel, BuildContext context) {
     Log.d("Mostrando tela de autorização do dispositivo");
 
     viewModel.loginWithDeviceAuth().then((ok) {
       if (ok) {
-        viewModel.goToHome();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          goToNavbar(context);
+        });
       }
     });
 
@@ -99,7 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
             child: ElevatedButton(
               onPressed: () async {
                 viewModel.loginWithDeviceAuth().then((ok) {
-                  viewModel.goToHome();
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    goToNavbar(context);
+                  });
                 });
               },
               child: const Text('Usar senha do celular'),
@@ -110,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _emailAndPassword(LoginViewModel viewModel) {
+  Widget _emailAndPassword(LoginViewModel viewModel, BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -120,11 +112,11 @@ class _LoginScreenState extends State<LoginScreen> {
           const SizedBox(height: 80),
           const SizedBox(height: 10),
           _formSection(viewModel),
-          _forgotPasswordLink(),
+          _forgotPasswordLink(context),
           const SizedBox(height: 80),
-          _loginButtonSection(),
+          _loginButtonSection(context),
           const OrDivider(),
-          _loggingInWithOther(),
+          _loggingInWithOther(context),
           TextAndLink(
               text: 'É novo pro aqui?',
               link: 'Cria a sua conta',
@@ -157,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _forgotPasswordLink() {
+  Widget _forgotPasswordLink(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).push(
@@ -182,31 +174,24 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Widget _loginButtonSection() {
+  Widget _loginButtonSection(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
-    return SizedBox(
-      width: 291,
-      height: 64,
-      child: ElevatedButton(
-          onPressed: () {
-            viewModel.loginWithEmailAndPassword().then((_) {
-              viewModel.goToHome();
-            }).catchError((e) => showDialog<Object>(
-                  context: context,
-                  builder: (BuildContext context) =>
-                      ErrorPopUp(content: Text('$e')),
-                ));
-          },
-          child: Consumer<LoginViewModel>(
-            builder: (context, value, child) => value.isLoading
-                ? const CircularProgressIndicator(value: null)
-                : const Text('Entrar'),
-          )),
-    );
+    return Requestbutton(
+        command: viewModel.loginCommand,
+        onErrorCallback: (String e) {
+          showDialog<Object>(
+            context: context,
+            builder: (BuildContext context) => ErrorPopUp(content: Text(e)),
+          );
+        },
+        onSuccessCallback: () {
+          goToNavbar(context);
+        },
+        nameButton: 'Entrar');
   }
 
-  Widget _loggingInWithOther() {
+  Widget _loggingInWithOther(BuildContext context) {
     return GestureDetector(
       onTap: () => Log.d(""),
       child: Container(
@@ -222,6 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
           size: 20,
           color: Theme.of(context).colorScheme.primary,
         ),
+      ),
+    );
+  }
+
+  void goToNavbar(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const NavbarView(),
       ),
     );
   }

@@ -69,8 +69,6 @@ void main() {
   testWidgets('Test sending the request', (WidgetTester tester) async {
     await tester.pumpWidget(createLoginScreen(mockViewModel));
 
-    when(mockViewModel.registerCommand).thenReturn(mockCommand0);
-
     final sendButton = find.text('Registrar');
 
     await tester.tap(sendButton);
@@ -80,8 +78,6 @@ void main() {
   });
 
   testWidgets('Register Account Test User Input', (WidgetTester tester) async {
-    when(mockViewModel.registerCommand).thenReturn(mockCommand0);
-
     await tester.pumpWidget(createLoginScreen(mockViewModel));
 
     const name = 'test';
@@ -103,9 +99,37 @@ void main() {
     expect(mockViewModel.emailController.text, email);
   });
 
+  testWidgets('Checkbox shows correct value when initially unchecked', (WidgetTester tester) async {
+    when(mockViewModel.isTermsAccepted).thenReturn(false);
+
+    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpAndSettle();
+
+    Checkbox checkbox = tester.widget(find.byType(Checkbox));
+    expect(checkbox.value, false);
+
+    await tester.tap(find.byType(Checkbox));
+
+    verify(mockViewModel.setToggleTermsAccepted(true)).called(1);
+  });
+
+
+  testWidgets('Checkbox shows correct value when initially checked', (WidgetTester tester) async {
+    when(mockViewModel.isTermsAccepted).thenReturn(true);
+
+    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpAndSettle();
+
+    Checkbox checkbox = tester.widget(find.byType(Checkbox));
+    expect(checkbox.value, true);
+
+    await tester.tap(find.byType(Checkbox));
+
+    verify(mockViewModel.setToggleTermsAccepted(false)).called(1);
+  });
+
   testWidgets('Register Account user notification snackbar',
       (WidgetTester tester) async {
-    when(mockViewModel.registerCommand).thenReturn(mockCommand0);
     when(mockCommand0.isOk).thenReturn(true);
 
     await tester.pumpWidget(createLoginScreen(mockViewModel));
@@ -129,5 +153,4 @@ void main() {
     expect(find.byType(ErrorPopUp), findsOneWidget);
     expect(find.text(error), findsOneWidget);
   });
-
 }

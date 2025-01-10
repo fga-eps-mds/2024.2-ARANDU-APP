@@ -2,6 +2,7 @@ import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/shared/OrDivider.dart';
 import 'package:aranduapp/ui/shared/TextAndLink.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
+import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aranduapp/core/log/Log.dart';
@@ -88,67 +89,35 @@ class RegisterAccountScreen extends StatelessWidget {
 
   Widget _buildTermsCheckbox(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
-    return Row(
-      children: [
-        Checkbox(
+
+    return Checkbox(
           value: viewModel.isTermsAccepted,
           onChanged: (value) {
-            // Ação ao clicar no checkbox
-            if (value != null) {
-              viewModel.toggleTermsAccepted(value);
-            }
-          },
-        ),
-        Expanded(
-          child: Text(
-            'Aceite os termos de privacidade',
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-      ],
-    );
+              viewModel.setToggleTermsAccepted(value??false);
+          });
+
   }
 
   Widget _buildRegisterButton(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
 
-    return ListenableBuilder(
-      listenable: viewModel.registerCommand,
-      builder: (context, child) {
-        if (viewModel.registerCommand.isError) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            showDialog<Object>(
-              context: context,
-              builder: (BuildContext context) => ErrorPopUp(
-                content: Text(viewModel.registerCommand.result!.asError!.error
-                    .toString()),
-              ),
-            );
-          });
-        }
-
-        if (viewModel.registerCommand.isOk) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('conta criada com sucesso!!!')),
-            );
-          });
-        }
-
-        return SizedBox(
-          width: 291,
-          height: 64,
-          child: ElevatedButton(
-            onPressed: () async {
-              viewModel.registerCommand.execute();
-            },
-            child: viewModel.registerCommand.running
-                ? const CircularProgressIndicator(value: null)
-                : const Text('Registrar'),
-          ),
-        );
-      },
-    );
+    return Requestbutton(
+        command: viewModel.registerCommand,
+        nameButton: 'Registrar',
+        onSuccessCallback: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('conta criada com sucesso!!!')),
+          );
+        },
+        onErrorCallback: (e) {
+          showDialog<Object>(
+            context: context,
+            builder: (BuildContext context) => ErrorPopUp(
+              content: Text(
+                  viewModel.registerCommand.result!.asError!.error.toString()),
+            ),
+          );
+        });
   }
 
   Widget _buildGoogleLoginButton(BuildContext context) {

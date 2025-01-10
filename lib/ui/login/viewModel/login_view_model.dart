@@ -1,71 +1,52 @@
 import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/navbar/view/navBarView.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:aranduapp/ui/login/service/LoginService.dart';
 import 'package:aranduapp/ui/login/model/LoginRequest.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  final BuildContext context;
 
-  bool isLoading;
+  late Command0<void> loginCommand;
+  late Command0<void> validadeTokenCommand;
 
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
 
-  LoginViewModel(this.context)
-      : isLoading = false,
-        formKey = GlobalKey<FormState>(),
+  LoginViewModel()
+      : formKey = GlobalKey<FormState>(),
         emailController = TextEditingController(),
-        passwordController = TextEditingController();
+        passwordController = TextEditingController() {
 
-  Future<void> loginWithEmailAndPassword() async {
-    // TODO use mutex to make this
-    if (isLoading) {
-      return;
-    }
+    loginCommand = Command0<void>(loginWithEmailAndPassword);
 
-    try {
-      isLoading = true;
-      super.notifyListeners();
-
-      if (!formKey.currentState!.validate()) {
-        throw Exception('Valores inválidos');
-      }
-
-      await LoginService.login(
-          LoginRequest(emailController.text, passwordController.text));
-    } catch (e) {
-      rethrow;
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    validadeTokenCommand = Command0<void>(validateToken);
+    validadeTokenCommand.execute();
   }
 
-  Future<void> validateToken() async {
+  Future<Result<void>> loginWithEmailAndPassword() async {
+    if (!formKey.currentState!.validate()) {
+      return Result.error(Exception('Valores inválidos'));
+    }
+
+    await LoginService.login(
+        LoginRequest(emailController.text, passwordController.text));
+
+    return Result.value(null);
+  }
+
+  Future<Result<void>> validateToken() async {
     await LoginService.validateToken();
+
+    return Result.value(null);
   }
 
   Future<bool> loginWithDeviceAuth() async {
     Log.d('init loginWithDeviceAuth');
     return await LocalAuthentication()
         .authenticate(localizedReason: 'Toque com o dedo no sensor para logar');
-  }
-
-  void goToHome() {
-    try {
-      if (context.mounted) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const NavbarView(),
-          ),
-        );
-      }
-    } catch (e) {
-      Log.e(e);
-      rethrow;
-    }
   }
 }

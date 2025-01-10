@@ -5,10 +5,11 @@ abstract class Command<T> extends ChangeNotifier {
   Result<T>? _result;
 
   bool _running = false;
+  bool _hasErrorOccurred = false;
 
   Command();
 
-  bool get isError => result?.asError != null;
+  bool get isError => result?.asError != null && !_hasErrorOccurred;
 
   bool get isOk => result?.asValue != null;
 
@@ -16,10 +17,18 @@ abstract class Command<T> extends ChangeNotifier {
 
   bool get running => _running;
 
-  Future<void> _execute(action) async {
-    if (running) return;
+  void resetError() {
+    if (isError) {
+      _result = null;
+      notifyListeners();
+    }
+  }
+
+  Future<void> _execute(Future<Result<T>> Function() action) async {
+    if (running || _hasErrorOccurred) return;
 
     _result = null;
+    _hasErrorOccurred = false;
     _running = true;
     notifyListeners();
 
@@ -27,8 +36,9 @@ abstract class Command<T> extends ChangeNotifier {
       _result = await action();
     } catch (e) {
       _result = Result.error(e);
+      _hasErrorOccurred = true;
     } finally {
-    _running = false;
+      _running = false;
       notifyListeners();
     }
   }
@@ -42,6 +52,11 @@ class Command0<T> extends Command<T> {
   Future<Result<T>> execute() async {
     await _execute(action);
 
-    return _result!;
+    return result!;
+  }
+
+  @override
+  void resetError() {
+    super.resetError();
   }
 }

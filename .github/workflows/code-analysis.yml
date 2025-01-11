@@ -23,12 +23,14 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
       - name: Build
         run: flutter build
-      - name: Execute tests
-        run: flutter test --coverage
       - name: Download sonar-scanner
         run: |
           curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.2.1.4610-linux-x64.zip
           unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+      - name: Execute tests
+        run: |
+              flutter test --coverage
+              ls coverage/
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

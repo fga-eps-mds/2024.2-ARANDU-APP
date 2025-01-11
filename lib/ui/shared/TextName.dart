@@ -17,8 +17,16 @@ class TextName extends StatelessWidget {
     return Padding(
       padding: padding,
       child: TextFormField(
-        validator: (value) =>
-            value == null || value.trim().length < 3 ? '$label inválido' : null,
+        validator: (value) {
+            if (value == null || value.trim().isEmpty) {
+              return '$label Obrigatório.';
+            } else if (value.trim().length < 2) {
+              return 'Opa, seu $label está pequeno!\nacrescente mais caracteres. (Ex: Ana)';
+            } else if (value.trim().length < 3) {
+              return 'Opa, seu $label está pequeno!\nacrescente mais um caractere. (Ex: Ana)';
+            }
+            return null;
+        },
         controller: controller,
         decoration: InputDecoration(
             prefixIcon: Icon(Icons.person_outline,

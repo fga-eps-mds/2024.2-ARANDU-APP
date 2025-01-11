@@ -5,7 +5,7 @@ class EditPasswordService {
 
   static Future<void> edit(EditPasswordRequest editPasswordRequest) async {
     await BaseApi.getInstance(auth: true)
-        .put(path: '/outh-change-password', data: editPasswordRequest.toJson());
+        .put(path: '/auth/change-password', data: editPasswordRequest.toJson());
   }
   
 

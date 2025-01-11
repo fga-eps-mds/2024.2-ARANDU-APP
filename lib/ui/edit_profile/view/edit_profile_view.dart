@@ -1,6 +1,5 @@
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/ProfileHeader.dart';
 import 'package:aranduapp/ui/shared/TextName.dart';
 import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +104,7 @@ class EditProfileScreen extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
                 content: Text(
-                    'Estamos quase lá! Confira seu e-mail para redefinir sua senha.')),
+                    'Usuario atualizado com sucesso. ')),
           );
         });
   }

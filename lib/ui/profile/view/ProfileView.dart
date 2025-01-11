@@ -60,44 +60,7 @@ class Profile extends StatelessWidget {
           children: [
             _buildProfileHeader(context),
             const SizedBox(height: 80),
-            SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: Card(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const EditPassword(),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.lock_reset,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 32,
-                          ),
-                          const Text('Trocar senha'),
-                          Icon(
-                            Icons.chevron_right,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 32,
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 80),
-            _buildLogoutButton(context),
+            _setting(context),
           ],
         ),
       ),
@@ -139,14 +102,42 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// Botão Deslogar
-  Widget _buildLogoutButton(BuildContext context) {
-    return SizedBox(
-      width: 291,
-      height: 64,
-      child: ElevatedButton(
-        onPressed: () => {},
-        child: const Text('Deslogar'),
+
+  Widget _setting(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          ListTile(
+            leading: Icon(
+              Icons.lock_reset,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
+            ),
+            title: const Text('Trocar senha'),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
+            ),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const EditPassword(),
+                ),
+              );
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(
+              Icons.logout_sharp,
+              color: Theme.of(context).colorScheme.error,
+              size: 32,
+            ),
+            title: const Text('Sair'),
+            onTap: () {},
+          ),
+        ],
       ),
     );
   }

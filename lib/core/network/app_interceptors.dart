@@ -13,7 +13,7 @@ class AppInterceptors extends Interceptor {
     Log.w(token);
 
     if (token != null) {
-      options.headers['Authorization'] = token;
+      options.headers['Authorization'] =  'Bearer $token';
     } else {
       Log.w('Token não encontrado');
     }

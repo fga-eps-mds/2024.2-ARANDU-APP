@@ -1,4 +1,5 @@
 import 'package:aranduapp/config/ThemeApp.dart';
+import 'package:aranduapp/core/di/locator.dart';
 import 'package:aranduapp/ui/welcome/view/WelcomeView.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    setupLocator();
+
     return MaterialApp(
       theme: ThemeApp.themeData(),
       darkTheme: ThemeApp.darkThemeData(),

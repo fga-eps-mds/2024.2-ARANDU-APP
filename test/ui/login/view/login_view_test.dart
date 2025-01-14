@@ -1,15 +1,15 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/navbar/view/navBarView.dart';
 import 'package:aranduapp/ui/shared/TextEmail.dart';
 import 'package:aranduapp/ui/shared/TextPassword.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
 @GenerateNiceMocks([MockSpec<LoginViewModel>(), MockSpec<Command0>()])
 import 'login_view_test.mocks.dart';
@@ -19,7 +19,7 @@ void main() {
   late MockCommand0 mockLoginCommand;
   late MockCommand0 mockValidadeTokenCommand;
 
-  setUp(() {
+  setUp(() async {
     mockViewModel = MockLoginViewModel();
     when(mockViewModel.formKey).thenReturn(GlobalKey<FormState>());
     when(mockViewModel.emailController).thenReturn(TextEditingController());
@@ -38,14 +38,14 @@ void main() {
     when(mockValidadeTokenCommand.running).thenReturn(false);
     when(mockValidadeTokenCommand.isError).thenReturn(false);
     when(mockValidadeTokenCommand.isOk).thenReturn(false);
+
+    await GetIt.instance.reset();
+    GetIt.I.registerLazySingleton<LoginViewModel>(() => mockViewModel);
   });
 
   Widget createLoginScreen() {
-    return ChangeNotifierProvider<LoginViewModel>.value(
-      value: mockViewModel,
-      child: const MaterialApp(
-        home: LoginScreen(),
-      ),
+    return const MaterialApp(
+      home: Login(),
     );
   }
 
@@ -125,6 +125,6 @@ void main() {
   });
 
   testWidgets('Displays error when login fails', (WidgetTester tester) async {
-    //TODO: 
+    //TODO:
   });
 }

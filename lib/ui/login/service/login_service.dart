@@ -7,7 +7,7 @@ import 'package:aranduapp/ui/login/model/LoginResponse.dart';
 import 'package:dio/dio.dart';
 
 class LoginService {
-  static Future<Response> login(LoginRequest loginRequest) async {
+  Future<Response> login(LoginRequest loginRequest) async {
     Log.d('${loginRequest.email} ${loginRequest.password}');
 
     Response response = await BaseApi.getInstance(auth: false).post(
@@ -27,7 +27,7 @@ class LoginService {
     return response;
   }
 
-  static Future<void> validateToken() async {
+  Future<void> validateToken() async {
     await AuthService().refreshToken();
   }
 }

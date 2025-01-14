@@ -1,14 +1,13 @@
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
+import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:aranduapp/ui/login/service/LoginService.dart';
-import 'package:aranduapp/ui/login/model/LoginRequest.dart';
+import 'package:aranduapp/ui/login/service/login_service.dart';
+import 'package:aranduapp/ui/login/model/login_request.dart';
 
 class LoginViewModel extends ChangeNotifier {
-
   late Command0<void> loginCommand;
   late Command0<void> validadeTokenCommand;
 
@@ -20,7 +19,6 @@ class LoginViewModel extends ChangeNotifier {
       : formKey = GlobalKey<FormState>(),
         emailController = TextEditingController(),
         passwordController = TextEditingController() {
-
     loginCommand = Command0<void>(loginWithEmailAndPassword);
 
     validadeTokenCommand = Command0<void>(validateToken);

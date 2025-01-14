@@ -1,9 +1,9 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
+import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -125,6 +125,6 @@ void main() {
   });
 
   testWidgets('Displays error when login fails', (WidgetTester tester) async {
-    //TODO: 
+    //TODO:
   });
 }

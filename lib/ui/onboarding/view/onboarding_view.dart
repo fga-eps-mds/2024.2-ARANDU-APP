@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../viewModel/onboarding_view_model.dart';
+import '../viewmodel/onboarding_viewmodel.dart';
 
 class OnboardingView extends StatelessWidget {
   const OnboardingView({super.key});

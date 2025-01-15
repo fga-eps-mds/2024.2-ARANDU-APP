@@ -8,9 +8,9 @@ import 'package:aranduapp/ui/shared/title_slogan.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
 @GenerateNiceMocks([MockSpec<RegisterAccountViewModel>(), MockSpec<Command0>()])
 import 'package:aranduapp/ui/register_account/viewmodel/register_viewmodel.dart';
@@ -21,7 +21,7 @@ void main() {
   late MockRegisterAccountViewModel mockViewModel;
   late MockCommand0 mockCommand0;
 
-  setUp(() {
+  setUp(() async {
     mockViewModel = MockRegisterAccountViewModel();
     mockCommand0 = MockCommand0();
 
@@ -34,16 +34,17 @@ void main() {
     when(mockViewModel.userNameController).thenReturn(TextEditingController());
     when(mockViewModel.passwordController).thenReturn(TextEditingController());
     when(mockViewModel.isTermsAccepted).thenReturn(false);
+
+
+
+    await GetIt.instance.reset();
+    GetIt.I.registerLazySingleton<RegisterAccountViewModel>(() => mockViewModel);
   });
 
-  Widget createLoginScreen(MockRegisterAccountViewModel mockViewModel) {
-    return ChangeNotifierProvider<RegisterAccountViewModel>.value(
-      value: mockViewModel,
-      builder: (context, child) {
-        return const MaterialApp(
-          home: RegisterAccountScreen(),
-        );
-      },
+
+  Widget createLoginScreen() {
+    return const MaterialApp(
+      home: RegisterAccount(),
     );
   }
 
@@ -52,7 +53,7 @@ void main() {
     when(mockViewModel.registerCommand).thenReturn(
         Command0<void>(() => Future.delayed(const Duration(seconds: 1))));
 
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
     await tester.pump();
 
     expect(find.byType(TitleSlogan), findsOneWidget);
@@ -67,7 +68,7 @@ void main() {
   });
 
   testWidgets('Test sending the request', (WidgetTester tester) async {
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
 
     final sendButton = find.text('Registrar');
 
@@ -78,7 +79,7 @@ void main() {
   });
 
   testWidgets('Register Account Test User Input', (WidgetTester tester) async {
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
 
     const name = 'test';
     const email = 'test@example.com';
@@ -103,7 +104,7 @@ void main() {
       (WidgetTester tester) async {
     when(mockViewModel.isTermsAccepted).thenReturn(false);
 
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 
     Checkbox checkbox = tester.widget(find.byType(Checkbox));
@@ -118,7 +119,7 @@ void main() {
       (WidgetTester tester) async {
     when(mockViewModel.isTermsAccepted).thenReturn(true);
 
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 
     Checkbox checkbox = tester.widget(find.byType(Checkbox));
@@ -133,7 +134,7 @@ void main() {
       (WidgetTester tester) async {
     when(mockCommand0.isOk).thenReturn(true);
 
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 
     expect(find.byType(SnackBar), findsOneWidget);
@@ -148,7 +149,7 @@ void main() {
 
     when(mockCommand0.result).thenReturn(Result.error(error));
 
-    await tester.pumpWidget(createLoginScreen(mockViewModel));
+    await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 
     expect(find.byType(ErrorPopUp), findsOneWidget);

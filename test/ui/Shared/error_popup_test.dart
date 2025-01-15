@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
+import 'package:aranduapp/ui/shared/error_popup.dart';
 
 void main() {
   testWidgets('Testa ErrorPopUp', (WidgetTester tester) async {

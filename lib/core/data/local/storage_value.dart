@@ -1,8 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/log/log.dart';
 
 class StorageValue {
-
   static const String _authToken = "auth_token";
   static const String _refreshToken = "refresh_token";
   static const String _email = "email";
@@ -15,8 +14,7 @@ class StorageValue {
       : storage = const FlutterSecureStorage(
             aOptions: AndroidOptions(encryptedSharedPreferences: true));
 
-  factory StorageValue.getInstance() =>
-      _singleton ??= StorageValue._internal();
+  factory StorageValue.getInstance() => _singleton ??= StorageValue._internal();
 
   Future<void> _setValue(String key, String value) async {
     try {

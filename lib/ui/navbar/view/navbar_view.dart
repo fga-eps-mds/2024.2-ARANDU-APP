@@ -1,9 +1,9 @@
-import 'package:aranduapp/ui/home/view/HomeView.dart';
-import 'package:aranduapp/ui/profile/view/ProfileView.dart';
+import 'package:aranduapp/ui/home/view/home_view.dart';
+import 'package:aranduapp/ui/profile/view/profile_view.dart';
 //import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:aranduapp/ui/navbar/model/navBarViewModel.dart';
+import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 
 class NavbarView extends StatelessWidget {
   const NavbarView({super.key});

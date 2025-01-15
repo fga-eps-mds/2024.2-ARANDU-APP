@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/shared/TextName.dart';
+import 'package:aranduapp/ui/shared/text_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -27,8 +27,10 @@ void main() {
 
     // Teste de validação para diferentes casos de nome
     await testName("", 'Nome Obrigatório.'); // Campo vazio
-    await testName("  a", 'Opa, seu Nome está pequeno!\nacrescente mais caracteres. (Ex: Ana)'); // Nome com menos de 3 caracteres
-    await testName("Jo", 'Opa, seu Nome está pequeno!\nacrescente mais um caractere. (Ex: Ana)'); // Nome com 2 caracteres
+    await testName("  a",
+        'Opa, seu Nome está pequeno!\nacrescente mais caracteres. (Ex: Ana)'); // Nome com menos de 3 caracteres
+    await testName("Jo",
+        'Opa, seu Nome está pequeno!\nacrescente mais um caractere. (Ex: Ana)'); // Nome com 2 caracteres
     await testName("João", null); // Nome válido
     await testName("Maria", null); // Outro nome válido
   });

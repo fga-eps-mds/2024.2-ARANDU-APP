@@ -2,8 +2,8 @@ import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
-import 'package:aranduapp/ui/shared/ProfileHeader.dart';
-import 'package:aranduapp/ui/profile/viewModel/ProfileViewModel.dart';
+import 'package:aranduapp/ui/shared/profile_header.dart';
+import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
 
 class Profile extends StatelessWidget {
@@ -101,7 +101,6 @@ class Profile extends StatelessWidget {
       ],
     );
   }
-
 
   Widget _setting(BuildContext context) {
     return Card(

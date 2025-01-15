@@ -1,9 +1,9 @@
-import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmode.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmodel.dart';
+import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 
 class EditPassword extends StatelessWidget {
   const EditPassword({super.key});

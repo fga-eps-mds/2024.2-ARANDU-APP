@@ -45,10 +45,7 @@ class JourneyScreen extends StatelessWidget {
           size: 32,
         ),
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const HomeView()),
-          );
+          Navigator.of(context).pop();
         },
       ),
     );
@@ -78,11 +75,42 @@ class JourneyScreen extends StatelessWidget {
             listenable: viewModel.journeyCommand,
             builder: (context, child) {
               if (viewModel.journeyCommand.isOk) {
-                return ListView.builder(itemCount: viewModel.journeys.length, itemBuilder: );
-              }
-              else if (viewModel.journeyCommand.isError) {
-              }
-              else{
+                return ListView.builder(
+                    itemCount: viewModel.journeys.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      var journey = viewModel.journeys[index];
+                      return ListTile(
+                        leading: Icon(
+                          Icons.border_right,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 32,
+                        ),
+                        title: Text(journey.title),
+                        subtitle: Text(journey.description),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 32,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const HomeView(),
+                            ),
+                          );
+                        },
+                      );
+                    });
+              } else if (viewModel.journeyCommand.isError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Erro ao carregar jornadas.',
+                    style: TextStyle(color: Theme.of(context).primaryColor),
+                  ),
+                );
+              } else {
                 return const LoadingWidget();
               }
             },

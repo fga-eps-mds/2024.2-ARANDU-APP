@@ -1,8 +1,8 @@
 import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:aranduapp/ui/login/service/login_service.dart';
 import 'package:aranduapp/ui/login/model/login_request.dart';
@@ -30,14 +30,14 @@ class LoginViewModel extends ChangeNotifier {
       return Result.error(Exception('Valores inválidos'));
     }
 
-    await LoginService.login(
+    await GetIt.instance<LoginService>().login(
         LoginRequest(emailController.text, passwordController.text));
 
     return Result.value(null);
   }
 
   Future<Result<void>> validateToken() async {
-    await LoginService.validateToken();
+    await GetIt.instance<LoginService>().validateToken();
 
     return Result.value(null);
   }

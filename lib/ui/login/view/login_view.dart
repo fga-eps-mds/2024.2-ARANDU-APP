@@ -3,6 +3,7 @@ import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -19,11 +20,10 @@ import 'package:aranduapp/ui/shared/or_divider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LoginViewModel(),
+    return ChangeNotifierProvider<LoginViewModel>.value(
+      value: GetIt.instance<LoginViewModel>(),
       child: const LoginScreen(),
     );
   }

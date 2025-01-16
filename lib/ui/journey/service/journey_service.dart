@@ -1,11 +1,11 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/base_api.dart';
 import 'package:aranduapp/ui/journey/model/journey_request.dart';
 import 'package:aranduapp/ui/journey/model/journey_response.dart';
-import 'package:aranduapp/core/log/Log.dart';
 import 'package:dio/dio.dart';
 
 class JourneyService {
-  static Future<List<JourneyResponse>?> getJourneys(JourneyRequest journeyRequest) async {
+   Future<List<JourneyResponse>?> getJourneys(JourneyRequest journeyRequest) async {
     Log.d('Request Journey: ${journeyRequest.title}, ${journeyRequest.description}, ${journeyRequest.pointId}');
 
     Response response = await BaseApi.getInstance(auth: true)

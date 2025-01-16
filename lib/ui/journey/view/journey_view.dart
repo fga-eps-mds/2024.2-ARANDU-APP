@@ -1,7 +1,7 @@
-import 'package:aranduapp/ui/home/view/HomeView.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class Journey extends StatelessWidget {
@@ -9,8 +9,8 @@ class Journey extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => JourneyViewModel(),
+    return ChangeNotifierProvider<JourneyViewModel>.value(
+      value: GetIt.instance<JourneyViewModel>(),
       child: const JourneyScreen(),
     );
   }
@@ -94,11 +94,7 @@ class JourneyScreen extends StatelessWidget {
                           size: 32,
                         ),
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const HomeView(),
-                            ),
-                          );
+                          Navigator.of(context).pop();
                         },
                       );
                     });

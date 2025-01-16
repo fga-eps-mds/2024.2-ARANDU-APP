@@ -11,7 +11,7 @@ class EditPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => EditPasswordViewMode(),
+      create: (context) => EditPasswordViewModel(),
       child: const EditPasswordScreen(),
     );
   }
@@ -59,7 +59,8 @@ class EditPasswordScreen extends StatelessWidget {
   }
 
   Widget _formSection(BuildContext context) {
-    EditPasswordViewMode viewModel = Provider.of<EditPasswordViewMode>(context);
+    EditPasswordViewModel viewModel =
+        Provider.of<EditPasswordViewModel>(context);
 
     return Form(
       key: viewModel.formKey,
@@ -78,7 +79,7 @@ class EditPasswordScreen extends StatelessWidget {
     );
   }
 
-  Widget _button(BuildContext context, EditPasswordViewMode viewModel) {
+  Widget _button(BuildContext context, EditPasswordViewModel viewModel) {
     return Requestbutton(
         command: viewModel.editCommand,
         nameButton: "Enviar",

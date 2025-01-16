@@ -1,8 +1,10 @@
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
 import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatelessWidget {
@@ -10,8 +12,8 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EditProfileViewModel(),
+    return ChangeNotifierProvider<LoginViewModel>.value(
+      value: GetIt.instance<LoginViewModel>(),
       child: const EditProfileScreen(),
     );
   }

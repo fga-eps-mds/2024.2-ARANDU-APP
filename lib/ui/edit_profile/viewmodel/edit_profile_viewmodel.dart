@@ -3,6 +3,7 @@ import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/service/edit_profile_service.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey;
@@ -17,14 +18,12 @@ class EditProfileViewModel extends ChangeNotifier {
         nameController = TextEditingController(),
         userNameController = TextEditingController(),
         emailController = TextEditingController() {
-
-    editCommand = Command0<void>(editprofile);
-
+    editCommand = Command0<void>(editProfile);
   }
 
-  Future<Result<void>> editprofile() async {
+  Future<Result<void>> editProfile() async {
     if (!formKey.currentState!.validate()) {
-      return Result.error(Exception('Valores inválidos' ));
+      return Result.error(Exception('Valores inválidos'));
     }
 
     EditProfileRequest request = EditProfileRequest(
@@ -32,7 +31,7 @@ class EditProfileViewModel extends ChangeNotifier {
         userName: userNameController.text,
         email: emailController.text);
 
-    await EditProfileService.edit(request);
+    await GetIt.instance<EditProfileService>().edit(request);
 
     return Result.value(null);
   }

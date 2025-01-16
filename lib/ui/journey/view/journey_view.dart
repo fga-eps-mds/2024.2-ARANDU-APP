@@ -1,4 +1,6 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
+import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -71,45 +73,42 @@ class JourneyScreen extends StatelessWidget {
     return Card(
       child: Column(
         children: [
-          ListenableBuilder(
-            listenable: viewModel.journeyCommand,
-            builder: (context, child) {
-              if (viewModel.journeyCommand.isOk) {
-                return ListView.builder(
-                    itemCount: viewModel.journeys.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      var journey = viewModel.journeys[index];
-                      return ListTile(
-                        leading: Icon(
-                          Icons.border_right,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 32,
-                        ),
-                        title: Text(journey.title),
-                        subtitle: Text(journey.description),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.primary,
-                          size: 32,
-                        ),
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                      );
-                    });
-              } else if (viewModel.journeyCommand.isError) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Erro ao carregar jornadas.',
-                    style: TextStyle(color: Theme.of(context).primaryColor),
-                  ),
-                );
-              } else {
-                return const LoadingWidget();
-              }
-            },
+          RefreshIndicator(
+            onRefresh:  viewModel.journeyCommand.execute,
+            child: ListenableBuilder(
+              listenable: viewModel.journeyCommand,
+              builder: (context, child) {
+                if (viewModel.journeyCommand.isOk) {
+                  return ListView.builder(
+                      itemCount: viewModel.journeyCommand.result!.asValue!.value.length,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        var journey = viewModel.journeyCommand.result!.asValue!.value[index];
+                        return ListTile(
+                          leading: Icon(
+                            Icons.border_right,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 32,
+                          ),
+                          title: Text(journey.title),
+                          subtitle: Text(journey.description),
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 32,
+                          ),
+                          onTap: () {
+                            Log.d("tap");
+                          },
+                        );
+                      });
+                } else if (viewModel.journeyCommand.isError) {
+                  return const ErrorScreen(message: "Deslize para baixo");
+                } else {
+                  return const LoadingWidget();
+                }
+              },
+            ),
           ),
         ],
       ),

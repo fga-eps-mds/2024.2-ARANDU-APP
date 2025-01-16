@@ -4,14 +4,14 @@ import 'package:aranduapp/ui/edit_password/service/edit_password_service.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
-class EditPasswordViewMode extends ChangeNotifier {
+class EditPasswordViewModel extends ChangeNotifier {
   final GlobalKey<FormState> formKey;
   final TextEditingController newPasswordController;
   final TextEditingController oldPasswordController;
 
   late Command0<void> editCommand;
 
-  EditPasswordViewMode()
+  EditPasswordViewModel()
       : formKey = GlobalKey<FormState>(),
         newPasswordController = TextEditingController(),
         oldPasswordController = TextEditingController() {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 
 void main() {
   // Testa a validação da senha no widget TextPassWord
@@ -33,7 +33,8 @@ void main() {
     }
 
     // Testa senhas inválidas, válidas e campo vazio
-    await testPassword('12345', "Senha deve ter no mínimo 8 caracteres.\n(Ex: @abd1234)"); // Senha muito curta
+    await testPassword('12345',
+        "Senha deve ter no mínimo 8 caracteres.\n(Ex: @abd1234)"); // Senha muito curta
     await testPassword('validPassword123', null); // Senha válida
     await testPassword('', 'Senha Obrigatória.'); // Campo vazio
   });

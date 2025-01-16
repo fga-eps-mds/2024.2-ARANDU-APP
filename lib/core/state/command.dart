@@ -5,12 +5,22 @@ abstract class Command<T> extends ChangeNotifier {
   Result<T>? _result;
 
   bool _running = false;
+  bool _isError = false;
+  bool _isOk = false;
 
   Command();
 
-  bool get isError => result?.asError != null;
+  bool get isError {
+    bool tmp = _isError;
+    _isError = false;
+    return tmp;
+  }
 
-  bool get isOk => result?.asValue != null;
+  bool get isOk {
+    bool tmp = _isOk;
+    _isOk = false;
+    return tmp;
+  }
 
   Result<T>? get result => _result;
 
@@ -21,14 +31,24 @@ abstract class Command<T> extends ChangeNotifier {
 
     _result = null;
     _running = true;
+    _isOk = false;
+    _isError = false;
     notifyListeners();
 
     try {
       _result = await action();
+
+      if (_result?.asError != null) {
+        _isError = true;
+      } else {
+        _isOk = true;
+      }
+
     } catch (e) {
       _result = Result.error(e);
+      _isError = true;
     } finally {
-    _running = false;
+      _running = false;
       notifyListeners();
     }
   }

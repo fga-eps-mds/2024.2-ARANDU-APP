@@ -1,6 +1,7 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import '../model/register_request.dart';
 import '../service/register_service.dart';
 
@@ -30,7 +31,7 @@ class RegisterAccountViewModel extends ChangeNotifier {
       return Result.error('Por favor, preencha todos os campos corretamente');
     }
 
-    await RegisterService.register(RegisterRequest(
+    await GetIt.instance<RegisterService>().register(RegisterRequest(
       email: emailController.text,
       name: nameController.text,
       userName: userNameController.text,

@@ -1,27 +1,27 @@
-import 'package:aranduapp/ui/login/view/login_view.dart';
-import 'package:aranduapp/ui/shared/OrDivider.dart';
-import 'package:aranduapp/ui/shared/TextAndLink.dart';
-import 'package:aranduapp/ui/shared/TextName.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/ui/shared/or_divider.dart';
+import 'package:aranduapp/ui/shared/text_and_link.dart';
+import 'package:aranduapp/ui/shared/text_name.dart';
+import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/log/log.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/register_account/viewModel/register_view_model.dart';
+import 'package:aranduapp/ui/register_account/viewmodel/register_viewmodel.dart';
 
-import 'package:aranduapp/ui/shared/TitleSlogan.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/title_slogan.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/error_popup.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 
 class RegisterAccount extends StatelessWidget {
   const RegisterAccount({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RegisterAccountViewModel(),
+    return ChangeNotifierProvider<RegisterAccountViewModel>.value(
+      value: GetIt.instance<RegisterAccountViewModel>(),
       child: const RegisterAccountScreen(),
     );
   }

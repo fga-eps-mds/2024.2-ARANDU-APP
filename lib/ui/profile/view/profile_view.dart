@@ -1,11 +1,7 @@
 import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
-//import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
-
-//import 'package:aranduapp/ui/shared/requestbutton.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:aranduapp/ui/shared/profile_header.dart';
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
@@ -41,13 +37,11 @@ class Profile extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Container(
-            child: Center(
-              child: Icon(
-                Icons.notifications_none_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 32,
-              ),
+          child: Center(
+            child: Icon(
+              Icons.notifications_none_outlined,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
             ),
           ),
         ),
@@ -66,7 +60,6 @@ class Profile extends StatelessWidget {
             const SizedBox(height: 80),
             _setting(context),
             const SizedBox(height: 80),
-            //_logoutButtonSection(context),
           ],
         ),
       ),
@@ -151,12 +144,9 @@ class Profile extends StatelessWidget {
                     builder: (context) => const Login(),   
                   )
                 );              
-                print('Usuário deslogado com sucesso'); 
                 } else {
-                  // Logout falhou, exibe uma mensagem de erro
-                  //final errorMessage = result.asError!.error;
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('errorMessage')),
+                    const SnackBar(content: Text('erro ao deslogar')),
                   );
                 }
             },
@@ -165,23 +155,4 @@ class Profile extends StatelessWidget {
       ),
     );
   }
-
-  /* Widget _logoutButtonSection(BuildContext context){
-    ProfileViewModel viewModel =Provider.of<ProfileViewModel>(context);
-
-    return Requestbutton(
-      command: viewModel.logoutCommand,
-      //Icon: Icon(
-        //Icons.logout_sharp,
-        //color: Theme.of(context).colorScheme.error,
-        //size: 32,
-      //),
-      onErrorCallback: (String e){
-
-      },
-      onSuccessCallback: (){
-        
-      },
-    nameButton: 'Sair',);
-  } */
 }

@@ -4,6 +4,7 @@ import 'package:aranduapp/core/di/locator.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -12,9 +13,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    setupLocator();
-
     return MaterialApp(
       theme: ThemeApp.themeData(),
       darkTheme: ThemeApp.darkThemeData(),

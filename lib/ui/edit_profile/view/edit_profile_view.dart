@@ -2,7 +2,7 @@ import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart'
 import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -89,7 +89,8 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
-    return Requestbutton(
+    return CommandButton(
+        tap: viewModel.editCommand.execute ,
         command: viewModel.editCommand,
         nameButton: "Salvar",
         onErrorCallback: (e) {

@@ -1,5 +1,5 @@
 import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmodel.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -80,7 +80,8 @@ class EditPasswordScreen extends StatelessWidget {
   }
 
   Widget _button(BuildContext context, EditPasswordViewModel viewModel) {
-    return Requestbutton(
+    return CommandButton(
+        tap: viewModel.editCommand.execute ,
         command: viewModel.editCommand,
         nameButton: "Enviar",
         onErrorCallback: (e) {

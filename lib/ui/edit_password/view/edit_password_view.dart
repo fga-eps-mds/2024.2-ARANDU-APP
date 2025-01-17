@@ -2,7 +2,7 @@ import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmodel.dar
 import 'package:aranduapp/ui/shared/request_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/shared/text_password.dart';
 
 class EditPassword extends StatelessWidget {
@@ -10,8 +10,8 @@ class EditPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EditPasswordViewModel(),
+    return ChangeNotifierProvider<EditPasswordViewModel>.value(
+      value: GetIt.instance<EditPasswordViewModel>(),
       child: const EditPasswordScreen(),
     );
   }

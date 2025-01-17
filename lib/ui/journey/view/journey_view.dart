@@ -67,6 +67,12 @@ class JourneyScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _onRefresh() async {
+    final journeyViewModel = JourneyViewModel();
+    await journeyViewModel.journey();
+    await Future.delayed(const Duration(seconds: 2));
+  }
+
   Widget _buildJourney(BuildContext context) {
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
@@ -74,16 +80,18 @@ class JourneyScreen extends StatelessWidget {
       child: Column(
         children: [
           RefreshIndicator(
-            onRefresh:  viewModel.journeyCommand.execute,
+            onRefresh: viewModel.journeyCommand.execute,
             child: ListenableBuilder(
               listenable: viewModel.journeyCommand,
               builder: (context, child) {
                 if (viewModel.journeyCommand.isOk) {
                   return ListView.builder(
-                      itemCount: viewModel.journeyCommand.result!.asValue!.value.length,
+                      itemCount: viewModel
+                          .journeyCommand.result!.asValue!.value.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        var journey = viewModel.journeyCommand.result!.asValue!.value[index];
+                        var journey = viewModel
+                            .journeyCommand.result!.asValue!.value[index];
                         return ListTile(
                           leading: Icon(
                             Icons.border_right,

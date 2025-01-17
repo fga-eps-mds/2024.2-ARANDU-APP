@@ -8,30 +8,19 @@ import 'package:aranduapp/ui/login/service/login_service.dart';
 import 'package:aranduapp/ui/login/model/login_request.dart';
 
 class LoginViewModel extends ChangeNotifier {
-  late Command0<void> loginCommand;
+  late Command1<void, LoginRequest> loginCommand;
   late Command0<void> validadeTokenCommand;
 
-  final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-
-  LoginViewModel()
-      : formKey = GlobalKey<FormState>(),
-        emailController = TextEditingController(),
-        passwordController = TextEditingController() {
-    loginCommand = Command0<void>(loginWithEmailAndPassword);
+  LoginViewModel() {
+    loginCommand = Command1<void, LoginRequest>(loginWithEmailAndPassword);
 
     validadeTokenCommand = Command0<void>(validateToken);
     validadeTokenCommand.execute();
   }
 
-  Future<Result<void>> loginWithEmailAndPassword() async {
-    if (!formKey.currentState!.validate()) {
-      return Result.error(Exception('Valores inválidos'));
-    }
-
-    await GetIt.instance<LoginService>().login(
-        LoginRequest(emailController.text, passwordController.text));
+  Future<Result<void>> loginWithEmailAndPassword(
+      LoginRequest loginRequest) async {
+    await GetIt.instance<LoginService>().login(loginRequest);
 
     return Result.value(null);
   }
@@ -44,7 +33,14 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<bool> loginWithDeviceAuth() async {
     Log.d('init loginWithDeviceAuth');
-    return await LocalAuthentication()
-        .authenticate(localizedReason: 'Toque com o dedo no sensor para logar');
+    var auth = GetIt.instance<LocalAuthentication>();
+
+    if (await auth.canCheckBiometrics && await auth.isDeviceSupported()) {
+      return auth.authenticate(
+          localizedReason: 'Toque com o dedo no sensor para logar');
+    } else {
+      Log.d('Device authentication not available, returning true');
+      return true;
+    }
   }
 }

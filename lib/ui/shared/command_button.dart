@@ -1,16 +1,18 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:flutter/material.dart';
 
-class Requestbutton extends StatelessWidget {
-  final Command0 command;
+class CommandButton extends StatelessWidget {
+  final Command command;
   final String nameButton;
 
   final VoidCallback onSuccessCallback;
+  final VoidCallback tap;
   final ValueChanged<String> onErrorCallback;
 
-  const Requestbutton({
+  const CommandButton({
     super.key,
     required this.command,
+    required this.tap,
     required this.nameButton,
     required this.onSuccessCallback,
     required this.onErrorCallback,
@@ -37,8 +39,9 @@ class Requestbutton extends StatelessWidget {
           width: 291,
           height: 64,
           child: ElevatedButton(
+            key: const Key('elevated_button_key'),
             onPressed: () async {
-              command.execute();
+              tap();
             },
             child: command.running
                 ? const CircularProgressIndicator(value: null)

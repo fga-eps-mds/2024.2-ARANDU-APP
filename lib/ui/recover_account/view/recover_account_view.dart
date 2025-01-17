@@ -4,7 +4,7 @@ import 'package:aranduapp/ui/shared/error_popup.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/title_slogan.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +52,8 @@ class RecoverAccountScreen extends StatelessWidget {
                   ])),
               Padding(
                 padding: const EdgeInsets.only(top: 80),
-                child: Requestbutton(
+                child: CommandButton(
+                    tap: viewModel.recoverCommand.execute ,
                     command: viewModel.recoverCommand,
                     onErrorCallback: (String e) {
                       showDialog<Object>(

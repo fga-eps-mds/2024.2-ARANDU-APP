@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/state/command.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/title_slogan.dart';
@@ -9,8 +10,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
-import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/recover_account/viewmodel/recover_account_viewmodel.dart';
 
 @GenerateNiceMocks([MockSpec<RecoverAccountViewModel>(), MockSpec<Command0>()])
@@ -35,13 +34,8 @@ void main() {
   });
 
   Widget createLoginScreen(MockRecoverAccountViewModel mockViewModel) {
-    return ChangeNotifierProvider<RecoverAccountViewModel>.value(
-      value: mockViewModel,
-      builder: (context, child) {
-        return const MaterialApp(
-          home: RecoverAccountScreen(),
-        );
-      },
+    return const MaterialApp(
+      home: Login(),
     );
   }
 

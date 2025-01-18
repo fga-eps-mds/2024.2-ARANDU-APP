@@ -1,8 +1,7 @@
 import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
-//import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 
 class NavbarView extends StatelessWidget {
@@ -10,19 +9,15 @@ class NavbarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NavbarViewModel viewModel = GetIt.I<NavbarViewModel>();
+
     return Scaffold(
-      body: ChangeNotifierProvider(
-          create: (context) => NavbarViewModel(),
-          builder: (context, child) {
-            return page(context);
-          }),
+      body: page(context, viewModel),
     );
   }
 }
 
-Widget page(BuildContext context) {
-  NavbarViewModel viewModel = Provider.of<NavbarViewModel>(context);
-
+Widget page(BuildContext context, NavbarViewModel viewModel) {
   final List<Widget> pages = [
     const HomeView(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),

@@ -25,7 +25,7 @@ class JourneyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildPage(context),
+      body: _buildJourney(context),
     );
   }
 
@@ -53,34 +53,11 @@ class JourneyScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildPage(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildJourney(context),
-            const SizedBox(height: 80),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _onRefresh() async {
-    final journeyViewModel = JourneyViewModel();
-    await journeyViewModel.journey();
-    await Future.delayed(const Duration(seconds: 2));
-  }
-
   Widget _buildJourney(BuildContext context) {
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
-    return Card(
-      child: Column(
-        children: [
-          RefreshIndicator(
-            onRefresh: viewModel.journeyCommand.execute,
+    return RefreshIndicator(
+        onRefresh: viewModel.journeyCommand.execute,
             child: ListenableBuilder(
               listenable: viewModel.journeyCommand,
               builder: (context, child) {
@@ -117,9 +94,6 @@ class JourneyScreen extends StatelessWidget {
                 }
               },
             ),
-          ),
-        ],
-      ),
     );
   }
 }

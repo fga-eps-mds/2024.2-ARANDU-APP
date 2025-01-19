@@ -1,7 +1,7 @@
 import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:aranduapp/ui/shared/profile_header.dart';
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
@@ -37,13 +37,11 @@ class Profile extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Container(
-            child: Center(
-              child: Icon(
-                Icons.notifications_none_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 32,
-              ),
+          child: Center(
+            child: Icon(
+              Icons.notifications_none_outlined,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
             ),
           ),
         ),
@@ -61,6 +59,7 @@ class Profile extends StatelessWidget {
             _buildProfileHeader(context),
             const SizedBox(height: 80),
             _setting(context),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -72,7 +71,7 @@ class Profile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ProfileHeader(
+        const ProfileHeader(
           name: "Stefani",
           role: "Estudante",
         ),
@@ -133,8 +132,24 @@ class Profile extends StatelessWidget {
               color: Theme.of(context).colorScheme.error,
               size: 32,
             ),
+            
             title: const Text('Sair'),
-            onTap: () {},
+            onTap: () async {
+              final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
+              final result = await viewModel.logoutCommand.execute();
+              if (result.isValue) {
+                  // Logout bem-sucedido, redireciona para a tela de login
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const Login(),   
+                  )
+                );              
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('erro ao deslogar')),
+                  );
+                }
+            },
           ),
         ],
       ),

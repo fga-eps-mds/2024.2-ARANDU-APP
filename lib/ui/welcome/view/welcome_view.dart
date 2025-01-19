@@ -4,7 +4,6 @@ import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeView extends StatefulWidget {
-
   WelcomeView({super.key});
 
   @override
@@ -36,47 +35,56 @@ class _WelcomeViewState extends State<WelcomeView> {
     double nameSize = screenSize.height * 0.075;
 
     return Center(
-        child: SingleChildScrollView(
-            child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        //Cículo com gradiente com possível logo sobreposta
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              width: circleDiameter * 0.3,
-              height: circleDiameter *0.3,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                shape: BoxShape.circle,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              // Círculo de fundo
+              Container(
+                width: circleDiameter * 0.3,
+                height: circleDiameter * 0.3,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 25),
-
-        //Titulo "arandú" com fonte amarante
-        Text(
-          "Arandú",
-          style: GoogleFonts.amarante(
-            textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontSize: nameSize,
-              fontWeight: FontWeight.w500,
+              // Imagem com deslocamento para a esquerda
+              Transform.translate(
+                offset: Offset(-10, 0), // Move 30 pixels para a esquerda
+                child: Container(
+                  child: Image.asset(
+                    'assets/images/Logo.png',
+                    width: circleDiameter * 0.24,
+                    height: circleDiameter * 0.24,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 25),
+          // Título "arandú" com fonte amarante
+          Text(
+            "Arandú",
+            style: GoogleFonts.amarante(
+              textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontSize: nameSize,
+                    fontWeight: FontWeight.w500,
+                  ),
             ),
           ),
-        ),
-      ],
-    )));
+        ],
+      ),
+    );
   }
 
   Widget _startButton(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
 
-    double paddingHorizontal =
-        screenSize.width * 0.07; // largura da tela
+    double paddingHorizontal = screenSize.width * 0.07; // largura da tela
     double paddingVertical = screenSize.height * 0.025; // da altura da tela
     return SingleChildScrollView(
       child: GestureDetector(
@@ -97,8 +105,8 @@ class _WelcomeViewState extends State<WelcomeView> {
             child: Text(
               "Começar",
               style: Theme.of(context).textTheme.bodyLarge?.apply(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
             )),
       ),
     );

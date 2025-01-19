@@ -8,7 +8,9 @@ class NavbarViewModel extends ChangeNotifier {
   int get selectedIndex => _selectedIndex;
 
   void changeTab(int index) {
-    _selectedIndex = index;
-    notifyListeners();
+    if (_selectedIndex != index) {
+      _selectedIndex = index;
+      notifyListeners();
+    }
   }
 }

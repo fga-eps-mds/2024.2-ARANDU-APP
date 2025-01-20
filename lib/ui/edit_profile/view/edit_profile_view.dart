@@ -1,5 +1,5 @@
+import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
-import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
@@ -12,15 +12,20 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<LoginViewModel>.value(
-      value: GetIt.instance<LoginViewModel>(),
-      child: const EditProfileScreen(),
+    return ChangeNotifierProvider<EditProfileViewModel>.value(
+      value: GetIt.instance<EditProfileViewModel>(),
+      child: EditProfileScreen(),
     );
   }
 }
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,24 +65,27 @@ class EditProfileScreen extends StatelessWidget {
 
   Widget _buildForm(BuildContext context, EditProfileViewModel viewModel) {
     return Form(
-      key: viewModel.formKey,
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextName(
-            controller: viewModel.nameController,
+            key: const Key("nameController"),
+            controller: nameController,
             padding: const EdgeInsets.symmetric(vertical: 0),
           ),
           const SizedBox(height: 20),
           TextName(
+            key: const Key("userNameController"),
             label: "Nome de Usuário",
-            controller: viewModel.userNameController,
+            controller: userNameController,
             padding: const EdgeInsets.symmetric(vertical: 0),
           ),
           const SizedBox(height: 20),
           TextEmail(
+            key: const Key("emailNameController"),
             padding: const EdgeInsets.symmetric(vertical: 0),
-            controller: viewModel.emailController,
+            controller: emailController,
           ),
           const SizedBox(height: 100),
           _saveButton(context, viewModel),
@@ -90,7 +98,14 @@ class EditProfileScreen extends StatelessWidget {
 
   Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
     return CommandButton(
-        tap: viewModel.editCommand.execute ,
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.editCommand.execute(EditProfileRequest(
+                name: nameController.text,
+                email: emailController.text,
+                userName: userNameController.text));
+          }
+        },
         command: viewModel.editCommand,
         nameButton: "Salvar",
         onErrorCallback: (e) {

@@ -1,5 +1,6 @@
 import 'package:aranduapp/ui/edit_password/di/di.dart';
 import 'package:aranduapp/ui/edit_profile/di/di.dart';
+import 'package:aranduapp/ui/journey/di/di.dart';
 import 'package:aranduapp/ui/login/di/di.dart';
 import 'package:aranduapp/ui/register_account/di/di.dart';
 import 'package:get_it/get_it.dart';
@@ -11,4 +12,5 @@ void setupLocator() {
   setupRegisterDI();
   setupEditProfileDI();
   setupPasswordDI();
+  setupJourneyDI();
 }

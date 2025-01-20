@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import '../viewmodel/onboarding_viewmodel.dart';
 
 class OnboardingView extends StatelessWidget {
@@ -9,44 +9,48 @@ class OnboardingView extends StatelessWidget {
     {
       'title': 'Bem-Vindo(a)!',
       'description':
-          'Seja bem-vindo ao Arandu!!! Sou um ambiente voltado para aprendizado de forma gratuita',
+          'Seja bem vindo ao Arandu!!! Sou um ambiente voltado para aprendizado de forma gratuita',
       'imageAsset': 'assets/images/Component1.png',
     },
     {
-      'title': 'O que você encontra?',
+      'title': 'o que você encontra?',
       'description':
-          'Aqui você encontrará livros interativos de diversas disciplinas com o objetivo de entregar praticidade e qualidade no aprendizado.',
+          'Aqui você encontrará livros interativos de diversas disciplinas com objetivo de entregar praticidade e qualidade no aprendizado.',
       'imageAsset': 'assets/images/Component2.png',
     },
     {
       'title': 'Como funciona?',
       'description':
-          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais. \n Bons estudos!!!',
+          'Para acessar uma trilha basta se inscrever na disciplina de sua preferência e ter acesso aos materiais. \n Bons estudos !!!',
       'imageAsset': 'assets/images/Component3.png',
     },
   ];
 
   @override
   Widget build(BuildContext context) {
-    // Pegando a instância do OnboardingViewModel do GetIt
-    final onboardingViewModel = GetIt.I<OnboardingViewModel>();
+    return ChangeNotifierProvider(
+      create: (_) => OnboardingViewModel(),
+      child: Consumer<OnboardingViewModel>(
+        builder: (context, viewModel, _) {
+          return Scaffold(
+            appBar: null,
+            body: LayoutBuilder(
+              builder: (context, constraints) {
+                final double imageHeight = constraints.maxHeight * 0.60;
+                final double contentHeight = constraints.maxHeight * 0.55;
+                final double buttonHeight = constraints.maxHeight * 0.15;
 
-    return Scaffold(
-      appBar: null,
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          final double imageHeight = constraints.maxHeight * 0.60;
-          final double contentHeight = constraints.maxHeight * 0.55;
-          final double buttonHeight = constraints.maxHeight * 0.15;
-
-          return Stack(
-            children: [
-              _buildSemicirclePage(context),
-              _buildImageSection(onboardingViewModel, steps, imageHeight),
-              _buildContentSection(onboardingViewModel, steps, contentHeight),
-              _buildNavigationButtons(
-                  context, onboardingViewModel, steps, buttonHeight),
-            ],
+                return Stack(
+                  children: [
+                    _buildSemicirclePage(context),
+                    _buildImageSection(viewModel, steps, imageHeight),
+                    _buildContentSection(viewModel, steps, contentHeight),
+                    _buildNavigationButtons(
+                        context, viewModel, steps, buttonHeight),
+                  ],
+                );
+              },
+            ),
           );
         },
       ),

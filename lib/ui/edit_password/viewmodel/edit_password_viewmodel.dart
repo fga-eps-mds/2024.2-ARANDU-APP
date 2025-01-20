@@ -6,30 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class EditPasswordViewModel extends ChangeNotifier {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController newPasswordController;
-  final TextEditingController oldPasswordController;
+  late Command1<void, EditPasswordRequest> editCommand;
 
-  late Command0<void> editCommand;
-
-  EditPasswordViewModel()
-      : formKey = GlobalKey<FormState>(),
-        newPasswordController = TextEditingController(),
-        oldPasswordController = TextEditingController() {
-    editCommand = Command0<void>(editPassword);
+  EditPasswordViewModel() {
+    editCommand = Command1<void, EditPasswordRequest>(editPassword);
   }
 
-  Future<Result<void>> editPassword() async {
-    if (!formKey.currentState!.validate()) {
-      return Result.error(Exception('Valores inválidos'));
-    }
-
-    EditPasswordRequest request = EditPasswordRequest(
-        oldPassword: oldPasswordController.text,
-        newPassword: newPasswordController.text);
-
+  Future<Result<void>> editPassword(EditPasswordRequest request) async {
     await GetIt.instance<EditPasswordService>().edit(request);
-
     return Result.value(null);
   }
 }

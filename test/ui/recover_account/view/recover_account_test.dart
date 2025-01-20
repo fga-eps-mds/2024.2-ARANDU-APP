@@ -3,7 +3,7 @@ import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/title_slogan.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,7 +46,7 @@ void main() {
 
     expect(find.byType(TitleSlogan), findsOneWidget);
     expect(find.byType(TextEmail), findsOneWidget);
-    expect(find.byType(Requestbutton), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
     expect(find.byType(TextAndLink), findsOneWidget);
   });
 

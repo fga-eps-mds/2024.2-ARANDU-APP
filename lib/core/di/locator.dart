@@ -17,5 +17,4 @@ void setupLocator() {
   setupEditPasswordDI();
   setupNavBarDI();
   setupOnboardingDI();
-  setupLoginDI();
 }

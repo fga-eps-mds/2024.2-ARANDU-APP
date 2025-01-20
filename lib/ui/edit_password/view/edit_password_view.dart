@@ -4,7 +4,7 @@ import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
-
+import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/shared/text_password.dart';
 
 class EditPassword extends StatelessWidget {
@@ -72,12 +72,12 @@ class EditPasswordScreen extends StatelessWidget {
       key: formKey,
       child: Column(children: [
         TextPassWord(
-            key: const Key('old_password') ,
+            key: const Key('old_password'),
             label: "Senha Antiga",
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: oldPasswordController),
         TextPassWord(
-            key: const Key('new_password') ,
+            key: const Key('new_password'),
             label: "Senha Nova",
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: newPasswordController),

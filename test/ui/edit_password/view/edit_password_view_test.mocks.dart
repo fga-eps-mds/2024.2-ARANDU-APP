@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
+import 'dart:ui' as _i7;
 
 import 'package:aranduapp/core/state/command.dart' as _i2;
 import 'package:aranduapp/ui/edit_password/model/edit_password_request.dart'
@@ -109,7 +110,7 @@ class MockEditPasswordViewModel extends _i1.Mock
       ) as _i6.Future<_i3.Result<void>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -118,7 +119,7 @@ class MockEditPasswordViewModel extends _i1.Mock
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -216,7 +217,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       ) as _i6.Future<_i3.Result<T>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -225,7 +226,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

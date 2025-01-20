@@ -7,7 +7,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([MockSpec<OnboardingViewModel>()])
-import 'onboarding_test.mocks.dart';
+import 'onboarding_view_test.mocks.dart';
 
 void main() {
   late MockOnboardingViewModel mockOnboardingViewModel;

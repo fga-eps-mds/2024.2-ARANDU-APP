@@ -1,36 +1,41 @@
-import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
-import 'package:aranduapp/ui/shared/TextAndLink.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/login/model/login_request.dart';
+import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
+import 'package:aranduapp/ui/shared/text_and_link.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 
 import 'package:aranduapp/ui/recover_account/view/recover_account_view.dart';
 import 'package:aranduapp/ui/register_account/view/register_account_view.dart';
 
-import 'package:aranduapp/ui/shared/TitleSlogan.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
-import 'package:aranduapp/ui/shared/OrDivider.dart';
+import 'package:aranduapp/ui/shared/title_slogan.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/error_popup.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
+import 'package:aranduapp/ui/shared/or_divider.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => LoginViewModel(),
-      child: const LoginScreen(),
+    return ChangeNotifierProvider<LoginViewModel>.value(
+      value: GetIt.instance<LoginViewModel>(),
+      child: LoginScreen(),
     );
   }
 }
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -133,16 +138,16 @@ class LoginScreen extends StatelessWidget {
 
   Widget _formSection(LoginViewModel viewModel) {
     return Form(
-      key: viewModel.formKey,
+      key: formKey,
       child: Column(
         children: <Widget>[
           TextEmail(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.emailController,
+            controller: emailController,
           ),
           TextPassWord(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.passwordController,
+            controller: passwordController,
           ),
         ],
       ),
@@ -177,7 +182,13 @@ class LoginScreen extends StatelessWidget {
   Widget _loginButtonSection(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
-    return Requestbutton(
+    return CommandButton(
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.loginCommand.execute(
+                LoginRequest(emailController.text, passwordController.text));
+          }
+        },
         command: viewModel.loginCommand,
         onErrorCallback: (String e) {
           showDialog<Object>(

@@ -6,7 +6,7 @@
 import 'dart:async' as _i6;
 
 import 'package:aranduapp/core/state/command.dart' as _i3;
-import 'package:aranduapp/ui/register_account/viewModel/register_view_model.dart'
+import 'package:aranduapp/ui/register_account/viewmodel/register_viewmodel.dart'
     as _i5;
 import 'package:async/async.dart' as _i4;
 import 'package:flutter/material.dart' as _i1;

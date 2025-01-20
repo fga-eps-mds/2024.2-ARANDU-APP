@@ -1,24 +1,30 @@
-import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmode.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/ui/edit_password/model/edit_password_request.dart';
+import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmodel.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
 
 class EditPassword extends StatelessWidget {
   const EditPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EditPasswordViewMode(),
-      child: const EditPasswordScreen(),
+    return ChangeNotifierProvider<EditPasswordViewModel>.value(
+      value: GetIt.instance<EditPasswordViewModel>(),
+      child: EditPasswordScreen(),
     );
   }
 }
 
 class EditPasswordScreen extends StatelessWidget {
-  const EditPasswordScreen({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
+
+  EditPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,27 +65,37 @@ class EditPasswordScreen extends StatelessWidget {
   }
 
   Widget _formSection(BuildContext context) {
-    EditPasswordViewMode viewModel = Provider.of<EditPasswordViewMode>(context);
+    EditPasswordViewModel viewModel =
+        Provider.of<EditPasswordViewModel>(context);
 
     return Form(
-      key: viewModel.formKey,
+      key: formKey,
       child: Column(children: [
         TextPassWord(
+            key: const Key('old_password') ,
             label: "Senha Antiga",
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.oldPasswordController),
+            controller: oldPasswordController),
         TextPassWord(
+            key: const Key('new_password') ,
             label: "Senha Nova",
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.newPasswordController),
+            controller: newPasswordController),
         const SizedBox(height: 80),
         _button(context, viewModel)
       ]),
     );
   }
 
-  Widget _button(BuildContext context, EditPasswordViewMode viewModel) {
-    return Requestbutton(
+  Widget _button(BuildContext context, EditPasswordViewModel viewModel) {
+    return CommandButton(
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.editCommand.execute(EditPasswordRequest(
+                oldPassword: oldPasswordController.text,
+                newPassword: newPasswordController.text));
+          }
+        },
         command: viewModel.editCommand,
         nameButton: "Enviar",
         onErrorCallback: (e) {

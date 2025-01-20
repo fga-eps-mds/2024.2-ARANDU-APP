@@ -1,4 +1,4 @@
-import 'package:aranduapp/core/log/Log.dart';
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/app_interceptors.dart';
 
 import 'package:dio/dio.dart';
@@ -35,9 +35,9 @@ class BaseApi {
   }
 
   Future<Response> get(
-      {required String path, Map<String, dynamic>? queryParameters}) async {
+      {required String path, Map<String, dynamic>? data}) async {
     try {
-      return await _dio.get(path, queryParameters: queryParameters);
+      return await _dio.get(path, data: data);
     } catch (e) {
       Log.e(e);
       rethrow;
@@ -53,7 +53,6 @@ class BaseApi {
     }
   }
 
-
   Future<Response> patch({required String path, Object? data}) async {
     try {
       return await _dio.patch(path, data: data);
@@ -63,8 +62,6 @@ class BaseApi {
     }
   }
 
-
-
   Future<Response> put({required String path, Object? data}) async {
     try {
       return await _dio.put(path, data: data);
@@ -73,5 +70,4 @@ class BaseApi {
       rethrow;
     }
   }
-
 }

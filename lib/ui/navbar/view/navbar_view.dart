@@ -1,9 +1,7 @@
-import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
 import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
-//import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 
 class NavbarView extends StatelessWidget {
@@ -11,23 +9,19 @@ class NavbarView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final NavbarViewModel viewModel = GetIt.I<NavbarViewModel>();
+
     return Scaffold(
-      body: ChangeNotifierProvider(
-          create: (context) => NavbarViewModel(),
-          builder: (context, child) {
-            return page(context);
-          }),
+      body: page(context, viewModel),
     );
   }
 }
 
-Widget page(BuildContext context) {
-  NavbarViewModel viewModel = Provider.of<NavbarViewModel>(context);
-
+Widget page(BuildContext context, NavbarViewModel viewModel) {
   final List<Widget> pages = [
     const Subject(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
-    const Center(child: Text('Dashbord', style: TextStyle(fontSize: 20))),
+    const Center(child: Text('Dashboard', style: TextStyle(fontSize: 20))),
     const Profile(),
   ];
 
@@ -40,18 +34,22 @@ Widget page(BuildContext context) {
       unselectedItemColor: Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
+          key: Key('homeTab'), // Chave única para o item Home
           icon: Icon(Icons.home_outlined),
           label: "Home",
         ),
         BottomNavigationBarItem(
+          key: Key('amigosTab'), // Chave única para o item Amigos
           icon: Icon(Icons.groups_outlined),
           label: "Amigos",
         ),
         BottomNavigationBarItem(
+          key: Key('dashboardTab'), // Chave única para o item Dashboard
           icon: Icon(Icons.bar_chart),
           label: "Dashboard",
         ),
         BottomNavigationBarItem(
+          key: Key('perfilTab'), // Chave única para o item Perfil
           icon: Icon(Icons.person_outline),
           label: "Perfil",
         ),

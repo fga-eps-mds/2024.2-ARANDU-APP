@@ -2,8 +2,8 @@ import 'package:aranduapp/ui/edit_password/service/edit_password_service.dart';
 import 'package:aranduapp/ui/edit_password/viewmodel/edit_password_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 
-void setupPasswordDI(){
+void setupEditPasswordDI() {
+  GetIt.I.registerLazySingleton(() => EditPasswordService());
 
-  GetIt.instance.registerFactory(() => EditPasswordViewModel());
-  GetIt.instance.registerSingleton(() => EditPasswordService());
+  GetIt.I.registerFactory(() => EditPasswordViewModel());
 }

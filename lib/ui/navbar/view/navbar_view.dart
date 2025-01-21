@@ -1,5 +1,6 @@
 import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
+import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 //import 'package:aranduapp/ui/profile/view/profileView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +25,7 @@ Widget page(BuildContext context) {
   NavbarViewModel viewModel = Provider.of<NavbarViewModel>(context);
 
   final List<Widget> pages = [
-    const HomeView(),
+    const Subject(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
     const Center(child: Text('Dashbord', style: TextStyle(fontSize: 20))),
     const Profile(),

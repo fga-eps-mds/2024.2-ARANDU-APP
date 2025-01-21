@@ -5,18 +5,11 @@ import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
 class SubjectsViewmodel extends ChangeNotifier {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController titleController;
-  final TextEditingController descriptionController;
-
   List<SubjectsResponse> subjects = [];
 
   late Command0<List<SubjectsRequest>> subjectCommand;
 
-  SubjectsViewmodel()
-      : formKey = GlobalKey<FormState>(),
-        titleController = TextEditingController(),
-        descriptionController = TextEditingController() {
+  SubjectsViewmodel() {
     subjectCommand = Command0(subject);
 
     subjectCommand.execute();

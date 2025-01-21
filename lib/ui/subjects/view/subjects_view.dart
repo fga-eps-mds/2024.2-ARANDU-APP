@@ -55,7 +55,7 @@ class SubjectScreen extends StatelessWidget {
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
             return ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
                 itemCount:
                     viewModel.subjectCommand.result!.asValue!.value.length,
                 shrinkWrap: true,

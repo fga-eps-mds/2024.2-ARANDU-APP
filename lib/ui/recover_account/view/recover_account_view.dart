@@ -1,4 +1,3 @@
-import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/recover_account/viewmodel/recover_account_viewmodel.dart';
 import 'package:aranduapp/ui/shared/error_popup.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
@@ -6,6 +5,7 @@ import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/title_slogan.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class RecoverAccount extends StatelessWidget {
@@ -13,11 +13,10 @@ class RecoverAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => RecoverAccountViewModel(),
-        builder: (context, child) {
-          return const RecoverAccountScreen();
-        });
+    return ChangeNotifierProvider<RecoverAccountViewModel>.value(
+      value: GetIt.instance<RecoverAccountViewModel>(),
+      child: const RecoverAccountScreen(),
+    );
   }
 }
 

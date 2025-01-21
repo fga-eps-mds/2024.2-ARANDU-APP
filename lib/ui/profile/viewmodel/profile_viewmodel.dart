@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  final BuildContext context;
-
   // Controllers e Key para o formulário
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -11,7 +9,8 @@ class ProfileViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  ProfileViewModel(this.context);
+  // ProfileViewModel não precisa mais do BuildContext
+  ProfileViewModel();
 
   // Método para simular o envio do e-mail de recuperação de senha
   Future<void> forgetPassword() async {

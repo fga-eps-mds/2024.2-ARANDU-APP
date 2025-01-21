@@ -3,7 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i6;
+import 'dart:async' as _i7;
+import 'dart:ui' as _i6;
 
 import 'package:aranduapp/core/state/command.dart' as _i3;
 import 'package:aranduapp/ui/register_account/viewmodel/register_viewmodel.dart'
@@ -193,7 +194,7 @@ class MockRegisterAccountViewModel extends _i2.Mock
       );
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -202,7 +203,7 @@ class MockRegisterAccountViewModel extends _i2.Mock
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -234,18 +235,18 @@ class MockRegisterAccountViewModel extends _i2.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockCommand0<T> extends _i2.Mock implements _i3.Command0<T> {
   @override
-  _i6.Future<_i4.Result<T>> Function() get action => (super.noSuchMethod(
+  _i7.Future<_i4.Result<T>> Function() get action => (super.noSuchMethod(
         Invocation.getter(#action),
-        returnValue: () => _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+        returnValue: () => _i7.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
           this,
           Invocation.getter(#action),
         )),
         returnValueForMissingStub: () =>
-            _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+            _i7.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
           this,
           Invocation.getter(#action),
         )),
-      ) as _i6.Future<_i4.Result<T>> Function());
+      ) as _i7.Future<_i4.Result<T>> Function());
 
   @override
   bool get isError => (super.noSuchMethod(
@@ -276,12 +277,12 @@ class MockCommand0<T> extends _i2.Mock implements _i3.Command0<T> {
       ) as bool);
 
   @override
-  _i6.Future<_i4.Result<T>> execute() => (super.noSuchMethod(
+  _i7.Future<_i4.Result<T>> execute() => (super.noSuchMethod(
         Invocation.method(
           #execute,
           [],
         ),
-        returnValue: _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+        returnValue: _i7.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
           this,
           Invocation.method(
             #execute,
@@ -289,17 +290,17 @@ class MockCommand0<T> extends _i2.Mock implements _i3.Command0<T> {
           ),
         )),
         returnValueForMissingStub:
-            _i6.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
+            _i7.Future<_i4.Result<T>>.value(_FakeResult_3<T>(
           this,
           Invocation.method(
             #execute,
             [],
           ),
         )),
-      ) as _i6.Future<_i4.Result<T>>);
+      ) as _i7.Future<_i4.Result<T>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -308,7 +309,7 @@ class MockCommand0<T> extends _i2.Mock implements _i3.Command0<T> {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i6.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

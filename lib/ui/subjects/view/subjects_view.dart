@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Subject extends StatelessWidget {
-  const Subject({super.key});
+  const Subject({super.key, required String title, required String description});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class SubjectScreen extends StatelessWidget {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       scrolledUnderElevation: 0,
       title: Text(
         'Disciplinas',

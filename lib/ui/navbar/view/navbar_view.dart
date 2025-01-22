@@ -19,7 +19,7 @@ class NavbarView extends StatelessWidget {
 
 Widget page(BuildContext context, NavbarViewModel viewModel) {
   final List<Widget> pages = [
-    const Subject(),
+    const SubjectScreen(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
     const Center(child: Text('Dashboard', style: TextStyle(fontSize: 20))),
     const Profile(),
@@ -34,9 +34,9 @@ Widget page(BuildContext context, NavbarViewModel viewModel) {
       unselectedItemColor: Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
-          key: Key('homeTab'), // Chave única para o item Home
-          icon: Icon(Icons.home_outlined),
-          label: "Home",
+          key: Key('disciplinasTab'), // Chave única para o item Home
+          icon: Icon(Icons.book_outlined),
+          label: "Disciplinas",
         ),
         BottomNavigationBarItem(
           key: Key('amigosTab'), // Chave única para o item Amigos

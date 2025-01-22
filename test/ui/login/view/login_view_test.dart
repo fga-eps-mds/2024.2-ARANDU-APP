@@ -97,6 +97,18 @@ void main() {
     expect(find.text('Entrar'), findsOneWidget);
   });
 
+  testWidgets(
+      'Login screen displays email when mockValidadeTokenCommand.isOk, mockValidadeTokenCommand.isError and mockValidadeTokenCommand.running are false',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createLoginScreen());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextEmail), findsOneWidget);
+    expect(find.byType(TextPassWord), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
+    expect(find.text('Entrar'), findsOneWidget);
+  });
+
   testWidgets('Test User Input for Email and Password',
       (WidgetTester tester) async {
     when(mockValidadeTokenCommand.isError).thenReturn(true);

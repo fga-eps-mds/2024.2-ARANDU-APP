@@ -49,8 +49,10 @@ class LoginScreen extends StatelessWidget {
             return _authDevice(viewModel, context);
           } else if (viewModel.validadeTokenCommand.isError) {
             return _emailAndPassword(viewModel, context);
-          } else {
+          } else if (viewModel.validadeTokenCommand.running) {
             return _loadingScreen(viewModel, context);
+          } else {
+            return _emailAndPassword(viewModel, context);
           }
         },
       ),

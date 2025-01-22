@@ -3,8 +3,6 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:ui' as _i4;
-
 import 'package:aranduapp/core/state/command.dart' as _i2;
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
@@ -82,7 +80,7 @@ class MockNavbarViewModel extends _i1.Mock implements _i3.NavbarViewModel {
       );
 
   @override
-  void addListener(_i4.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -91,7 +89,7 @@ class MockNavbarViewModel extends _i1.Mock implements _i3.NavbarViewModel {
       );
 
   @override
-  void removeListener(_i4.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

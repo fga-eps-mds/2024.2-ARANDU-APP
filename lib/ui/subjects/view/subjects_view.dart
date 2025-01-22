@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Subject extends StatelessWidget {
-  const Subject({super.key, required String title, required String description});
+  const Subject({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class SubjectScreen extends StatelessWidget {
   Widget _buildSubjects(BuildContext context) {
     SubjectsViewmodel viewModel = Provider.of<SubjectsViewmodel>(context);
 
-    final screenWidth = MediaQuery.of(context).size.width;
+    //final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return RefreshIndicator(
@@ -54,48 +54,7 @@ class SubjectScreen extends StatelessWidget {
         listenable: viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
-            return ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
-                itemCount:
-                    viewModel.subjectCommand.result!.asValue!.value.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  var subject =
-                      viewModel.subjectCommand.result!.asValue!.value[index];
-                  return Column(
-                    children: [
-                      ListTile(
-                        contentPadding: EdgeInsets.all(screenHeight * 0.02),
-                        tileColor:
-                            Theme.of(context).colorScheme.onInverseSurface,
-                        leading: Container(
-                          width: 72,
-                          alignment: Alignment.topLeft,
-                          child: Icon(
-                            Icons.book,
-                            color: Theme.of(context).colorScheme.onSurface,
-                            size: 64,
-                          ),
-                        ),
-                        title: Text(subject.title),
-                        subtitle: Text(subject.description),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.onSurface,
-                          size: 56,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        onTap: () {
-                          Log.d("tap");
-                        },
-                      ),
-                      SizedBox(
-                          height: screenHeight * 0.01), // Espaço entre os itens
-                    ],
-                  );
-                });
+            return listView(viewModel, screenHeight);
           } else if (viewModel.subjectCommand.isError) {
             return const ErrorScreen(message: "Deslize para baixo");
           } else {
@@ -104,5 +63,46 @@ class SubjectScreen extends StatelessWidget {
         },
       ),
     );
+  }
+
+  ListView listView(SubjectsViewmodel viewModel, double screenHeight) {
+    return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
+        itemCount: viewModel.subjectCommand.result!.asValue!.value.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          var subject = viewModel.subjectCommand.result!.asValue!.value[index];
+          return Column(
+            children: [
+              ListTile(
+                contentPadding: EdgeInsets.all(screenHeight * 0.02),
+                tileColor: Theme.of(context).colorScheme.onInverseSurface,
+                leading: Container(
+                  width: 72,
+                  alignment: Alignment.topLeft,
+                  child: Icon(
+                    Icons.book,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    size: 64,
+                  ),
+                ),
+                title: Text(subject.title),
+                subtitle: Text(subject.description),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  size: 56,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                onTap: () {
+                  Log.d("tap");
+                },
+              ),
+              SizedBox(height: screenHeight * 0.01),
+            ],
+          );
+        });
   }
 }

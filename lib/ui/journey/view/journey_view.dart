@@ -13,13 +13,13 @@ class Journey extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<JourneyViewModel>.value(
       value: GetIt.instance<JourneyViewModel>(),
-      child: const JourneyScreen(),
+      child: const _JourneyScreen(),
     );
   }
 }
 
-class JourneyScreen extends StatelessWidget {
-  const JourneyScreen({super.key});
+class _JourneyScreen extends StatelessWidget {
+  const _JourneyScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

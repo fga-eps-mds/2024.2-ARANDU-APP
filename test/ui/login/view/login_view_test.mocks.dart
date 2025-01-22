@@ -4,12 +4,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
-import 'dart:ui' as _i7;
 
 import 'package:aranduapp/core/state/command.dart' as _i2;
 import 'package:aranduapp/ui/login/model/login_request.dart' as _i5;
 import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart' as _i4;
-import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart' as _i8;
 import 'package:async/async.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -173,7 +171,7 @@ class MockLoginViewModel extends _i1.Mock implements _i4.LoginViewModel {
       ) as _i6.Future<bool>);
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -182,7 +180,7 @@ class MockLoginViewModel extends _i1.Mock implements _i4.LoginViewModel {
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -279,7 +277,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       ) as _i6.Future<_i3.Result<T>>);
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -288,7 +286,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -386,7 +384,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       ) as _i6.Future<_i3.Result<T>>);
 
   @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -395,93 +393,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       );
 
   @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(
-          #removeListener,
-          [listener],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void dispose() => super.noSuchMethod(
-        Invocation.method(
-          #dispose,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void notifyListeners() => super.noSuchMethod(
-        Invocation.method(
-          #notifyListeners,
-          [],
-        ),
-        returnValueForMissingStub: null,
-      );
-}
-
-/// A class which mocks [NavbarViewModel].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockNavbarViewModel extends _i1.Mock implements _i8.NavbarViewModel {
-  @override
-  _i2.Command0<void> get navbarCommand => (super.noSuchMethod(
-        Invocation.getter(#navbarCommand),
-        returnValue: _FakeCommand0_1<void>(
-          this,
-          Invocation.getter(#navbarCommand),
-        ),
-        returnValueForMissingStub: _FakeCommand0_1<void>(
-          this,
-          Invocation.getter(#navbarCommand),
-        ),
-      ) as _i2.Command0<void>);
-
-  @override
-  set navbarCommand(_i2.Command0<void>? _navbarCommand) => super.noSuchMethod(
-        Invocation.setter(
-          #navbarCommand,
-          _navbarCommand,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  int get selectedIndex => (super.noSuchMethod(
-        Invocation.getter(#selectedIndex),
-        returnValue: 0,
-        returnValueForMissingStub: 0,
-      ) as int);
-
-  @override
-  bool get hasListeners => (super.noSuchMethod(
-        Invocation.getter(#hasListeners),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
-
-  @override
-  void changeTab(int? index) => super.noSuchMethod(
-        Invocation.method(
-          #changeTab,
-          [index],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
-        Invocation.method(
-          #addListener,
-          [listener],
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

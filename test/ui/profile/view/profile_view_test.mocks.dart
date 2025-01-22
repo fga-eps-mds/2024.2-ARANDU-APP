@@ -4,7 +4,6 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
-import 'dart:ui' as _i5;
 
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart' as _i3;
 import 'package:flutter/material.dart' as _i1;
@@ -109,7 +108,7 @@ class MockProfileViewModel extends _i2.Mock implements _i3.ProfileViewModel {
       );
 
   @override
-  void addListener(_i5.VoidCallback? listener) => super.noSuchMethod(
+  void addListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -118,7 +117,7 @@ class MockProfileViewModel extends _i2.Mock implements _i3.ProfileViewModel {
       );
 
   @override
-  void removeListener(_i5.VoidCallback? listener) => super.noSuchMethod(
+  void removeListener(dynamic listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

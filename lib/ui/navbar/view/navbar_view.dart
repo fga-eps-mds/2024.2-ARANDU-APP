@@ -1,5 +1,5 @@
-import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
+import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
@@ -19,7 +19,7 @@ class NavbarView extends StatelessWidget {
 
 Widget page(BuildContext context, NavbarViewModel viewModel) {
   final List<Widget> pages = [
-    const HomeView(),
+    const Subject(),
     const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
     const Center(child: Text('Dashboard', style: TextStyle(fontSize: 20))),
     const Profile(),
@@ -34,22 +34,22 @@ Widget page(BuildContext context, NavbarViewModel viewModel) {
       unselectedItemColor: Theme.of(context).colorScheme.onSurface,
       items: const [
         BottomNavigationBarItem(
-          key: Key('homeTab'), // Chave única para o item Home
-          icon: Icon(Icons.home_outlined),
-          label: "Home",
+          key: Key('disciplinasTab'),
+          icon: Icon(Icons.book_outlined),
+          label: "Disciplinas",
         ),
         BottomNavigationBarItem(
-          key: Key('amigosTab'), // Chave única para o item Amigos
+          key: Key('amigosTab'),
           icon: Icon(Icons.groups_outlined),
           label: "Amigos",
         ),
         BottomNavigationBarItem(
-          key: Key('dashboardTab'), // Chave única para o item Dashboard
+          key: Key('dashboardTab'),
           icon: Icon(Icons.bar_chart),
           label: "Dashboard",
         ),
         BottomNavigationBarItem(
-          key: Key('perfilTab'), // Chave única para o item Perfil
+          key: Key('perfilTab'),
           icon: Icon(Icons.person_outline),
           label: "Perfil",
         ),

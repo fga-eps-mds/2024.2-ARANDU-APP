@@ -7,6 +7,7 @@ import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/text_password.dart';
+import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -46,6 +47,7 @@ void main() {
     await GetIt.instance.reset();
     GetIt.I.registerLazySingleton<LoginViewModel>(() => mockViewModel);
     GetIt.I.registerLazySingleton<NavbarViewModel>(() => mockNavbarViewModel);
+    GetIt.I.registerLazySingleton<SubjectsViewmodel>(() => SubjectsViewmodel());
   });
 
   Widget createLoginScreen() {
@@ -86,6 +88,18 @@ void main() {
       (WidgetTester tester) async {
     when(mockValidadeTokenCommand.isError).thenReturn(true);
 
+    await tester.pumpWidget(createLoginScreen());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextEmail), findsOneWidget);
+    expect(find.byType(TextPassWord), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
+    expect(find.text('Entrar'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Login screen displays email when mockValidadeTokenCommand.isOk, mockValidadeTokenCommand.isError and mockValidadeTokenCommand.running are false',
+      (WidgetTester tester) async {
     await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 

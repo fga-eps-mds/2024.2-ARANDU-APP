@@ -57,43 +57,45 @@ class _JourneyScreen extends StatelessWidget {
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
     return RefreshIndicator(
-        onRefresh: viewModel.journeyCommand.execute,
-            child: ListenableBuilder(
-              listenable: viewModel.journeyCommand,
-              builder: (context, child) {
-                if (viewModel.journeyCommand.isOk) {
-                  return ListView.builder(
-                      itemCount: viewModel
-                          .journeyCommand.result!.asValue!.value.length,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        var journey = viewModel
-                            .journeyCommand.result!.asValue!.value[index];
-                        return ListTile(
-                          leading: Icon(
-                            Icons.border_right,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 32,
-                          ),
-                          title: Text(journey.title),
-                          subtitle: Text(journey.description),
-                          trailing: Icon(
-                            Icons.chevron_right,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 32,
-                          ),
-                          onTap: () {
-                            Log.d("tap");
-                          },
-                        );
-                      });
-                } else if (viewModel.journeyCommand.isError) {
-                  return const ErrorScreen(message: "Deslize para baixo");
-                } else {
-                  return const LoadingWidget();
-                }
-              },
-            ),
+      onRefresh: viewModel.journeyCommand.execute,
+      child: ListenableBuilder(
+        listenable: viewModel.journeyCommand,
+        builder: (context, child) {
+          if (viewModel.journeyCommand.isOk) {
+            return listView(viewModel);
+          } else if (viewModel.journeyCommand.isError) {
+            return const ErrorScreen(message: "Deslize para baixo");
+          } else {
+            return const LoadingWidget();
+          }
+        },
+      ),
     );
+  }
+
+  ListView listView(JourneyViewModel viewModel) {
+    return ListView.builder(
+        itemCount: viewModel.journeyCommand.result!.asValue!.value.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) {
+          var journey = viewModel.journeyCommand.result!.asValue!.value[index];
+          return ListTile(
+            leading: Icon(
+              Icons.border_right,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
+            ),
+            title: Text(journey.title),
+            subtitle: Text(journey.description),
+            trailing: Icon(
+              Icons.chevron_right,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
+            ),
+            onTap: () {
+              Log.d("tap");
+            },
+          );
+        });
   }
 }

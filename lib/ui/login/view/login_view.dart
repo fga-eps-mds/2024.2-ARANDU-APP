@@ -1,7 +1,8 @@
 import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/login/model/login_request.dart';
 import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -24,13 +25,17 @@ class Login extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<LoginViewModel>.value(
       value: GetIt.instance<LoginViewModel>(),
-      child: const LoginScreen(),
+      child: LoginScreen(),
     );
   }
 }
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +49,10 @@ class LoginScreen extends StatelessWidget {
             return _authDevice(viewModel, context);
           } else if (viewModel.validadeTokenCommand.isError) {
             return _emailAndPassword(viewModel, context);
-          } else {
+          } else if (viewModel.validadeTokenCommand.running) {
             return _loadingScreen(viewModel, context);
+          } else {
+            return _emailAndPassword(viewModel, context);
           }
         },
       ),
@@ -133,16 +140,16 @@ class LoginScreen extends StatelessWidget {
 
   Widget _formSection(LoginViewModel viewModel) {
     return Form(
-      key: viewModel.formKey,
+      key: formKey,
       child: Column(
         children: <Widget>[
           TextEmail(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.emailController,
+            controller: emailController,
           ),
           TextPassWord(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.passwordController,
+            controller: passwordController,
           ),
         ],
       ),
@@ -177,7 +184,13 @@ class LoginScreen extends StatelessWidget {
   Widget _loginButtonSection(BuildContext context) {
     LoginViewModel viewModel = Provider.of<LoginViewModel>(context);
 
-    return Requestbutton(
+    return CommandButton(
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.loginCommand.execute(
+                LoginRequest(emailController.text, passwordController.text));
+          }
+        },
         command: viewModel.loginCommand,
         onErrorCallback: (String e) {
           showDialog<Object>(

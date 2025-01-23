@@ -6,33 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
-  final GlobalKey<FormState> formKey;
-  final TextEditingController nameController;
-  final TextEditingController userNameController;
-  final TextEditingController emailController;
+  late Command1<void, EditProfileRequest> editCommand;
 
-  late Command0<void> editCommand;
-
-  EditProfileViewModel()
-      : formKey = GlobalKey<FormState>(),
-        nameController = TextEditingController(),
-        userNameController = TextEditingController(),
-        emailController = TextEditingController() {
-    editCommand = Command0<void>(editProfile);
+  EditProfileViewModel() {
+    editCommand = Command1<void, EditProfileRequest>(editProfile);
   }
 
-  Future<Result<void>> editProfile() async {
-    if (!formKey.currentState!.validate()) {
-      return Result.error(Exception('Valores inválidos'));
-    }
-
-    EditProfileRequest request = EditProfileRequest(
-        name: nameController.text,
-        userName: userNameController.text,
-        email: emailController.text);
-
+  Future<Result<void>> editProfile(EditProfileRequest request) async {
     await GetIt.instance<EditProfileService>().edit(request);
-
     return Result.value(null);
   }
 }

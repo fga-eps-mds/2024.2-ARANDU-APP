@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:aranduapp/core/data/local/storage_value.dart';
 
 class ProfileViewModel extends ChangeNotifier {
-  final BuildContext context;
-
   // Controllers e Key para o formulário
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -18,7 +16,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   late Command0<void> logoutCommand;
 
-  ProfileViewModel(this.context) {
+  ProfileViewModel() {
     logoutCommand = Command0<void>(logout);
   }
 

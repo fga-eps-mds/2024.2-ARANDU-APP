@@ -65,3 +65,25 @@ class Command0<T> extends Command<T> {
     return _result!;
   }
 }
+
+class Command1<T, A> extends Command<T> {
+  final Future<Result<T>> Function(A) action;
+
+  Command1(this.action);
+
+  Future<Result<T>> execute(A arg1) async {
+    await _execute(() => action(arg1));
+    return result!;
+  }
+}
+
+class Command2<T, A, B> extends Command<T> {
+  final Future<Result<T>> Function(A, B) action;
+
+  Command2(this.action);
+
+  Future<Result<T>> execute(A arg1, B arg2) async {
+    await _execute(() => action(arg1, arg2));
+    return result!;
+  }
+}

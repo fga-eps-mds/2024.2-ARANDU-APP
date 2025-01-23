@@ -35,9 +35,9 @@ class BaseApi {
   }
 
   Future<Response> get(
-      {required String path, Map<String, dynamic>? queryParameters}) async {
+      {required String path, Map<String, dynamic>? data}) async {
     try {
-      return await _dio.get(path, queryParameters: queryParameters);
+      return await _dio.get(path, data: data);
     } catch (e) {
       Log.e(e);
       rethrow;

@@ -1,28 +1,24 @@
 import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/core/network/base_api.dart';
-import 'package:aranduapp/ui/subjects/model/subjects_request.dart';
-import 'package:aranduapp/ui/subjects/model/subjects_response.dart';
+import 'package:aranduapp/core/network/studio_maker_api.dart';
+import 'package:aranduapp/ui/subjects/model/subject.dart';
 import 'package:dio/dio.dart';
 
 class SubjectService {
-  Future<List<SubjectsResponse>?> getSubjects(
-      SubjectsRequest subjectRequest) async {
-    Log.d(
-        'Request Subject: ${subjectRequest.title}, ${subjectRequest.description}');
+  Future<List<Subject>> getSubjects() async {
+    Response response =
+        await StudioMakerApi.getInstance().get(path: '/subjects');
 
-    Response response = await BaseApi.getInstance(auth: true)
-        .get(path: '/subjects', data: subjectRequest.toJson());
+    List<dynamic> subjectList = response.data as List<dynamic>;
 
-    Log.d('Response Subject: ${response.toString()}');
+    Log.i(subjectList);
 
-    if (response.data != null) {
-      List<dynamic> subjectList = response.data as List<dynamic>;
-      return subjectList
-          .map((subjectJson) => SubjectsResponse.fromJsonString(subjectJson))
-          .toList();
-    } else {
-      Log.e('Não é uma lista');
-      return null;
-    }
+    return subjectList.map((e) {
+      final Map<String, dynamic> subjectMap = e as Map<String, dynamic>;
+
+      return Subject(
+          name: subjectMap['name']!,
+          shortName: subjectMap['shortName']!,
+          description: subjectMap['description']!);
+    }).toList();
   }
 }

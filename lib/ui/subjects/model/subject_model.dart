@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class Subject {
+class SubjectModel {
   final String name;
   final String shortName;
   final String description;
 
 
-  Subject({
+  SubjectModel({
     required this.name,
     required this.shortName,
     required this.description,
@@ -20,10 +20,10 @@ class Subject {
     };
   }
 
-  factory Subject.fromJson(String jsonString) {
+  factory SubjectModel.fromJson(String jsonString) {
     final json = jsonDecode(jsonString);
 
-    return Subject(
+    return SubjectModel(
       name: json['name']! as String,
       shortName: json['shortName']! as String,
       description: json['description']! as String,

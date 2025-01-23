@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -99,7 +100,13 @@ class _SubjectScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 onTap: () {
-                  Log.d("tap");
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Journey(
+                          subject: viewModel
+                              .subjectCommand.result!.asValue!.value[index]),
+                    ),
+                  );
                 },
               ),
               SizedBox(height: screenHeight * 0.01),

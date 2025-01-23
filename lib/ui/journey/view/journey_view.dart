@@ -2,24 +2,29 @@ import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
+import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class Journey extends StatelessWidget {
-  const Journey({super.key});
+  final SubjectModel subject;
+
+  const Journey({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<JourneyViewModel>.value(
       value: GetIt.instance<JourneyViewModel>(),
-      child: const _JourneyScreen(),
+      child: _JourneyScreen(subject: subject),
     );
   }
 }
 
 class _JourneyScreen extends StatelessWidget {
-  const _JourneyScreen({super.key});
+  final SubjectModel subject;
+
+  const _JourneyScreen({required this.subject});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,7 @@ class _JourneyScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       scrolledUnderElevation: 0,
       title: Text(
-        'Jornadas de Lógica',
+        'Jornadas de ${subject.name}',
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),

@@ -1,7 +1,7 @@
 import 'package:aranduapp/ui/shared/or_divider.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
-import 'package:aranduapp/ui/shared/request_button.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -110,7 +110,8 @@ class RegisterAccountScreen extends StatelessWidget {
   Widget _buildRegisterButton(BuildContext context) {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
 
-    return Requestbutton(
+    return CommandButton(
+        tap: viewModel.registerCommand.execute,
         command: viewModel.registerCommand,
         nameButton: 'Registrar',
         onSuccessCallback: () {

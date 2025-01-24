@@ -16,6 +16,7 @@ class SubjectService {
       final Map<String, dynamic> subjectMap = e as Map<String, dynamic>;
 
       return SubjectModel(
+          id: subjectMap['_id']!,
           name: subjectMap['name']!,
           shortName: subjectMap['shortName']!,
           description: subjectMap['description']!);

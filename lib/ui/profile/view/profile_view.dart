@@ -1,23 +1,21 @@
-import 'package:flutter/material.dart';
+import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/shared/profile_header.dart';
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
-import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Usando GetIt para acessar a instância da ProfileViewModel
-    final profileViewModel = GetIt.I<ProfileViewModel>();
-
     return Scaffold(
       appBar: _buildAppBar(context),
       body: ChangeNotifierProvider.value(
-        value: profileViewModel,
+        value: GetIt.I<ProfileViewModel>(),
         builder: (context, child) {
           return _buildPage(context);
         },
@@ -25,7 +23,6 @@ class Profile extends StatelessWidget {
     );
   }
 
-  /// AppBar
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -40,13 +37,11 @@ class Profile extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Container(
-            child: Center(
-              child: Icon(
-                Icons.notifications_none_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 32,
-              ),
+          child: Center(
+            child: Icon(
+              Icons.notifications_none_outlined,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
             ),
           ),
         ),
@@ -64,6 +59,7 @@ class Profile extends StatelessWidget {
             _buildProfileHeader(context),
             const SizedBox(height: 80),
             _setting(context),
+            const SizedBox(height: 80),
           ],
         ),
       ),
@@ -75,7 +71,7 @@ class Profile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ProfileHeader(
+        const ProfileHeader(
           name: "Stefani",
           role: "Estudante",
         ),
@@ -106,6 +102,8 @@ class Profile extends StatelessWidget {
   }
 
   Widget _setting(BuildContext context) {
+    ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
+
     return Card(
       child: Column(
         children: [
@@ -130,14 +128,31 @@ class Profile extends StatelessWidget {
             },
           ),
           const Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.logout_sharp,
-              color: Theme.of(context).colorScheme.error,
-              size: 32,
-            ),
-            title: const Text('Sair'),
-            onTap: () {},
+          ListenableBuilder(
+            listenable: viewModel.logoutCommand,
+            builder: (context, child) {
+              if (viewModel.logoutCommand.isOk) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const Login(),
+                    ),
+                  );
+                });
+              }
+
+              return ListTile(
+                key: const Key('logout_button'),
+              
+                leading: Icon(
+                  Icons.logout_sharp,
+                  color: Theme.of(context).colorScheme.error,
+                  size: 32,
+                ),
+                title: const Text('Sair'),
+                onTap: viewModel.logoutCommand.execute,
+              );
+            },
           ),
         ],
       ),

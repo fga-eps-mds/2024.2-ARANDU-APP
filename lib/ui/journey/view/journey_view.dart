@@ -61,14 +61,16 @@ class _JourneyScreen extends StatelessWidget {
   Widget _buildJourney(BuildContext context) {
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
+    viewModel.getJourneyCommand.execute(subject.id);
+
     return RefreshIndicator(
-      onRefresh: viewModel.journeyCommand.execute,
+      onRefresh: () => viewModel.getJourneyCommand.execute(subject.id),
       child: ListenableBuilder(
-        listenable: viewModel.journeyCommand,
+        listenable: viewModel.getJourneyCommand,
         builder: (context, child) {
-          if (viewModel.journeyCommand.isOk) {
-            return listView(viewModel);
-          } else if (viewModel.journeyCommand.isError) {
+          if (viewModel.getJourneyCommand.isOk) {
+            return _buildListView(context);
+          } else if (viewModel.getJourneyCommand.isError) {
             return const ErrorScreen(message: "Deslize para baixo");
           } else {
             return const LoadingWidget();
@@ -78,12 +80,15 @@ class _JourneyScreen extends StatelessWidget {
     );
   }
 
-  ListView listView(JourneyViewModel viewModel) {
+  ListView _buildListView(BuildContext context) {
+
+    JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
+
     return ListView.builder(
-        itemCount: viewModel.journeyCommand.result!.asValue!.value.length,
+        itemCount: viewModel.getJourneyCommand.result!.asValue!.value.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          var journey = viewModel.journeyCommand.result!.asValue!.value[index];
+          var journey = viewModel.getJourneyCommand.result!.asValue!.value[index];
           return ListTile(
             leading: Icon(
               Icons.border_right,

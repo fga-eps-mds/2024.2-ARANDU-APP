@@ -1,27 +1,27 @@
 import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/core/network/base_api.dart';
+import 'package:aranduapp/core/network/studio_maker_api.dart';
 import 'package:aranduapp/ui/journey/model/journey_request.dart';
-import 'package:aranduapp/ui/journey/model/journey_response.dart';
+import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'package:dio/dio.dart';
 
 class JourneyService {
-   Future<List<JourneyResponse>?> getJourneys(JourneyRequest journeyRequest) async {
-    Log.d('Request Journey: ${journeyRequest.title}, ${journeyRequest.description}, ${journeyRequest.pointId}');
+  Future<List<JourneyModel>> getJourneys(JourneyRequest journeyRequest) async {
+    Response response = await StudioMakerApi.getInstance()
+        .get(path: '/journeys/subjects/${journeyRequest.subjectId}');
 
-    Response response = await BaseApi.getInstance(auth: true)
-        .get(path: '/journeys', data: journeyRequest.toJson());
+    List<dynamic> subjectList = response.data as List<dynamic>;
 
-    Log.d('Response Journey: ${response.toString()}');
+    Log.i(subjectList);
 
-    if (response.data != null) {
-      List<dynamic> journeyList = response.data as List<dynamic>;
-      return journeyList
-          .map((journeyJson) => JourneyResponse.fromJsonString(journeyJson))
-          .toList();
-    } else {
-      Log.e('Não é uma lista');
-      return null;
-    }
-    
+    var res = subjectList.map((e) {
+      final Map<String, dynamic> subjectMap = e as Map<String, dynamic>;
+
+      return JourneyModel(
+          id: subjectMap['_id']! as String,
+          title: subjectMap['title']! as String,
+          description: subjectMap['description']! as String);
+    }).toList();
+
+    return res;
   }
 }

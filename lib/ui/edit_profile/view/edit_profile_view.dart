@@ -73,6 +73,7 @@ class EditProfileScreen extends StatelessWidget {
             key: const Key("nameController"),
             controller: nameController,
             padding: const EdgeInsets.symmetric(vertical: 0),
+            initialText: viewModel.user?.name ?? "",
           ),
           const SizedBox(height: 20),
           TextName(
@@ -86,6 +87,7 @@ class EditProfileScreen extends StatelessWidget {
             key: const Key("emailNameController"),
             padding: const EdgeInsets.symmetric(vertical: 0),
             controller: emailController,
+            initialText: viewModel.user?.email ?? "",
           ),
           const SizedBox(height: 100),
           _saveButton(context, viewModel),

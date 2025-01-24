@@ -3,14 +3,14 @@ import 'package:aranduapp/core/network/app_interceptors.dart';
 
 import 'package:dio/dio.dart';
 
-class BaseApi {
+class AuthApi {
   final Dio _dio;
 
-  static BaseApi? _authInstance, _nonAuthInstance;
+  static AuthApi? _authInstance, _nonAuthInstance;
 
   final String url = 'https://arandu-user-service.onrender.com';
 
-  BaseApi._internal(bool auth) : _dio = Dio() {
+  AuthApi._internal(bool auth) : _dio = Dio() {
     _dio.options.baseUrl = url;
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 5);
@@ -26,11 +26,11 @@ class BaseApi {
         request: true));
   }
 
-  static BaseApi getInstance({required bool auth}) {
+  static AuthApi getInstance({required bool auth}) {
     if (auth) {
-      return _authInstance ??= BaseApi._internal(auth);
+      return _authInstance ??= AuthApi._internal(auth);
     } else {
-      return _nonAuthInstance ??= BaseApi._internal(auth);
+      return _nonAuthInstance ??= AuthApi._internal(auth);
     }
   }
 

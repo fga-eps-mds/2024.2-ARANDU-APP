@@ -1,5 +1,6 @@
 import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
+import 'package:aranduapp/ui/shared/error_popup.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -68,12 +69,14 @@ class Profile extends StatelessWidget {
 
   /// Cabeçalho do Perfil
   Widget _buildProfileHeader(BuildContext context) {
+    ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const ProfileHeader(
-          name: "Stefani",
-          role: "Estudante",
+        ProfileHeader(
+          name: viewModel.user == null ?"..." : viewModel.user!.name ,
+          role: viewModel.user == null ?"..." : viewModel.user!.role ,
         ),
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
@@ -143,7 +146,6 @@ class Profile extends StatelessWidget {
 
               return ListTile(
                 key: const Key('logout_button'),
-              
                 leading: Icon(
                   Icons.logout_sharp,
                   color: Theme.of(context).colorScheme.error,

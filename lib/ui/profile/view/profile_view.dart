@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:aranduapp/ui/shared/profile_header.dart';
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
-import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -103,6 +102,8 @@ class Profile extends StatelessWidget {
   }
 
   Widget _setting(BuildContext context) {
+    ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
+
     return Card(
       child: Column(
         children: [
@@ -127,31 +128,30 @@ class Profile extends StatelessWidget {
             },
           ),
           const Divider(),
-          ListTile(
-            leading: Icon(
-              Icons.logout_sharp,
-              color: Theme.of(context).colorScheme.error,
-              size: 32,
-            ),
-            title: const Text('Sair'),
-            onTap: () async {
-              final viewModel = Provider.of<ProfileViewModel>(context, listen: false);
-              final result = await viewModel.logoutCommand.execute();
-
-
-
-
-
-              if (result.isValue) {
-                // Logout bem-sucedido, redireciona para a tela de login
-                Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const Login(),
-                ));
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('erro ao deslogar')),
-                );
+          ListenableBuilder(
+            listenable: viewModel.logoutCommand,
+            builder: (context, child) {
+              if (viewModel.logoutCommand.isOk) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const Login(),
+                    ),
+                  );
+                });
               }
+
+              return ListTile(
+                key: const Key('logout_button'),
+              
+                leading: Icon(
+                  Icons.logout_sharp,
+                  color: Theme.of(context).colorScheme.error,
+                  size: 32,
+                ),
+                title: const Text('Sair'),
+                onTap: viewModel.logoutCommand.execute,
+              );
             },
           ),
         ],

@@ -70,4 +70,14 @@ class AuthApi {
       rethrow;
     }
   }
+
+
+  Future<Response> delete({required String path, Object? data}) async {
+    try {
+      return await _dio.delete(path, data: data);
+    } catch (e) {
+      Log.e(e);
+      rethrow;
+    }
+  }
 }

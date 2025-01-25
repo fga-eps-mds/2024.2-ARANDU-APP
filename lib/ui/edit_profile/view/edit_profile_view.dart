@@ -121,44 +121,4 @@ class EditProfileScreen extends StatelessWidget {
           );
         });
   }
-
-//Widget _deleteButton(BuildContext context) {
-//  return ElevatedButton(
-//    onPressed: () => _showDeleteConfirmationDialog(context),
-//    style: ElevatedButton.styleFrom(
-//      minimumSize: Size(0, 50),
-//    ),
-//    child: const Text('Deletar Conta'),
-//  );
-//}
-
-//void _showDeleteConfirmationDialog(BuildContext context) {
-//  showDialog(
-//    context: context,
-//    builder: (BuildContext context) {
-//      return AlertDialog(
-//        title: const Text('Confirmar Deleção'),
-//        content: const Text(
-//            'Tem certeza de que deseja deletar sua conta? Essa ação não pode ser desfeita.'),
-//        actions: [
-//          TextButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            },
-//            child: const Text('Cancelar'),
-//          ),
-//          ElevatedButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//              ScaffoldMessenger.of(context).showSnackBar(
-//                const SnackBar(content: Text('Conta deletada com sucesso!')),
-//              );
-//            },
-//            child: const Text('Deletar'),
-//          ),
-//        ],
-//      );
-//    },
-//  );
-//}
 }

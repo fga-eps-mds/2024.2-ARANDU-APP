@@ -22,6 +22,8 @@ class EditProfileViewModel extends ChangeNotifier {
 
   Future<Result<void>> editProfile(EditProfileRequest request) async {
     await GetIt.instance<EditProfileService>().edit(request);
+
+    await GetIt.instance<AuthRepository>().clearUser();
     return Result.value(null);
   }
 
@@ -36,4 +38,3 @@ class EditProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 }
-

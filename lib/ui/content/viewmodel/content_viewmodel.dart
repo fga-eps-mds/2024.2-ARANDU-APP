@@ -6,6 +6,8 @@ class ContentViewModel extends ChangeNotifier {
 
   double get progress => _progress;
 
+  bool get shouldShowButton => _progress == 1.0;
+
   ContentViewModel() {
     scrollController.addListener(_updateProgress);
   }

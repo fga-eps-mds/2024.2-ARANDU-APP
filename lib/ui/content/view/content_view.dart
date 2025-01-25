@@ -30,7 +30,7 @@ class Content extends StatelessWidget {
             return Column(
               children: [
                 // Barra de progresso
-                Container(
+                SizedBox(
                   height: 10.0,
                   child: LinearProgressIndicator(
                     value: viewModel.progress,
@@ -165,7 +165,7 @@ class Content extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          content: Container(
+          content: SizedBox(
             width: 250,
             height: 150,
             child: Column(
@@ -179,7 +179,7 @@ class Content extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onSurface,
                       ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context)
@@ -189,7 +189,7 @@ class Content extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeView()),
+                      MaterialPageRoute(builder: (context) => const HomeView()),
                       (Route<dynamic> route) =>
                           false, // Limpa a pilha de navegação
                     );

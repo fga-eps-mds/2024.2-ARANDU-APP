@@ -6,7 +6,7 @@ void main() {
   testWidgets('Welcome display screen', (WidgetTester tester) async {
     // Carrega o widget WelcomeView
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: WelcomeView(),
       ),
     );

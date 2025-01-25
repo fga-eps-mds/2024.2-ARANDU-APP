@@ -40,13 +40,11 @@ class Profile extends StatelessWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
-          child: Container(
-            child: Center(
-              child: Icon(
-                Icons.notifications_none_outlined,
-                color: Theme.of(context).colorScheme.primary,
-                size: 32,
-              ),
+          child: Center(
+            child: Icon(
+              Icons.notifications_none_outlined,
+              color: Theme.of(context).colorScheme.primary,
+              size: 32,
             ),
           ),
         ),
@@ -75,7 +73,7 @@ class Profile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ProfileHeader(
+        const ProfileHeader(
           name: "Stefani",
           role: "Estudante",
         ),

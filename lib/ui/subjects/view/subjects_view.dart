@@ -1,4 +1,3 @@
-import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';

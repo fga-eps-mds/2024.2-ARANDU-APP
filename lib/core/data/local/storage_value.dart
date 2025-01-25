@@ -4,8 +4,7 @@ import 'package:aranduapp/core/log/log.dart';
 class StorageValue {
   static const String _authToken = "auth_token";
   static const String _refreshToken = "refresh_token";
-  static const String _email = "email";
-  static const String _name = "name";
+  static const String _jsonUser = "json_user";
 
   static StorageValue? _singleton;
   final FlutterSecureStorage storage;
@@ -35,13 +34,11 @@ class StorageValue {
 
   Future<void> setAuthToken(String token) => _setValue(_authToken, token);
   Future<void> setRefreshToken(String token) => _setValue(_refreshToken, token);
-  Future<void> setEmail(String email) => _setValue(_email, email);
-  Future<void> setName(String name) => _setValue(_name, name);
+  Future<void> setJsonUser(String email) => _setValue(_jsonUser, email);
 
   Future<String?> getAuthToken() => _getValue(_authToken);
   Future<String?> getRefreshToken() => _getValue(_refreshToken);
-  Future<String?> getEmail() => _getValue(_email);
-  Future<String?> getName() => _getValue(_name);
+  Future<String?> getJsonUser() => _getValue(_jsonUser);
 
   Future<void> clear() async {
     try {

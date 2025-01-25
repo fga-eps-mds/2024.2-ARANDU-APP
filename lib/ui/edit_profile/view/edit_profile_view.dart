@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
 import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
@@ -64,36 +65,45 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   Widget _buildForm(BuildContext context, EditProfileViewModel viewModel) {
-    return Form(
-      key: formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextName(
-            key: const Key("nameController"),
-            controller: nameController,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-          ),
-          const SizedBox(height: 20),
-          TextName(
-            key: const Key("userNameController"),
-            label: "Nome de Usuário",
-            controller: userNameController,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-          ),
-          const SizedBox(height: 20),
-          TextEmail(
-            key: const Key("emailNameController"),
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            controller: emailController,
-          ),
-          const SizedBox(height: 100),
-          _saveButton(context, viewModel),
-          const SizedBox(height: 20),
-          //         _deleteButton(context),
-        ],
-      ),
-    );
+    viewModel.getUserCommand.execute();
+
+    return ListenableBuilder(
+        listenable: viewModel.getUserCommand,
+        builder: (context, child) {
+          UserModel? user = viewModel.getUserCommand.result?.asValue?.value;
+
+          return Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextName(
+                  key: const Key("nameController"),
+                  controller: nameController,
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  initialText: user?.name ?? "",
+                ),
+                const SizedBox(height: 20),
+                TextName(
+                  key: const Key("userNameController"),
+                  label: "Nome de Usuário",
+                  controller: userNameController,
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                ),
+                const SizedBox(height: 20),
+                TextEmail(
+                  key: const Key("emailNameController"),
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  controller: emailController,
+                  initialText: user?.email ?? "",
+                ),
+                const SizedBox(height: 100),
+                _saveButton(context, viewModel),
+                const SizedBox(height: 20),
+              ],
+            ),
+          );
+        });
   }
 
   Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
@@ -119,44 +129,4 @@ class EditProfileScreen extends StatelessWidget {
           );
         });
   }
-
-//Widget _deleteButton(BuildContext context) {
-//  return ElevatedButton(
-//    onPressed: () => _showDeleteConfirmationDialog(context),
-//    style: ElevatedButton.styleFrom(
-//      minimumSize: Size(0, 50),
-//    ),
-//    child: const Text('Deletar Conta'),
-//  );
-//}
-
-//void _showDeleteConfirmationDialog(BuildContext context) {
-//  showDialog(
-//    context: context,
-//    builder: (BuildContext context) {
-//      return AlertDialog(
-//        title: const Text('Confirmar Deleção'),
-//        content: const Text(
-//            'Tem certeza de que deseja deletar sua conta? Essa ação não pode ser desfeita.'),
-//        actions: [
-//          TextButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            },
-//            child: const Text('Cancelar'),
-//          ),
-//          ElevatedButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//              ScaffoldMessenger.of(context).showSnackBar(
-//                const SnackBar(content: Text('Conta deletada com sucesso!')),
-//              );
-//            },
-//            child: const Text('Deletar'),
-//          ),
-//        ],
-//      );
-//    },
-//  );
-//}
 }

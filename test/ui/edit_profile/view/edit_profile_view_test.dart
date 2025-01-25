@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/view/edit_profile_view.dart';
@@ -11,24 +12,31 @@ import 'package:mockito/mockito.dart';
 
 import 'edit_profile_view_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<EditProfileViewModel>(), MockSpec<Command1>()])
+@GenerateNiceMocks([MockSpec<EditProfileViewModel>(), MockSpec<Command1>(), MockSpec<Command0>()])
 
 void main() {
   
   late MockEditProfileViewModel mockEditProfileViewModel;
   late MockCommand1<void, EditProfileRequest> mockEditProfileCommand1;
+  late MockCommand0<UserModel> mockGetUserCommand1;
 
   setUp(() async {
     mockEditProfileViewModel =MockEditProfileViewModel();
 
     mockEditProfileCommand1 = MockCommand1();
-
     when(mockEditProfileViewModel.editCommand)
         .thenReturn(mockEditProfileCommand1);
-
     when(mockEditProfileCommand1.running).thenReturn(false);
     when(mockEditProfileCommand1.isError).thenReturn(false);
     when(mockEditProfileCommand1.isOk).thenReturn(false);
+
+    mockGetUserCommand1 = MockCommand0();
+    when(mockEditProfileViewModel.getUserCommand)
+        .thenReturn(mockGetUserCommand1);
+    when(mockGetUserCommand1.running).thenReturn(false);
+    when(mockGetUserCommand1.isError).thenReturn(false);
+    when(mockGetUserCommand1.isOk).thenReturn(false);
+
 
     await GetIt.instance.reset();
     GetIt.I.registerLazySingleton<EditProfileViewModel>(

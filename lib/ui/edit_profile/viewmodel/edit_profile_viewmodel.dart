@@ -9,13 +9,11 @@ import 'package:get_it/get_it.dart';
 
 class EditProfileViewModel extends ChangeNotifier {
   late Command1<void, EditProfileRequest> editCommand;
-  late Command0<void> getUserCommand;
-
-  UserModel? user;
+  late Command0<UserModel> getUserCommand;
 
   EditProfileViewModel() {
     editCommand = Command1<void, EditProfileRequest>(editProfile);
-    getUserCommand = Command0<void>(getUser);
+    getUserCommand = Command0<UserModel>(getUser);
 
     getUserCommand.execute();
   }
@@ -29,12 +27,6 @@ class EditProfileViewModel extends ChangeNotifier {
 
   Future<Result<UserModel>> getUser() async {
     UserModel user = await GetIt.instance<AuthRepository>().getUser();
-    _setUser(user);
     return Result.value(user);
-  }
-
-  void _setUser(UserModel user) {
-    this.user = user;
-    notifyListeners();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
@@ -19,6 +20,7 @@ import 'profile_view_test.mocks.dart';
 void main() {
   late MockProfileViewModel mockProfileViewModel;
   late MockCommand0 mocklogoutCommand0;
+  late MockCommand0<UserModel> mockGetUserCommand0;
 
   setUp(() async {
     mockProfileViewModel = MockProfileViewModel();
@@ -28,6 +30,14 @@ void main() {
     when(mocklogoutCommand0.running).thenReturn(false);
     when(mocklogoutCommand0.isOk).thenReturn(false);
     when(mocklogoutCommand0.running).thenReturn(false);
+
+
+    mockGetUserCommand0 = MockCommand0();
+    when(mockProfileViewModel.getUserCommand)
+        .thenReturn(mockGetUserCommand0);
+    when(mockGetUserCommand0.running).thenReturn(false);
+    when(mockGetUserCommand0.isError).thenReturn(false);
+    when(mockGetUserCommand0.isOk).thenReturn(false);
 
     await GetIt.instance.reset();
     GetIt.I.registerSingleton<ProfileViewModel>(mockProfileViewModel);

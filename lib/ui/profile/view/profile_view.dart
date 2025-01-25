@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
 import 'package:aranduapp/ui/edit_delete_user/view/edit_delete_user_view.dart';
 import 'package:aranduapp/ui/edit_password/view/edit_password_view.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
@@ -74,10 +75,16 @@ class Profile extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ProfileHeader(
-          name: viewModel.user == null ?"..." : viewModel.user!.name ,
-          role: viewModel.user == null ?"..." : viewModel.user!.role ,
-        ),
+        ListenableBuilder(
+            listenable: viewModel.getUserCommand,
+            builder: (context, child) {
+              UserModel? user = viewModel.getUserCommand.result?.asValue?.value;
+
+              return ProfileHeader(
+                name: user?.name == null ? "..." : user!.name,
+                role: user?.role == null ? "..." : user!.role,
+              );
+            }),
         Padding(
           padding: const EdgeInsets.only(right: 16.0),
           child: ElevatedButton(
@@ -122,75 +129,75 @@ class Profile extends StatelessWidget {
 
   ListTile _editPassword(BuildContext context) {
     return ListTile(
-          leading: Icon(
-            Icons.lock_reset,
-            color: Theme.of(context).colorScheme.primary,
-            size: 32,
+      leading: Icon(
+        Icons.lock_reset,
+        color: Theme.of(context).colorScheme.primary,
+        size: 32,
+      ),
+      title: const Text('Trocar senha'),
+      trailing: Icon(
+        Icons.chevron_right,
+        color: Theme.of(context).colorScheme.primary,
+        size: 32,
+      ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const EditPassword(),
           ),
-          title: const Text('Trocar senha'),
-          trailing: Icon(
-            Icons.chevron_right,
-            color: Theme.of(context).colorScheme.primary,
-            size: 32,
-          ),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const EditPassword(),
-              ),
-            );
-          },
         );
+      },
+    );
   }
 
   ListTile _deleteAccount(BuildContext context) {
     return ListTile(
-          leading: Icon(
-            Icons.delete_forever,
-            color: Theme.of(context).colorScheme.error,
-            size: 32,
+      leading: Icon(
+        Icons.delete_forever,
+        color: Theme.of(context).colorScheme.error,
+        size: 32,
+      ),
+      title: const Text('Apagar conta'),
+      trailing: Icon(
+        Icons.chevron_right,
+        color: Theme.of(context).colorScheme.error,
+        size: 32,
+      ),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const EditDeleteUser(),
           ),
-          title: const Text('Apagar conta'),
-          trailing: Icon(
-            Icons.chevron_right,
-            color: Theme.of(context).colorScheme.error,
-            size: 32,
-          ),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const EditDeleteUser(),
-              ),
-            );
-          },
         );
+      },
+    );
   }
 
   ListenableBuilder _logout(ProfileViewModel viewModel) {
     return ListenableBuilder(
-          listenable: viewModel.logoutCommand,
-          builder: (context, child) {
-            if (viewModel.logoutCommand.isOk) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const Login(),
-                  ),
-                );
-              });
-            }
-
-            return ListTile(
-              key: const Key('logout_button'),
-              leading: Icon(
-                Icons.logout_sharp,
-                color: Theme.of(context).colorScheme.error,
-                size: 32,
+      listenable: viewModel.logoutCommand,
+      builder: (context, child) {
+        if (viewModel.logoutCommand.isOk) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => const Login(),
               ),
-              title: const Text('Sair'),
-              onTap: viewModel.logoutCommand.execute,
             );
-          },
+          });
+        }
+
+        return ListTile(
+          key: const Key('logout_button'),
+          leading: Icon(
+            Icons.logout_sharp,
+            color: Theme.of(context).colorScheme.error,
+            size: 32,
+          ),
+          title: const Text('Sair'),
+          onTap: viewModel.logoutCommand.execute,
         );
+      },
+    );
   }
 }

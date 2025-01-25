@@ -90,32 +90,24 @@ class MockEditProfileViewModel extends _i1.Mock
       );
 
   @override
-  _i2.Command0<void> get getUserCommand => (super.noSuchMethod(
+  _i2.Command0<_i6.UserModel> get getUserCommand => (super.noSuchMethod(
         Invocation.getter(#getUserCommand),
-        returnValue: _FakeCommand0_1<void>(
+        returnValue: _FakeCommand0_1<_i6.UserModel>(
           this,
           Invocation.getter(#getUserCommand),
         ),
-        returnValueForMissingStub: _FakeCommand0_1<void>(
+        returnValueForMissingStub: _FakeCommand0_1<_i6.UserModel>(
           this,
           Invocation.getter(#getUserCommand),
         ),
-      ) as _i2.Command0<void>);
+      ) as _i2.Command0<_i6.UserModel>);
 
   @override
-  set getUserCommand(_i2.Command0<void>? _getUserCommand) => super.noSuchMethod(
+  set getUserCommand(_i2.Command0<_i6.UserModel>? _getUserCommand) =>
+      super.noSuchMethod(
         Invocation.setter(
           #getUserCommand,
           _getUserCommand,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  set user(_i6.UserModel? _user) => super.noSuchMethod(
-        Invocation.setter(
-          #user,
-          _user,
         ),
         returnValueForMissingStub: null,
       );
@@ -278,6 +270,112 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
           Invocation.method(
             #execute,
             [arg1],
+          ),
+        )),
+      ) as _i7.Future<_i3.Result<T>>);
+
+  @override
+  void addListener(dynamic listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(dynamic listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [Command0].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
+  @override
+  _i7.Future<_i3.Result<T>> Function() get action => (super.noSuchMethod(
+        Invocation.getter(#action),
+        returnValue: () => _i7.Future<_i3.Result<T>>.value(_FakeResult_2<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+        returnValueForMissingStub: () =>
+            _i7.Future<_i3.Result<T>>.value(_FakeResult_2<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+      ) as _i7.Future<_i3.Result<T>> Function());
+
+  @override
+  bool get isError => (super.noSuchMethod(
+        Invocation.getter(#isError),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get isOk => (super.noSuchMethod(
+        Invocation.getter(#isOk),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get running => (super.noSuchMethod(
+        Invocation.getter(#running),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i7.Future<_i3.Result<T>> execute() => (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [],
+        ),
+        returnValue: _i7.Future<_i3.Result<T>>.value(_FakeResult_2<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i7.Future<_i3.Result<T>>.value(_FakeResult_2<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [],
           ),
         )),
       ) as _i7.Future<_i3.Result<T>>);

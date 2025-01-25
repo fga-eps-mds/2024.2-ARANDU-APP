@@ -9,15 +9,13 @@ import 'package:get_it/get_it.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   late Command0<void> logoutCommand;
-  late Command0<void> getUserCommand;
+  late Command0<UserModel> getUserCommand;
 
-  UserModel? user;
 
   ProfileViewModel() {
     logoutCommand = Command0<void>(logout);
-    getUserCommand = Command0<void>(getUser);
+    getUserCommand = Command0<UserModel>(getUser);
 
-    if (user == null) getUserCommand.execute();
   }
 
   Future<Result<void>> logout() async {
@@ -29,12 +27,7 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<Result<UserModel>> getUser() async {
     UserModel user = await GetIt.instance<AuthRepository>().getUser();
-    _setUser(user);
     return Result.value(user);
   }
 
-  void _setUser(UserModel user) {
-    this.user = user;
-    notifyListeners();
-  }
 }

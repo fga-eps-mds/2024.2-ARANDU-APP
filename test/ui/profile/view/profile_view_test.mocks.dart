@@ -72,32 +72,24 @@ class MockProfileViewModel extends _i1.Mock implements _i4.ProfileViewModel {
       );
 
   @override
-  _i2.Command0<void> get getUserCommand => (super.noSuchMethod(
+  _i2.Command0<_i5.UserModel> get getUserCommand => (super.noSuchMethod(
         Invocation.getter(#getUserCommand),
-        returnValue: _FakeCommand0_0<void>(
+        returnValue: _FakeCommand0_0<_i5.UserModel>(
           this,
           Invocation.getter(#getUserCommand),
         ),
-        returnValueForMissingStub: _FakeCommand0_0<void>(
+        returnValueForMissingStub: _FakeCommand0_0<_i5.UserModel>(
           this,
           Invocation.getter(#getUserCommand),
         ),
-      ) as _i2.Command0<void>);
+      ) as _i2.Command0<_i5.UserModel>);
 
   @override
-  set getUserCommand(_i2.Command0<void>? _getUserCommand) => super.noSuchMethod(
+  set getUserCommand(_i2.Command0<_i5.UserModel>? _getUserCommand) =>
+      super.noSuchMethod(
         Invocation.setter(
           #getUserCommand,
           _getUserCommand,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  set user(_i5.UserModel? _user) => super.noSuchMethod(
-        Invocation.setter(
-          #user,
-          _user,
         ),
         returnValueForMissingStub: null,
       );

@@ -72,6 +72,8 @@ class Profile extends StatelessWidget {
   Widget _buildProfileHeader(BuildContext context) {
     ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
 
+    viewModel.getUserCommand.execute();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

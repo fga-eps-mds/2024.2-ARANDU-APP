@@ -11,15 +11,14 @@ class ProfileViewModel extends ChangeNotifier {
   late Command0<void> logoutCommand;
   late Command0<UserModel> getUserCommand;
 
-
   ProfileViewModel() {
     logoutCommand = Command0<void>(logout);
     getUserCommand = Command0<UserModel>(getUser);
-
   }
 
   Future<Result<void>> logout() async {
     await StorageValue.getInstance().clear();
+    await GetIt.instance<AuthRepository>().clearUser();
 
     Log.d("Usuário deslogado com sucesso.");
     return Result.value(null);
@@ -29,5 +28,4 @@ class ProfileViewModel extends ChangeNotifier {
     UserModel user = await GetIt.instance<AuthRepository>().getUser();
     return Result.value(user);
   }
-
 }

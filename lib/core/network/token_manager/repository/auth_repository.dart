@@ -23,5 +23,6 @@ class AuthRepository {
   Future<void> clearUser() async {
     _userCache = null;
     StorageValue.getInstance().setJsonUser(null);
+    await GetIt.instance<AuthService>().refreshToken();
   }
 }

@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/register_account/model/register_request.dart';
 import 'package:aranduapp/ui/shared/or_divider.dart';
 import 'package:aranduapp/ui/shared/text_and_link.dart';
 import 'package:aranduapp/ui/shared/text_name.dart';
@@ -22,13 +23,19 @@ class RegisterAccount extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<RegisterAccountViewModel>.value(
       value: GetIt.instance<RegisterAccountViewModel>(),
-      child: const RegisterAccountScreen(),
+      child: RegisterAccountScreen(),
     );
   }
 }
 
 class RegisterAccountScreen extends StatelessWidget {
-  const RegisterAccountScreen({super.key});
+  RegisterAccountScreen({super.key});
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -58,28 +65,25 @@ class RegisterAccountScreen extends StatelessWidget {
   }
 
   Widget _formSection(BuildContext context) {
-    RegisterAccountViewModel viewModel =
-        Provider.of<RegisterAccountViewModel>(context);
-
     return Form(
-      key: viewModel.formKey,
+      key: formKey,
       child: Column(children: [
         TextName(
             key: const Key('nameField'),
             label: 'Nome',
-            controller: viewModel.nameController,
+            controller: nameController,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
         TextName(
             key: const Key('userNameField'),
             label: 'Nome de Usuário',
-            controller: viewModel.userNameController,
+            controller: userNameController,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20)),
         TextEmail(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.emailController),
+            controller: emailController),
         TextPassWord(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-            controller: viewModel.passwordController),
+            controller: passwordController),
         _buildTermsCheckbox(context),
         const SizedBox(height: 20),
         _buildRegisterButton(context),
@@ -111,7 +115,15 @@ class RegisterAccountScreen extends StatelessWidget {
     final viewModel = Provider.of<RegisterAccountViewModel>(context);
 
     return CommandButton(
-        tap: viewModel.registerCommand.execute,
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.registerCommand.execute(RegisterRequest(
+                name: nameController.text,
+                email: emailController.text,
+                userName: userNameController.text,
+                password: passwordController.text));
+          }
+        },
         command: viewModel.registerCommand,
         nameButton: 'Registrar',
         onSuccessCallback: () {

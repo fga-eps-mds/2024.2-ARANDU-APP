@@ -6,37 +6,21 @@ import '../model/register_request.dart';
 import '../service/register_service.dart';
 
 class RegisterAccountViewModel extends ChangeNotifier {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   bool isTermsAccepted = false;
 
-  late Command0<void> registerCommand;
+  late Command1<void, RegisterRequest> registerCommand;
 
   RegisterAccountViewModel() {
-    registerCommand = Command0<void>(_register);
+    registerCommand = Command1<void, RegisterRequest>(_register);
   }
 
-  Future<Result<void>> _register() async {
-
+  Future<Result<void>> _register(RegisterRequest registerRequest) async {
     if (!isTermsAccepted) {
       return Result.error(
           'Você deve aceitar os termos de privacidade e políticas de uso.');
     }
 
-    if (!formKey.currentState!.validate()) {
-      return Result.error('Por favor, preencha todos os campos corretamente');
-    }
-
-    await GetIt.instance<RegisterService>().register(RegisterRequest(
-      email: emailController.text,
-      name: nameController.text,
-      userName: userNameController.text,
-      password: passwordController.text,
-    ));
+    await GetIt.instance<RegisterService>().register(registerRequest);
 
     return Result.value(null);
   }

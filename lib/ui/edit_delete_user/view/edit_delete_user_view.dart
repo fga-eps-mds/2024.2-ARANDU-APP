@@ -26,22 +26,39 @@ class EditDeleteUserScreen extends StatelessWidget {
         Provider.of<EditDelteUserViewmodel>(context);
 
     return Scaffold(
-      body: CommandButton(
-        tap: viewModel.deleteUserCommand.execute,
-        command: viewModel.deleteUserCommand,
-        nameButton: "Deltetar",
-        onSuccessCallback: () {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => const Login(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
+                'Tem certeza de que deseja excluir sua conta? Essa ação não pode ser desfeita.',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
             ),
-          );
-        },
-        onErrorCallback: (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('não foi possível apagar a conta')),
-          );
-        },
+            const SizedBox(height: 20),
+            CommandButton(
+              tap: viewModel.deleteUserCommand.execute,
+              command: viewModel.deleteUserCommand,
+              nameButton: "Deletar",
+              onSuccessCallback: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const Login(),
+                  ),
+                );
+              },
+              onErrorCallback: (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Não foi possível apagar a conta')),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

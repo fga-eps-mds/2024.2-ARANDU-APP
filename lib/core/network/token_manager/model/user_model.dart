@@ -3,12 +3,14 @@ import 'dart:convert';
 class UserModel {
   final String id;
   final String name;
+  final String userName;
   final String email;
   final String role;
 
   UserModel({
     required this.id,
     required this.name,
+    required this.userName,
     required this.email,
     required this.role,
   });
@@ -16,6 +18,7 @@ class UserModel {
   UserModel.fromMap(Map<String, dynamic> json)
       : id = json['userId']! as String,
         name = json['name']! as String,
+        userName = json['username']! as String,
         email = json['email']! as String,
         role = json['role']! as String;
 
@@ -24,6 +27,7 @@ class UserModel {
     return UserModel(
       id: json['userId']! as String,
       name: json['name']! as String,
+      userName: json['username']! as String,
       email: json['email']! as String,
       role: json['role']! as String,
     );
@@ -38,4 +42,3 @@ class UserModel {
     });
   }
 }
-

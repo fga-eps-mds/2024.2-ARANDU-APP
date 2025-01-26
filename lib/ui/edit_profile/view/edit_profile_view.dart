@@ -89,6 +89,7 @@ class EditProfileScreen extends StatelessWidget {
                   label: "Nome de Usuário",
                   controller: userNameController,
                   padding: const EdgeInsets.symmetric(vertical: 0),
+                  initialText: user?.userName ?? "",
                 ),
                 const SizedBox(height: 20),
                 TextEmail(

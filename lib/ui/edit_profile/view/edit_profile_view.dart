@@ -1,8 +1,11 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
+import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/viewmodel/edit_profile_viewmodel.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextName.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/text_name.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatelessWidget {
@@ -10,22 +13,26 @@ class EditProfile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => EditProfileViewModel(),
-      child: const EditProfileScreen(),
+    return ChangeNotifierProvider<EditProfileViewModel>.value(
+      value: GetIt.instance<EditProfileViewModel>(),
+      child: EditProfileScreen(),
     );
   }
 }
 
 class EditProfileScreen extends StatelessWidget {
-  const EditProfileScreen({super.key});
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  EditProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     EditProfileViewModel viewModel = Provider.of<EditProfileViewModel>(context);
 
     return Scaffold(
-
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.surface,
           elevation: 0,
@@ -55,97 +62,72 @@ class EditProfileScreen extends StatelessWidget {
             ],
           ),
         ));
-
   }
 
   Widget _buildForm(BuildContext context, EditProfileViewModel viewModel) {
-    return Form(
-      key: viewModel.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextName(
-            controller: viewModel.nameController,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-          ),
-          const SizedBox(height: 20),
-          TextName(
-            label: "Nome de Usuário",
-            controller: viewModel.userNameController,
-            padding: const EdgeInsets.symmetric(vertical: 0),
-          ),
-          const SizedBox(height: 20),
-          TextEmail(
-            padding: const EdgeInsets.symmetric(vertical: 0),
-            controller: viewModel.emailController,
-          ),
-          const SizedBox(height: 100),
-          _saveButton(context, viewModel),
-          const SizedBox(height: 20),
-          //         _deleteButton(context),
-        ],
-      ),
-    );
-  }
+    viewModel.getUserCommand.execute();
 
+    return ListenableBuilder(
+        listenable: viewModel.getUserCommand,
+        builder: (context, child) {
+          UserModel? user = viewModel.getUserCommand.result?.asValue?.value;
 
-  Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
-    return Requestbutton(
-        command: viewModel.editCommand,
-        nameButton: "Salvar",
-        onErrorCallback: (e) {
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(e)),
-
-          );
-        },
-        onSuccessCallback: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-                content: Text(
-                    'Usuario atualizado com sucesso. ')),
+          return Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                TextName(
+                  key: const Key("nameController"),
+                  controller: nameController,
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  initialText: user?.name ?? "",
+                ),
+                const SizedBox(height: 20),
+                TextName(
+                  key: const Key("userNameController"),
+                  label: "Nome de Usuário",
+                  controller: userNameController,
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  initialText: user?.userName ?? "",
+                ),
+                const SizedBox(height: 20),
+                TextEmail(
+                  key: const Key("emailNameController"),
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  controller: emailController,
+                  initialText: user?.email ?? "",
+                ),
+                const SizedBox(height: 100),
+                _saveButton(context, viewModel),
+                const SizedBox(height: 20),
+              ],
+            ),
           );
         });
   }
 
-//Widget _deleteButton(BuildContext context) {
-//  return ElevatedButton(
-//    onPressed: () => _showDeleteConfirmationDialog(context),
-//    style: ElevatedButton.styleFrom(
-//      minimumSize: Size(0, 50),
-//    ),
-//    child: const Text('Deletar Conta'),
-//  );
-//}
-
-//void _showDeleteConfirmationDialog(BuildContext context) {
-//  showDialog(
-//    context: context,
-//    builder: (BuildContext context) {
-//      return AlertDialog(
-//        title: const Text('Confirmar Deleção'),
-//        content: const Text(
-//            'Tem certeza de que deseja deletar sua conta? Essa ação não pode ser desfeita.'),
-//        actions: [
-//          TextButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            },
-//            child: const Text('Cancelar'),
-//          ),
-//          ElevatedButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//              ScaffoldMessenger.of(context).showSnackBar(
-//                const SnackBar(content: Text('Conta deletada com sucesso!')),
-//              );
-//            },
-//            child: const Text('Deletar'),
-//          ),
-//        ],
-//      );
-//    },
-//  );
-//}
+  Widget _saveButton(BuildContext context, EditProfileViewModel viewModel) {
+    return CommandButton(
+        tap: () {
+          if (formKey.currentState!.validate()) {
+            viewModel.editCommand.execute(EditProfileRequest(
+                name: nameController.text,
+                email: emailController.text,
+                userName: userNameController.text));
+          }
+        },
+        command: viewModel.editCommand,
+        nameButton: "Salvar",
+        onErrorCallback: (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e)),
+          );
+        },
+        onSuccessCallback: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Usuario atualizado com sucesso. ')),
+          );
+        });
+  }
 }

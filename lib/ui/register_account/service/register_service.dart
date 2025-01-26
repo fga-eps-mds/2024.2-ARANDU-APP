@@ -1,9 +1,9 @@
-import 'package:aranduapp/core/network/base_api.dart';
+import 'package:aranduapp/core/network/auth_api.dart';
 import '../model/register_request.dart';
 
 class RegisterService {
-  static Future<void> register(RegisterRequest registerRequest) async {
-    await BaseApi.getInstance(auth: false)
+   Future<void> register(RegisterRequest registerRequest) async {
+    await AuthApi.getInstance(auth: false)
         .post(path: '/users', data: <String, dynamic>{
       'name': registerRequest.name,
       'email': registerRequest.email,

@@ -1,51 +1,58 @@
 import 'package:aranduapp/core/state/command.dart';
+import 'package:aranduapp/ui/login/model/login_request.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
-import 'package:aranduapp/ui/login/viewModel/login_view_model.dart';
-import 'package:aranduapp/ui/navbar/view/navBarView.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TextPassword.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
+import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
+import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/text_password.dart';
+import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
-@GenerateNiceMocks([MockSpec<LoginViewModel>(), MockSpec<Command0>()])
+@GenerateNiceMocks(
+    [MockSpec<LoginViewModel>(), MockSpec<Command0>(), MockSpec<Command1>()])
 import 'login_view_test.mocks.dart';
 
 void main() {
   late MockLoginViewModel mockViewModel;
-  late MockCommand0 mockLoginCommand;
+  late MockCommand1<void, LoginRequest> mockLoginCommand;
   late MockCommand0 mockValidadeTokenCommand;
+  late NavbarViewModel mockNavbarViewModel;
 
-  setUp(() {
+  setUp(() async {
     mockViewModel = MockLoginViewModel();
-    when(mockViewModel.formKey).thenReturn(GlobalKey<FormState>());
-    when(mockViewModel.emailController).thenReturn(TextEditingController());
-    when(mockViewModel.passwordController).thenReturn(TextEditingController());
+    mockLoginCommand = MockCommand1();
+    mockValidadeTokenCommand = MockCommand0();
 
-    mockLoginCommand = MockCommand0();
-    when(mockLoginCommand.execute())
+    when(mockLoginCommand.execute(any))
         .thenAnswer((_) async => Result.value(null));
     when(mockViewModel.loginCommand).thenReturn(mockLoginCommand);
 
-    mockValidadeTokenCommand = MockCommand0();
-    when(mockViewModel.validadeTokenCommand)
-        .thenReturn(mockValidadeTokenCommand);
     when(mockValidadeTokenCommand.execute())
         .thenAnswer((_) async => Result.value(null));
     when(mockValidadeTokenCommand.running).thenReturn(false);
     when(mockValidadeTokenCommand.isError).thenReturn(false);
     when(mockValidadeTokenCommand.isOk).thenReturn(false);
+    when(mockViewModel.validadeTokenCommand)
+        .thenReturn(mockValidadeTokenCommand);
+
+    mockNavbarViewModel = NavbarViewModel();
+
+    await GetIt.instance.reset();
+    GetIt.I.registerLazySingleton<LoginViewModel>(() => mockViewModel);
+    GetIt.I.registerLazySingleton<NavbarViewModel>(() => mockNavbarViewModel);
+    GetIt.I.registerLazySingleton<SubjectsViewmodel>(() => SubjectsViewmodel());
   });
 
   Widget createLoginScreen() {
-    return ChangeNotifierProvider<LoginViewModel>.value(
-      value: mockViewModel,
-      child: const MaterialApp(
-        home: LoginScreen(),
-      ),
+    return const MaterialApp(
+      home: Login(),
     );
   }
 
@@ -86,6 +93,19 @@ void main() {
 
     expect(find.byType(TextEmail), findsOneWidget);
     expect(find.byType(TextPassWord), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
+    expect(find.text('Entrar'), findsOneWidget);
+  });
+
+  testWidgets(
+      'Login screen displays email when mockValidadeTokenCommand.isOk, mockValidadeTokenCommand.isError and mockValidadeTokenCommand.running are false',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createLoginScreen());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextEmail), findsOneWidget);
+    expect(find.byType(TextPassWord), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
     expect(find.text('Entrar'), findsOneWidget);
   });
 
@@ -102,29 +122,40 @@ void main() {
     await tester.enterText(find.byType(TextEmail), email);
     await tester.enterText(find.byType(TextPassWord), password);
 
-    expect(mockViewModel.emailController.text, email);
-    expect(mockViewModel.passwordController.text, password);
+    await tester.tap(find.byKey(const Key('elevated_button_key')));
+
+    verify(mockLoginCommand.execute(argThat(
+      predicate<LoginRequest>(
+          (req) => req.email == email && req.password == password),
+    ))).called(1);
   });
 
   testWidgets('Login is successful', (WidgetTester tester) async {
     when(mockValidadeTokenCommand.isError).thenReturn(true);
+    when(mockLoginCommand.execute(any))
+        .thenAnswer((_) async => Result.value(null));
 
     await tester.pumpWidget(createLoginScreen());
     await tester.pumpAndSettle();
 
-    when(mockLoginCommand.execute())
-        .thenAnswer((_) async => Result.value(null));
+    const email = 'test@example.com';
+    const password = 'password123';
 
-    await tester.tap(find.text('Entrar'));
+    await tester.enterText(find.byType(TextEmail), email);
+    await tester.enterText(find.byType(TextPassWord), password);
 
+    await tester.tap(find.byKey(const Key('elevated_button_key')));
     await tester.pumpAndSettle();
 
-    verify(mockLoginCommand.execute()).called(1);
+    verify(mockLoginCommand.execute(argThat(
+      predicate<LoginRequest>(
+          (req) => req.email == email && req.password == password),
+    ))).called(1);
 
-    //TODO: verify navigation to navbar
+    // TODO: Verify navigation to navbar
   });
 
   testWidgets('Displays error when login fails', (WidgetTester tester) async {
-    //TODO: 
+    //TODO:
   });
 }

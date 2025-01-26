@@ -1,11 +1,11 @@
-import 'package:aranduapp/core/log/Log.dart';
-import 'package:aranduapp/ui/recover_account/viewModel/recover_account_view_model.dart';
-import 'package:aranduapp/ui/shared/ErrorPopUp.dart';
-import 'package:aranduapp/ui/shared/TextAndLink.dart';
-import 'package:aranduapp/ui/shared/TextEmail.dart';
-import 'package:aranduapp/ui/shared/TitleSlogan.dart';
-import 'package:aranduapp/ui/shared/requestbutton.dart';
+import 'package:aranduapp/ui/recover_account/viewmodel/recover_account_viewmodel.dart';
+import 'package:aranduapp/ui/shared/error_popup.dart';
+import 'package:aranduapp/ui/shared/text_and_link.dart';
+import 'package:aranduapp/ui/shared/text_email.dart';
+import 'package:aranduapp/ui/shared/title_slogan.dart';
+import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 
 class RecoverAccount extends StatelessWidget {
@@ -13,11 +13,10 @@ class RecoverAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => RecoverAccountViewModel(),
-        builder: (context, child) {
-          return const RecoverAccountScreen();
-        });
+    return ChangeNotifierProvider<RecoverAccountViewModel>.value(
+      value: GetIt.instance<RecoverAccountViewModel>(),
+      child: const RecoverAccountScreen(),
+    );
   }
 }
 
@@ -52,7 +51,8 @@ class RecoverAccountScreen extends StatelessWidget {
                   ])),
               Padding(
                 padding: const EdgeInsets.only(top: 80),
-                child: Requestbutton(
+                child: CommandButton(
+                    tap: viewModel.recoverCommand.execute ,
                     command: viewModel.recoverCommand,
                     onErrorCallback: (String e) {
                       showDialog<Object>(

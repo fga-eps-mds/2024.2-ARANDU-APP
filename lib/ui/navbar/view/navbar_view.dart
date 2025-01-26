@@ -1,4 +1,4 @@
-import 'package:aranduapp/ui/content/view/content_view.dart';
+import 'package:aranduapp/ui/content/example/example.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
 import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +32,9 @@ class NavBarScreen extends StatelessWidget {
       const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
       const Center(child: Text('Dashboard', style: TextStyle(fontSize: 20))),
       const Profile(),
-      const Content(),
+      const Example(
+        trailID: '67954e55af09776c00b6c7ca',
+      ),
     ];
 
     return Scaffold(
@@ -62,6 +64,11 @@ class NavBarScreen extends StatelessWidget {
             key: Key('perfilTab'),
             icon: Icon(Icons.person_outline),
             label: "Perfil",
+          ),
+          BottomNavigationBarItem(
+            key: Key('conteudoTab'),
+            icon: Icon(Icons.no_adult_content_outlined),
+            label: "Conteúdo",
           ),
         ],
       ),

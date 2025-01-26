@@ -1,3 +1,7 @@
+import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
+import 'package:aranduapp/core/state/command.dart';
+import 'package:aranduapp/ui/login/view/login_view.dart';
+import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
 import 'package:aranduapp/ui/profile/viewmodel/profile_viewmodel.dart';
 import 'package:aranduapp/ui/shared/profile_header.dart';
@@ -9,22 +13,35 @@ import 'package:mockito/mockito.dart';
 
 import 'profile_view_test.mocks.dart';
 
-@GenerateNiceMocks([MockSpec<ProfileViewModel>()])
+@GenerateNiceMocks([
+  MockSpec<ProfileViewModel>(),
+  MockSpec<Command0>(),
+])
 void main() {
   late MockProfileViewModel mockProfileViewModel;
+  late MockCommand0 mocklogoutCommand0;
+  late MockCommand0<UserModel> mockGetUserCommand0;
 
-  setUp(() {
+  setUp(() async {
     mockProfileViewModel = MockProfileViewModel();
+    mocklogoutCommand0 = MockCommand0();
 
-    // Define os comportamentos padrão para o mock
-    when(mockProfileViewModel.isLoading)
-        .thenReturn(false); // Simula que o carregamento não está acontecendo
-    when(mockProfileViewModel.formKey).thenReturn(GlobalKey<FormState>());
-    when(mockProfileViewModel.emailController)
-        .thenReturn(TextEditingController());
+    when(mockProfileViewModel.logoutCommand).thenReturn(mocklogoutCommand0);
+    when(mocklogoutCommand0.running).thenReturn(false);
+    when(mocklogoutCommand0.isOk).thenReturn(false);
+    when(mocklogoutCommand0.running).thenReturn(false);
 
-    // Registra o mock como a instância do ViewModel usada pelo GetIt
+
+    mockGetUserCommand0 = MockCommand0();
+    when(mockProfileViewModel.getUserCommand)
+        .thenReturn(mockGetUserCommand0);
+    when(mockGetUserCommand0.running).thenReturn(false);
+    when(mockGetUserCommand0.isError).thenReturn(false);
+    when(mockGetUserCommand0.isOk).thenReturn(false);
+
+    await GetIt.instance.reset();
     GetIt.I.registerSingleton<ProfileViewModel>(mockProfileViewModel);
+    GetIt.I.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
   });
   Widget createScreen() {
     return const MaterialApp(
@@ -33,7 +50,6 @@ void main() {
   }
 
   testWidgets('Profile screen displays', (WidgetTester tester) async {
-    // Carrega a tela
     await tester.pumpWidget(createScreen());
 
     expect(find.text('Perfil'), findsOneWidget);
@@ -42,5 +58,27 @@ void main() {
     expect(find.widgetWithText(ElevatedButton, 'Editar'), findsOneWidget);
     expect(find.text('Trocar senha'), findsOneWidget);
     expect(find.text('Sair'), findsOneWidget);
+  });
+
+  testWidgets('tap logout', (WidgetTester tester) async {
+    await tester.pumpWidget(createScreen());
+
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('logout_button')));
+
+    await tester.pumpAndSettle();
+
+    verify(mocklogoutCommand0.execute()).called(1);
+  });
+
+  testWidgets('logout', (WidgetTester tester) async {
+    when(mocklogoutCommand0.isOk).thenReturn(true);
+
+    await tester.pumpWidget(createScreen());
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(Login), findsOneWidget);
   });
 }

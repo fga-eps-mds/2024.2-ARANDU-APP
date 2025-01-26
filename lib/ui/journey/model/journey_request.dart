@@ -1,21 +1,15 @@
 import 'dart:convert';
 
 class JourneyRequest {
-  final String title;
-  final String description;
-  final String pointId;
+  final String subjectId;
 
   JourneyRequest({
-    required this.title,
-    required this.description,
-    required this.pointId,
+    required this.subjectId,
   });
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'title': title,
-      'description': description,
-      'pointId': pointId,
+      'subjectId': subjectId,
     };
   }
 
@@ -23,9 +17,7 @@ class JourneyRequest {
     final json = jsonDecode(jsonString);
 
     return JourneyRequest(
-      title: json['title']! as String,
-      description: json['description']! as String,
-      pointId: json['pointId']! as String,
+      subjectId: json['subjectId']! as String,
     );
   }
 }

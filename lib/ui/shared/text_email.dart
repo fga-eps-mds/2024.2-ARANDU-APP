@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 
-class TextEmail extends StatelessWidget{
-
+class TextEmail extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final EdgeInsetsGeometry padding;
+  final String initialText;
 
-    static final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+\w{2,4}$');
+  static final RegExp emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+\w{2,4}$');
 
-
-  const TextEmail ({
-    super.key,
-    this.label = 'E-mail',
-    required this.padding,
-    required this.controller,
-  });
-
-
+  const TextEmail(
+      {super.key,
+      this.label = 'E-mail',
+      required this.padding,
+      required this.controller,
+      this.initialText = ""});
 
   @override
   Widget build(BuildContext context) {
+    controller.text = initialText;
+
     return Padding(
-      padding: padding, 
+      padding: padding,
       child: TextFormField(
-        validator: (value) { 
+        validator: (value) {
           if (value == null || value.trim().isEmpty) {
             return '$label Obrigatório.';
           } else if (!emailRegex.hasMatch(value.trim())) {
@@ -32,11 +31,11 @@ class TextEmail extends StatelessWidget{
           return null;
         },
         controller: controller,
-        decoration: InputDecoration ( 
-          prefixIcon: Icon ( Icons.email_outlined, color: Theme.of(context).colorScheme.primary),
-          labelText: label),
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.email_outlined,
+                color: Theme.of(context).colorScheme.primary),
+            labelText: label),
       ),
     );
   }
-
 }

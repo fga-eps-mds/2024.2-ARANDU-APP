@@ -3,11 +3,10 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i7;
+import 'dart:async' as _i6;
 
 import 'package:aranduapp/core/state/command.dart' as _i2;
-import 'package:aranduapp/ui/subjects/model/subjects_request.dart' as _i6;
-import 'package:aranduapp/ui/subjects/model/subjects_response.dart' as _i5;
+import 'package:aranduapp/ui/subjects/model/subject_model.dart' as _i5;
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart' as _i4;
 import 'package:async/async.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
@@ -50,14 +49,14 @@ class _FakeResult_1<T> extends _i1.SmartFake implements _i3.Result<T> {
 /// See the documentation for Mockito's code generation for more information.
 class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
   @override
-  List<_i5.SubjectsResponse> get subjects => (super.noSuchMethod(
+  List<_i5.SubjectModel> get subjects => (super.noSuchMethod(
         Invocation.getter(#subjects),
-        returnValue: <_i5.SubjectsResponse>[],
-        returnValueForMissingStub: <_i5.SubjectsResponse>[],
-      ) as List<_i5.SubjectsResponse>);
+        returnValue: <_i5.SubjectModel>[],
+        returnValueForMissingStub: <_i5.SubjectModel>[],
+      ) as List<_i5.SubjectModel>);
 
   @override
-  set subjects(List<_i5.SubjectsResponse>? _subjects) => super.noSuchMethod(
+  set subjects(List<_i5.SubjectModel>? _subjects) => super.noSuchMethod(
         Invocation.setter(
           #subjects,
           _subjects,
@@ -66,22 +65,21 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
       );
 
   @override
-  _i2.Command0<List<_i6.SubjectsRequest>> get subjectCommand =>
+  _i2.Command0<List<_i5.SubjectModel>> get subjectCommand =>
       (super.noSuchMethod(
         Invocation.getter(#subjectCommand),
-        returnValue: _FakeCommand0_0<List<_i6.SubjectsRequest>>(
+        returnValue: _FakeCommand0_0<List<_i5.SubjectModel>>(
           this,
           Invocation.getter(#subjectCommand),
         ),
-        returnValueForMissingStub: _FakeCommand0_0<List<_i6.SubjectsRequest>>(
+        returnValueForMissingStub: _FakeCommand0_0<List<_i5.SubjectModel>>(
           this,
           Invocation.getter(#subjectCommand),
         ),
-      ) as _i2.Command0<List<_i6.SubjectsRequest>>);
+      ) as _i2.Command0<List<_i5.SubjectModel>>);
 
   @override
-  set subjectCommand(
-          _i2.Command0<List<_i6.SubjectsRequest>>? _subjectCommand) =>
+  set subjectCommand(_i2.Command0<List<_i5.SubjectModel>>? _subjectCommand) =>
       super.noSuchMethod(
         Invocation.setter(
           #subjectCommand,
@@ -98,14 +96,14 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
       ) as bool);
 
   @override
-  _i7.Future<_i3.Result<List<_i6.SubjectsRequest>>> subject() =>
+  _i6.Future<_i3.Result<List<_i5.SubjectModel>>> subject() =>
       (super.noSuchMethod(
         Invocation.method(
           #subject,
           [],
         ),
-        returnValue: _i7.Future<_i3.Result<List<_i6.SubjectsRequest>>>.value(
-            _FakeResult_1<List<_i6.SubjectsRequest>>(
+        returnValue: _i6.Future<_i3.Result<List<_i5.SubjectModel>>>.value(
+            _FakeResult_1<List<_i5.SubjectModel>>(
           this,
           Invocation.method(
             #subject,
@@ -113,15 +111,15 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
           ),
         )),
         returnValueForMissingStub:
-            _i7.Future<_i3.Result<List<_i6.SubjectsRequest>>>.value(
-                _FakeResult_1<List<_i6.SubjectsRequest>>(
+            _i6.Future<_i3.Result<List<_i5.SubjectModel>>>.value(
+                _FakeResult_1<List<_i5.SubjectModel>>(
           this,
           Invocation.method(
             #subject,
             [],
           ),
         )),
-      ) as _i7.Future<_i3.Result<List<_i6.SubjectsRequest>>>);
+      ) as _i6.Future<_i3.Result<List<_i5.SubjectModel>>>);
 
   @override
   void addListener(dynamic listener) => super.noSuchMethod(

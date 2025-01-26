@@ -1,4 +1,4 @@
-import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -13,13 +13,13 @@ class Subject extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SubjectsViewmodel>.value(
       value: GetIt.instance<SubjectsViewmodel>(),
-      child: const SubjectScreen(),
+      child: const _SubjectScreen(),
     );
   }
 }
 
-class SubjectScreen extends StatelessWidget {
-  const SubjectScreen({super.key});
+class _SubjectScreen extends StatelessWidget {
+  const _SubjectScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,9 @@ class SubjectScreen extends StatelessWidget {
           if (viewModel.subjectCommand.isOk) {
             return listView(viewModel, screenHeight);
           } else if (viewModel.subjectCommand.isError) {
-            return const ErrorScreen(message: "Deslize para baixo");
+            return ErrorScreen(
+                message:
+                    "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}");
           } else {
             return const LoadingWidget();
           }
@@ -86,7 +88,7 @@ class SubjectScreen extends StatelessWidget {
                     size: 64,
                   ),
                 ),
-                title: Text(subject.title),
+                title: Text(subject.name),
                 subtitle: Text(subject.description),
                 trailing: Icon(
                   Icons.chevron_right,
@@ -97,7 +99,13 @@ class SubjectScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 onTap: () {
-                  Log.d("tap");
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => Journey(
+                          subject: viewModel
+                              .subjectCommand.result!.asValue!.value[index]),
+                    ),
+                  );
                 },
               ),
               SizedBox(height: screenHeight * 0.01),

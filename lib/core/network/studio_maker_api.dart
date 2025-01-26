@@ -1,21 +1,19 @@
-import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/core/network/app_interceptors.dart';
 
+import 'package:aranduapp/core/log/log.dart';
 import 'package:dio/dio.dart';
 
-class BaseApi {
+class StudioMakerApi {
   final Dio _dio;
 
-  static BaseApi? _authInstance, _nonAuthInstance;
+  static StudioMakerApi? _instance;
 
-  final String url = 'https://arandu-user-service.onrender.com';
+  final String url = 'https://arandu-studio-maker.onrender.com';
 
-  BaseApi._internal(bool auth) : _dio = Dio() {
+  StudioMakerApi._internal() : _dio = Dio() {
     _dio.options.baseUrl = url;
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 5);
 
-    if (auth) _dio.interceptors.add(AppInterceptors());
 
     _dio.interceptors.add(LogInterceptor(
         requestBody: true,
@@ -26,12 +24,8 @@ class BaseApi {
         request: true));
   }
 
-  static BaseApi getInstance({required bool auth}) {
-    if (auth) {
-      return _authInstance ??= BaseApi._internal(auth);
-    } else {
-      return _nonAuthInstance ??= BaseApi._internal(auth);
-    }
+  static StudioMakerApi getInstance() {
+      return _instance ??= StudioMakerApi._internal();
   }
 
   Future<Response> get(

@@ -57,8 +57,9 @@ class _SubjectScreen extends StatelessWidget {
             return listView(viewModel, screenHeight);
           } else if (viewModel.subjectCommand.isError) {
             return ErrorScreen(
-                message:
-                    "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}");
+              onRetry: () {},
+              onExit: () {},
+            );
           } else {
             return const LoadingWidget();
           }

@@ -69,7 +69,10 @@ class _JourneyScreen extends StatelessWidget {
           if (viewModel.journeyCommand.isOk) {
             return listView(viewModel);
           } else if (viewModel.journeyCommand.isError) {
-            return const ErrorScreen(message: "Deslize para baixo");
+            return ErrorScreen(
+              onRetry: () {},
+              onExit: () {},
+            );
           } else {
             return const LoadingWidget();
           }

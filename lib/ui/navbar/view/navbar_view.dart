@@ -67,7 +67,7 @@ class NavBarScreen extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             key: Key('conteudoTab'),
-            icon: Icon(Icons.no_adult_content_outlined),
+            icon: Icon(Icons.content_paste_go),
             label: "Conteúdo",
           ),
         ],

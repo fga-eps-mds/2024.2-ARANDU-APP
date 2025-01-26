@@ -49,7 +49,11 @@ dependencies:
   get_it: ^8.0.3
   flutter_launcher_icons: ^0.14.3
   flutter_html: ^3.0.0-beta.2
-  flutter_markdown: ^0.6.0
+  flutter_markdown: ^0.7.5
+  markdown: ^7.3.0
+  lottie: ^2.7.0
+  
+
 
 flutter_launcher_icons:
   android: "launcher_icon"
@@ -95,6 +99,8 @@ flutter:
     - assets/images/Component2.png
     - assets/images/Component3.png
     - assets/images/Logo.png
+    - assets/gif/alert_animation.json
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:

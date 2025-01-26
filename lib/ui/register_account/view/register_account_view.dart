@@ -84,7 +84,7 @@ class RegisterAccountScreen extends StatelessWidget {
         TextPassWord(
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             controller: passwordController),
-        _buildTermsCheckbox(context),
+ //       _buildTermsCheckbox(context),
         const SizedBox(height: 20),
         _buildRegisterButton(context),
       ]),

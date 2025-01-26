@@ -15,10 +15,10 @@ class RegisterAccountViewModel extends ChangeNotifier {
   }
 
   Future<Result<void>> _register(RegisterRequest registerRequest) async {
-    if (!isTermsAccepted) {
-      return Result.error(
-          'Você deve aceitar os termos de privacidade e políticas de uso.');
-    }
+//  if (!isTermsAccepted) {
+//    return Result.error(
+//        'Você deve aceitar os termos de privacidade e políticas de uso.');
+//  }
 
     await GetIt.instance<RegisterService>().register(registerRequest);
 

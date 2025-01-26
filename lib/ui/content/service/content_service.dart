@@ -1,27 +1,36 @@
 import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/core/network/base_api.dart';
-import 'package:aranduapp/ui/content/model/content_request.dart';
-import 'package:aranduapp/ui/content/model/content_response.dart';
+import 'package:aranduapp/core/network/studio_maker_api.dart';
 import 'package:dio/dio.dart';
 
 class ContentService {
-  Future<List<ContentResponse>?> getContents(
-      ContentRequest contentRequest) async {
-    Log.d(
-        'Request Content: ${contentRequest.title}, ${contentRequest.content}, ${contentRequest.trailID}');
+  Future<List<Map<String, dynamic>>?> getContentsByTrail(String trailId) async {
+    try {
+      String path = '/contents/trail/$trailId';
+      Response response = await StudioMakerApi.getInstance().get(path: path);
+      if (response.statusCode == 200 && response.data != null) {
+        return List<Map<String, dynamic>>.from(response.data);
+      } else {
+        Log.e('Erro ao buscar conteúdos da trilha:${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      Log.e('Erro na requisição $e');
+      return null;
+    }
+  }
 
-    Response response = await BaseApi.getInstance(auth: true)
-        .get(path: '/contents/trail/{id}', data: contentRequest.toJson());
-
-    Log.d('Response Content: ${response.toString()}');
-
-    if (response.data != null) {
-      List<dynamic> contentList = response.data as List<dynamic>;
-      return contentList
-          .map((contentJson) => ContentResponse.fromJsonString(contentJson))
-          .toList();
-    } else {
-      Log.e('Não é um conteúdo');
+  Future<Map<String, dynamic>?> getContentsById(String contentId) async {
+    try {
+      String path = '/contents/$contentId';
+      Response response = await StudioMakerApi.getInstance().get(path: path);
+      if (response.statusCode == 200 && response.data != null) {
+        return Map<String, dynamic>.from(response.data);
+      } else {
+        Log.e('Erro ao buscar conteúdos da trilha:${response.statusCode}');
+        return null;
+      }
+    } catch (e) {
+      Log.e('Erro na requisição $e');
       return null;
     }
   }

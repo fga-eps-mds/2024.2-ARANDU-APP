@@ -34,7 +34,6 @@ class AuthService {
   }
 
   Future<UserModel> getUser() async {
-    Log.d("get user");
     String? json = await StorageValue.getInstance().getJsonUser();
 
     if (json != null) {
@@ -45,6 +44,8 @@ class AuthService {
       Log.f(response);
 
       Map<String, dynamic> json = jsonDecode(response.toString());
+
+      if (json['userPayload'] == null) Log.e('user payload is null');
 
       UserModel user = UserModel.fromMap(json['userPayload']!);
 

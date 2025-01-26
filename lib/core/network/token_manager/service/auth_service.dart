@@ -34,6 +34,7 @@ class AuthService {
   }
 
   Future<UserModel> getUser() async {
+    Log.d("get user");
     String? json = await StorageValue.getInstance().getJsonUser();
 
     if (json != null) {

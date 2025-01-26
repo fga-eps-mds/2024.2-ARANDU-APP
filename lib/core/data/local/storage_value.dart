@@ -15,7 +15,7 @@ class StorageValue {
 
   factory StorageValue.getInstance() => _singleton ??= StorageValue._internal();
 
-  Future<void> _setValue(String key, String value) async {
+  Future<void> _setValue(String key, String? value) async {
     try {
       await storage.write(key: key, value: value);
     } catch (e) {
@@ -32,9 +32,9 @@ class StorageValue {
     }
   }
 
-  Future<void> setAuthToken(String token) => _setValue(_authToken, token);
-  Future<void> setRefreshToken(String token) => _setValue(_refreshToken, token);
-  Future<void> setJsonUser(String email) => _setValue(_jsonUser, email);
+  Future<void> setAuthToken(String? token) => _setValue(_authToken, token);
+  Future<void> setRefreshToken(String? token) => _setValue(_refreshToken, token);
+  Future<void> setJsonUser(String? email) => _setValue(_jsonUser, email);
 
   Future<String?> getAuthToken() => _getValue(_authToken);
   Future<String?> getRefreshToken() => _getValue(_refreshToken);

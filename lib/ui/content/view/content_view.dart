@@ -4,8 +4,8 @@ import 'package:aranduapp/ui/content/viewmodel/content_viewmodel.dart';
 import 'package:flutter_html/flutter_html.dart'; // Pacote para renderizar HTML
 import 'package:aranduapp/ui/home/view/home_view.dart';
 
-class Content extends StatelessWidget {
-  const Content({super.key});
+class ContentView extends StatelessWidget {
+  const ContentView({super.key});
 
   @override
   Widget build(BuildContext context) {

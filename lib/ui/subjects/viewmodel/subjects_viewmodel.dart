@@ -9,6 +9,7 @@ class SubjectsViewmodel extends ChangeNotifier {
   List<SubjectModel> subjects = [];
 
   late Command0<List<SubjectModel>> subjectCommand;
+  bool _isReloadingData = false;
 
   SubjectsViewmodel() {
     subjectCommand = Command0(subject);
@@ -16,10 +17,15 @@ class SubjectsViewmodel extends ChangeNotifier {
     subjectCommand.execute();
   }
 
-  Future<Result<List<SubjectModel>>> subject() async {
+  bool get isReloadingData => _isReloadingData;
 
+  Future<Result<List<SubjectModel>>> subject() async {
+    _isReloadingData = true;
+    notifyListeners();
+
+  
     final res = await GetIt.instance<SubjectService>().getSubjects();
 
     return Result.value(res);
-  }
+  } 
 }

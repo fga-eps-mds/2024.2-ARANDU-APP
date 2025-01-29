@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:aranduapp/ui/content/service/content_service.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_markdown_latex/flutter_markdown_latex.dart';
+import 'package:markdown/markdown.dart' as md;
 import 'package:provider/provider.dart';
+import 'package:aranduapp/ui/content/service/content_service.dart';
 import 'package:aranduapp/ui/content/viewmodel/content_viewmodel.dart';
-import 'package:flutter_html/flutter_html.dart'; // Pacote para renderizar HTML
-import 'package:aranduapp/ui/home/view/home_view.dart';
 
 class ContentView extends StatelessWidget {
   final String contentID;
@@ -71,51 +72,40 @@ class ContentView extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // Conteúdo rolável com altura mínima garantida
                     Expanded(
                       child: SingleChildScrollView(
                         controller: viewModel.scrollController,
                         padding: const EdgeInsets.all(16.0),
-                        child: Container(
-                          // Adicionando uma altura mínima para garantir a rolagem
-                          constraints: BoxConstraints(
-                            minHeight: MediaQuery.of(context)
-                                .size
-                                .height, // Garante altura mínima
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              _renderContent(content['content']),
-                              if (viewModel.shouldShowButton) ...[
-                                // Botão "Finalizar", exibido somente quando permitido pela ViewModel
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 16.0),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                    onPressed: () {
-                                      _showCompletionDialog(context);
-                                    },
-                                    child: Text(
-                                      'Finalizar',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.apply(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .onPrimary,
-                                          ),
-                                    ),
-                                  ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            _renderMarkdown(content['content']),
+                            // Botão "Finalizar" sempre visível no final
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
                                 ),
-                              ],
-                            ],
-                          ),
+                                onPressed: () {
+                                  _showCompletionDialog(context);
+                                },
+                                child: Text(
+                                  'Finalizar',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.apply(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -129,16 +119,23 @@ class ContentView extends StatelessWidget {
     );
   }
 
-  Widget _renderContent(String htmlContent) {
-    return Html(
-      data: htmlContent,
+  Widget _renderMarkdown(String markdownContent) {
+    return MarkdownBody(
+      data: markdownContent,
+      builders: {
+        'latex': LatexElementBuilder(),
+      },
+      extensionSet: md.ExtensionSet(
+        [LatexBlockSyntax()],
+        [LatexInlineSyntax()],
+      ),
     );
   }
 
   void _showCompletionDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           content: SizedBox(
             width: 250,
@@ -158,18 +155,19 @@ class ContentView extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary),
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeView()),
-                      (Route<dynamic> route) => false,
-                    );
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(context).pop();
                   },
-                  child: Text('Trilha',
-                      style: Theme.of(context).textTheme.bodyLarge?.apply(
-                          color: Theme.of(context).colorScheme.onPrimary)),
-                ),
+                  child: Text(
+                    'Trilha',
+                    style: Theme.of(context).textTheme.bodyLarge?.apply(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                  ),
+                )
               ],
             ),
           ),

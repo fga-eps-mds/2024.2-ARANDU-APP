@@ -47,10 +47,11 @@ dependencies:
   build_runner: ^2.4.13
   async: ^2.11.0
   get_it: ^8.0.3
-  flutter_launcher_icons: ^0.14.3
+  flutter_launcher_icons: ^0.11.0
   flutter_html: ^3.0.0-beta.2
   flutter_markdown: ^0.7.5
   markdown: ^7.3.0
+  flutter_markdown_latex: ^0.3.4
   lottie: ^2.7.0
   
 

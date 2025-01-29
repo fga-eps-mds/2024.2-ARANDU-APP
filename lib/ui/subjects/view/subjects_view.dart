@@ -1,4 +1,5 @@
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
+import 'package:aranduapp/ui/join_subjects/view/join_subjects_view.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -20,6 +21,7 @@ class Subject extends StatelessWidget {
 
 class _SubjectScreen extends StatelessWidget {
   const _SubjectScreen();
+  final bool isConditionMet = false; // parametro que diz se ta inscrito ou não 
 
   @override
   Widget build(BuildContext context) {
@@ -99,13 +101,22 @@ class _SubjectScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => Journey(
-                          subject: viewModel
-                              .subjectCommand.result!.asValue!.value[index]),
-                    ),
-                  );
+                  if (!isConditionMet) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => JoinSubjectsScreen(),
+                         // Redireciona para a página de exceção
+                      ),
+                    );
+                  }else{
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => Journey(
+                            subject: viewModel
+                                .subjectCommand.result!.asValue!.value[index]),
+                      ),
+                    );
+                  }
                 },
               ),
               SizedBox(height: screenHeight * 0.01),

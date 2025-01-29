@@ -1,12 +1,26 @@
+import 'package:aranduapp/ui/access_trails/viewmodel/access_trails_viewmodel.dart';
+import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 import 'flecha.dart';
 
-void main() {
-  runApp(const MainApp());
+class AccessTrails extends StatelessWidget {
+  final JourneyModel journey;
+
+  const AccessTrails(this.journey);
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<AccessTrailsViewmodel>.value(
+      value: GetIt.instance<AccessTrailsViewmodel>(),
+      child: _AccessTrails(),
+    );
+  }
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class _AccessTrails extends StatelessWidget {
+  const _AccessTrails();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +52,7 @@ class MainApp extends StatelessWidget {
                     width: 200,
                   ),
                 ),
-                CorpoList(), // Agora os itens da lista são botões!
+                const CorpoList(), // Agora os itens da lista são botões!
                 CustomPaint(
                   painter: Ponta(),
                   child: const SizedBox(

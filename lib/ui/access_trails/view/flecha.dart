@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Fundo extends CustomPainter {
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.grey;
 
@@ -15,10 +16,12 @@ class Fundo extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class Square extends CustomPainter {
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.grey;
 
@@ -32,10 +35,12 @@ class Square extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class Base extends CustomPainter {
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.grey;
 
@@ -49,10 +54,12 @@ class Base extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class Corpo extends CustomPainter {
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.grey;
 
@@ -66,10 +73,12 @@ class Corpo extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class Ponta extends CustomPainter {
+  @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()..color = Colors.grey;
 
@@ -82,10 +91,13 @@ class Ponta extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
+  @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class CorpoList extends StatelessWidget {
+  const CorpoList({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Lista de dados para os botões
@@ -104,7 +116,7 @@ class CorpoList extends StatelessWidget {
               children: [
                 Align(
                   alignment: Alignment.center,
-                  child: Container(
+                  child: SizedBox(
                     width: 75,
                     height: 75,
                     child: ElevatedButton(

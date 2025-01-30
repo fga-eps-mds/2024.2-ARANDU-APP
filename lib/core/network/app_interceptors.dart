@@ -1,7 +1,7 @@
 import 'package:aranduapp/core/data/local/storage_value.dart';
 import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/core/network/token_manager/auth_service.dart';
 import 'package:aranduapp/core/network/token_manager/model/refresh_token_response.dart';
+import 'package:aranduapp/core/network/token_manager/service/auth_service.dart';
 import 'package:dio/dio.dart';
 
 class AppInterceptors extends Interceptor {
@@ -33,7 +33,17 @@ class AppInterceptors extends Interceptor {
 
         requestOptions.headers['Authorization'] = 'Bearer ${tokens.authToken}';
 
-        final response = await Dio().request(
+        Dio dio = Dio();
+
+        dio.interceptors.add(LogInterceptor(
+            requestBody: true,
+            responseBody: true,
+            requestHeader: true,
+            error: true,
+            responseHeader: true,
+            request: true));
+
+        final response = await dio.request(
           requestOptions.path,
           options: Options(
             method: requestOptions.method,

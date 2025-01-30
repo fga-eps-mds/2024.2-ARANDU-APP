@@ -6,7 +6,7 @@ void main() {
   testWidgets('Home screen displays', (WidgetTester tester) async {
     // Carrega o widget HomeView
     await tester.pumpWidget(
-      MaterialApp(
+      const MaterialApp(
         home: HomeView(),
       ),
     );

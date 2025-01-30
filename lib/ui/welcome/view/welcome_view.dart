@@ -1,10 +1,9 @@
 import 'package:aranduapp/ui/onboarding/view/onboarding_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomeView extends StatefulWidget {
-  WelcomeView({super.key});
+  const WelcomeView({super.key});
 
   @override
   State<WelcomeView> createState() => _WelcomeViewState();
@@ -53,14 +52,12 @@ class _WelcomeViewState extends State<WelcomeView> {
               ),
               // Imagem com deslocamento para a esquerda
               Transform.translate(
-                offset: Offset(-10, 0), // Move 30 pixels para a esquerda
-                child: Container(
-                  child: Image.asset(
-                    'assets/images/Logo.png',
-                    width: circleDiameter * 0.24,
-                    height: circleDiameter * 0.24,
-                    fit: BoxFit.contain,
-                  ),
+                offset: const Offset(-10, 0), // Move 30 pixels para a esquerda
+                child: Image.asset(
+                  'assets/images/Logo.png',
+                  width: circleDiameter * 0.24,
+                  height: circleDiameter * 0.24,
+                  fit: BoxFit.contain,
                 ),
               ),
             ],

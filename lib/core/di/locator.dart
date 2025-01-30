@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/content/di/di_content.dart';
 import 'package:aranduapp/core/network/token_manager/di/di_auth.dart';
 import 'package:aranduapp/ui/access_trails/di/di.dart';
 import 'package:aranduapp/ui/access_trails/service/access_trails_service.dart';
@@ -27,6 +28,7 @@ void setupLocator() {
   setupJourneyDI();
   setupSubjectDI();
   setupProfileDI();
+  setupContentDI();
   setupAuthDI();
   setupEditDeleteUser();
   setupAccessTrails();

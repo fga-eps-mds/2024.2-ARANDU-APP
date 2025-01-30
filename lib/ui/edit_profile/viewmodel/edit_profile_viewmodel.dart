@@ -1,5 +1,6 @@
 import 'package:aranduapp/core/network/token_manager/model/user_model.dart';
 import 'package:aranduapp/core/network/token_manager/repository/auth_repository.dart';
+import 'package:aranduapp/core/network/token_manager/service/auth_service.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/edit_profile/model/edit_profile_request.dart';
 import 'package:aranduapp/ui/edit_profile/service/edit_profile_service.dart';
@@ -22,6 +23,7 @@ class EditProfileViewModel extends ChangeNotifier {
     await GetIt.instance<EditProfileService>().edit(request);
 
     await GetIt.instance<AuthRepository>().clearUser();
+    await GetIt.instance<AuthService>().refreshToken();
     return Result.value(null);
   }
 

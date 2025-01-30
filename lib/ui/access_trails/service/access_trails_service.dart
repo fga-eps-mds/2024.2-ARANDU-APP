@@ -1,28 +1,27 @@
 import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/studio_maker_api.dart';
 import 'package:aranduapp/ui/access_trails/model/access_trails_model.dart';
+import 'package:aranduapp/ui/access_trails/model/access_trails_request.dart';
 import 'package:dio/dio.dart';
 
 class AccessTrailsService {
-  Future<List<AccessTrailsModel>> getTrails() async {
-    try {
-      Response response = await StudioMakerApi.getInstance().get(path: '/trails');
-      List<dynamic> trailsList = response.data as List<dynamic>;
+  Future<List<AccessTrailsModel>> getAccessTrails(AccessTrailsRequest accessTrailsRequest) async {
+    Response response = await StudioMakerApi.getInstance()
+        .get(path: '/journeys/subjects/${accessTrailsRequest.journeyId}');
 
-      Log.i(trailsList);
+    List<dynamic> journeyList = response.data as List<dynamic>;
 
-      return trailsList.map((e) {
-        final Map<String, dynamic> trailsMap = e as Map<String, dynamic>;
+    Log.i(journeyList);
 
-        return AccessTrailsModel(
-          id: trailsMap['_id'] ?? "Null",
-          title: trailsMap['name'] ?? "Null",
-          description: trailsMap['description'] ?? "Null",
-        );
-      }).toList();
-    } catch (e) {
-      Log.e("Error fetching trails: $e");
-      rethrow;
-    }
+    var res = journeyList.map((e) {
+      final Map<String, dynamic> journeyMap = e as Map<String, dynamic>;
+
+      return AccessTrailsModel(
+          id: journeyMap['_id'] as String? ?? "",
+          title: journeyMap['title'] as String? ?? "Sem título",
+          description: journeyMap['description'] as String? ?? "Sem descrição");
+    }).toList();
+
+    return res;
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 class AccessTrailsModel {
   final String id;
   final String title;
-  final String description;
+  final String? description;
 
   AccessTrailsModel({
     required this.id,
@@ -11,20 +11,13 @@ class AccessTrailsModel {
     required this.description,
   });
 
-  Map<String, dynamic> toJson() {
-    return <String, dynamic>{
-      'id': id,
-      'title': title,
-      'description': description,
-    };
-  }
+  factory AccessTrailsModel.fromJsonString(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(jsonString);
 
-  factory AccessTrailsModel.fromJson(String jsonString) {
-    final Map<String, dynamic> json = jsonDecode(jsonString);
     return AccessTrailsModel(
-      id: json['_id'] ?? 'Null',
-      title: json['title'] ?? 'Sem título',
-      description: json['description'] ?? 'Sem descrição',
+      id: json['_id'] as String? ?? "",
+      title: json['title'] as String? ?? "Sem título",
+      description: json['description'] as String? ?? "Sem descrição",
     );
   }
 }

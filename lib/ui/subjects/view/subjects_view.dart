@@ -104,7 +104,7 @@ class _SubjectScreen extends StatelessWidget {
                   if (!isConditionMet) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => JoinSubjectsScreen(),
+                        builder: (context) => const JoinSubjects(),
                          // Redireciona para a página de exceção
                       ),
                     );

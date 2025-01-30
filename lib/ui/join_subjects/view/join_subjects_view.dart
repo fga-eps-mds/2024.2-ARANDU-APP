@@ -5,15 +5,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
-/*class JoinSubjectsView extends StatefulWidget {
-  JoinSubjects({super.key});
-  
-  @override
-  State<JoinSubjectsView> createState() => _JoinSubjectsScreen();
-}*/
+class JoinSubjects extends StatelessWidget {
+  const JoinSubjects({super.key});
 
-class JoinSubjectsScreen extends StatelessWidget{
-  //const _JoinSubjectsScreen();
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<JoinSubjectsViewmodel>.value(
+      value: GetIt.instance<JoinSubjectsViewmodel>(),
+      child: const _JoinSubjectsScreen(),
+    );
+  }
+}
+
+class _JoinSubjectsScreen extends StatelessWidget {
+  const _JoinSubjectsScreen();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class JoinSubjectsScreen extends StatelessWidget{
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
       elevation: 0,
-      title: Text('Disciplina',
+      title: Text('',
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,
           fontSize: 24,
@@ -57,69 +62,77 @@ class JoinSubjectsScreen extends StatelessWidget{
   }
 }
 
-Widget _buildJoinSubjects(BuildContext context){
-
+Widget _buildJoinSubjects(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
-  return Column(
-    children: [
-      Expanded(
-        child: SingleChildScrollView(
-        child: Container( // Aqui definimos o tamanho
+
+  final viewModel = Provider.of<JoinSubjectsViewmodel>(context);
+
+  return Column(children: [
+    Expanded(
+      child: SingleChildScrollView(
+        child: Container(
+          // Aqui definimos o tamanho
           padding: EdgeInsets.only(
-            left: screenWidth * 0.05, 
-            right: screenWidth* 0.05,
-            top: screenHeight *0.02, ), // Espaçamento à esquerda
+            left: screenWidth * 0.05,
+            right: screenWidth * 0.05,
+            top: screenHeight * 0.02,
+          ), // Espaçamento à esquerda
           //height: screenHeight * 0.9,
-            child: Column(
-              children: [
-                Row(
-                  children: [ Icon(
-                    Icons.book,
-                      color: Theme.of(context).colorScheme.onSurface,
-                      size: 120,
-                  ),
-                  SizedBox(width:screenWidth *0.03),
-                  const Flexible(
-                    child: Text(
-                      'nome disciplina ',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                    softWrap: true,
-                  )),
-                  ]
-                ), // Espaçamento entre o ícone e o título
-                SizedBox(height: screenHeight*0.06), // Espaçamento entre o título e a descrição
-                const Text(
-                  'Descrição da disciplina que fornece informações relevantes sobre o conteúdo. '
-                  'Este curso aborda diversos conceitos fundamentais e avançados, fornecendo uma visão detalhada sobre o tema. '
-                  'Os alunos terão acesso a materiais exclusivos e participarão de atividades interativas para aprimorar seu aprendizado. '
-                  'Além disso, serão discutidos estudos de caso, permitindo uma compreensão prática dos conceitos teóricos.'
-                  'Descrição da disciplina que fornece informações relevantes sobre o conteúdo. '
-                  'Este curso aborda diversos conceitos fundamentais e avançados, fornecendo uma visão detalhada sobre o tema. '
-                  'Os alunos terão acesso a materiais exclusivos e participarão de atividades interativas para aprimorar seu aprendizado. '
-                  'Além disso, serão discutidos estudos de caso, permitindo uma compreensão prática dos conceitos teóricos.'
-                  'Descrição da disciplina que fornece informações relevantes sobre o conteúdo. '
-                  'Este curso aborda diversos conceitos fundamentais e avançados, fornecendo uma visão detalhada sobre o tema. '
-                  'Os alunos terão acesso a materiais exclusivos e participarão de atividades interativas para aprimorar seu aprendizado. '
-                  'Além disso, serão discutidos estudos de caso, permitindo uma compreensão prática dos conceitos teóricos.',
-                  style: TextStyle(fontSize: 13),
-                  textAlign: TextAlign.justify,
+          child: Column(
+            children: [
+              Row(children: [
+                Icon(
+                  Icons.book,
+                  color: Theme.of(context).colorScheme.onSurface,
+                  size: 120,
                 ),
-              ],
-            ),
-        ),
+                SizedBox(width: screenWidth * 0.03),
+                const Flexible(
+                    child: Text('',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  softWrap: true,
+                )),
+              ]), // Espaçamento entre o ícone e o título
+              SizedBox(
+                  height: screenHeight *
+                      0.06), // Espaçamento entre o título e a descrição
+              const Text('',
+                style: TextStyle(fontSize: 13),
+                textAlign: TextAlign.justify,
+              ),
+            ],
+          ),
         ),
       ),
-      Container(
-        padding: EdgeInsets.only(bottom: screenHeight * 0.05), // Espaçamento inferior
-        child: Center(
-          child: ElevatedButton(
-            onPressed: () {}, 
-            child: const Text('Ingressar'),
-          )
-                      
-        ),
+    ),
+    Container(
+      padding:
+          EdgeInsets.only(bottom: screenHeight * 0.05), // Espaçamento inferior
+      child: Center(
+        child: _joinButton(context, viewModel),
       ),
-    ],
+    ),
+  ]);
+}
+
+Widget _joinButton(BuildContext context, JoinSubjectsViewmodel viewModel) {
+  return CommandButton(
+    tap: () {
+      viewModel.joinsubjectsCommand.execute();
+    },
+    command: viewModel.joinsubjectsCommand,
+    nameButton: "Ingressar",
+    onErrorCallback: (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro: $e')),
+      );
+    },
+    onSuccessCallback: () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Você ingressou na disciplina com sucesso!')),
+      );
+    },
   );
 }

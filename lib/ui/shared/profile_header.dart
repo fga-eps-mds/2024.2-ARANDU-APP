@@ -5,10 +5,10 @@ class ProfileHeader extends StatelessWidget {
   final String role;
 
   const ProfileHeader({
-    super.key,
+    Key? key,
     required this.name,
     required this.role,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

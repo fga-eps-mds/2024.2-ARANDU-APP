@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:aranduapp/ui/subjects/service/subjects_service.dart';
@@ -17,6 +18,7 @@ class SubjectsViewmodel extends ChangeNotifier {
   }
 
   Future<Result<List<SubjectModel>>> subject() async {
+
     final res = await GetIt.instance<SubjectService>().getSubjects();
 
     return Result.value(res);

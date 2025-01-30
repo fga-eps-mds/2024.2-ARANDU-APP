@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
@@ -57,9 +58,8 @@ class _SubjectScreen extends StatelessWidget {
             return listView(viewModel, screenHeight);
           } else if (viewModel.subjectCommand.isError) {
             return ErrorScreen(
-              onRetry: () {},
-              onExit: () {},
-            );
+                message:
+                    "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}");
           } else {
             return const LoadingWidget();
           }

@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/access_trails/view/access_trails_view.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -71,7 +72,9 @@ class _JourneyScreen extends StatelessWidget {
           if (viewModel.getJourneyCommand.isOk) {
             return _buildListView(context);
           } else if (viewModel.getJourneyCommand.isError) {
-            return ErrorScreen(message: "Deslize para baixo\n\n ${viewModel.getJourneyCommand.result!.asError!.error.toString()}");
+            return ErrorScreen(
+                message:
+                    "Deslize para baixo\n\n ${viewModel.getJourneyCommand.result!.asError!.error.toString()}");
           } else {
             return const LoadingWidget();
           }
@@ -81,14 +84,14 @@ class _JourneyScreen extends StatelessWidget {
   }
 
   ListView _buildListView(BuildContext context) {
-
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
     return ListView.builder(
         itemCount: viewModel.getJourneyCommand.result!.asValue!.value.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          var journey = viewModel.getJourneyCommand.result!.asValue!.value[index];
+          var journey =
+              viewModel.getJourneyCommand.result!.asValue!.value[index];
           return ListTile(
             leading: Icon(
               Icons.border_right,
@@ -96,13 +99,19 @@ class _JourneyScreen extends StatelessWidget {
               size: 32,
             ),
             title: Text(journey.title),
-            subtitle: Text(journey.description),
+            subtitle: Text(journey.description ?? ""),
             trailing: Icon(
               Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
             onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) =>  AccessTrails(journey: journey)
+                ),
+              );
+
               Log.d("tap");
             },
           );

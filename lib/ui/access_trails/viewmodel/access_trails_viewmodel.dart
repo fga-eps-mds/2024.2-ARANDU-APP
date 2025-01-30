@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class AccessTrailsViewmodel extends ChangeNotifier {
-  List<AccessTrailsModel> trails = [];
 
   late Command0<List<AccessTrailsModel>> trailsCommand;
 
@@ -15,14 +14,9 @@ class AccessTrailsViewmodel extends ChangeNotifier {
     trailsCommand.execute();
   }
 
-  // Corrigi a assinatura da função, ela agora retorna um Future<Result> corretamente.
   Future<Result<List<AccessTrailsModel>>> _getTrails() async {
-    try {
-      final res = await GetIt.instance<AccessTrailsService>().getTrails();
-      return Result.value(res);
-    } catch (e) {
-      return Result.error(e.toString());
-    }
+    final res = await GetIt.instance<AccessTrailsService>().getTrails();
+    return Result.value(res);
   }
 
   Future<List<AccessTrailsModel>> getTrails() async {

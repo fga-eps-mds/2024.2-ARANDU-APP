@@ -17,9 +17,9 @@ class JourneyService {
       final Map<String, dynamic> subjectMap = e as Map<String, dynamic>;
 
       return JourneyModel(
-          id: subjectMap['_id']! as String,
-          title: subjectMap['title']! as String,
-          description: subjectMap['description']! as String);
+          id: subjectMap['_id'] as String,
+          title: subjectMap['title'] as String,
+          description: subjectMap['description']);
     }).toList();
 
     return res;

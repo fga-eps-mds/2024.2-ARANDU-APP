@@ -1,22 +1,32 @@
 import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/access_trails/service/access_trails_service.dart';
-import 'package:aranduapp/ui/access_trails/model/access_trails_request.dart';
 import 'package:aranduapp/ui/access_trails/model/access_trails_model.dart';
+import 'package:aranduapp/ui/access_trails/service/access_trails_service.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class AccessTrailsViewmodel extends ChangeNotifier {
-  late Command1<List<AccessTrailsModel>, String> getTrailsCommand;
+  List<AccessTrailsModel> trails = [];
+
+  late Command0<List<AccessTrailsModel>> trailsCommand;
 
   AccessTrailsViewmodel() {
-    getTrailsCommand = Command1(getTrails);
+    trailsCommand = Command0(_getTrails);
+    trailsCommand.execute();
   }
 
-  Future<Result<List<AccessTrailsModel>>> getTrails(String JourneyId) async {
-    List<AccessTrailsModel> res = (await GetIt.instance<AccessTrailsService>()
-        .getTrails(AccessTrailsRequest(JourneyId: JourneyId))).cast<AccessTrailsModel>();
+  // Corrigi a assinatura da função, ela agora retorna um Future<Result> corretamente.
+  Future<Result<List<AccessTrailsModel>>> _getTrails() async {
+    try {
+      final res = await GetIt.instance<AccessTrailsService>().getTrails();
+      return Result.value(res);
+    } catch (e) {
+      return Result.error(e.toString());
+    }
+  }
 
-    return Result.value(res);
+  Future<List<AccessTrailsModel>> getTrails() async {
+    final result = await trailsCommand.execute();
+    return result.asValue?.value ?? [];
   }
 }

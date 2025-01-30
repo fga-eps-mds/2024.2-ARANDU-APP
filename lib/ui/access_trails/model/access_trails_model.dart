@@ -11,13 +11,20 @@ class AccessTrailsModel {
     required this.description,
   });
 
-  factory AccessTrailsModel.fromJsonString(String jsonString) {
-    Map<String, dynamic> json = jsonDecode(jsonString);
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'id': id,
+      'title': title,
+      'description': description,
+    };
+  }
 
+  factory AccessTrailsModel.fromJson(String jsonString) {
+    final Map<String, dynamic> json = jsonDecode(jsonString);
     return AccessTrailsModel(
-      id: json['_id']! as String,
-      title: json['title']! as String,
-      description: json['description']! as String,
+      id: json['_id'] ?? 'Null',
+      title: json['title'] ?? 'Sem título',
+      description: json['description'] ?? 'Sem descrição',
     );
   }
 }

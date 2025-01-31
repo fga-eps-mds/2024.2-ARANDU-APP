@@ -21,7 +21,7 @@ class Subject extends StatelessWidget {
 
 class _SubjectScreen extends StatelessWidget {
   const _SubjectScreen();
-  final bool isConditionMet = false; // parametro que diz se ta inscrito ou não 
+  final bool isConditionMet = false; // parametro que diz se ta inscrito ou não
 
   @override
   Widget build(BuildContext context) {
@@ -100,20 +100,19 @@ class _SubjectScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                onTap: () {
-                  if (!isConditionMet) {
+                onTap: () async {
+                  bool isSubscribed = await viewModel.isUserSUbscribed(subject.id);
+                  if (!isSubscribed) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => const JoinSubjects(),
-                         // Redireciona para a página de exceção
+                        builder: (context) => JoinSubjects(subject: subject),
+                        // Redireciona para a página de exceção
                       ),
                     );
-                  }else{
+                  } else {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => Journey(
-                            subject: viewModel
-                                .subjectCommand.result!.asValue!.value[index]),
+                        builder: (context) => Journey(subject: subject),
                       ),
                     );
                   }

@@ -6,7 +6,8 @@ import 'package:dio/dio.dart';
 class SubjectService {
   Future<List<SubjectModel>> getSubjects() async {
     Response response =
-        await StudioMakerApi.getInstance().get(path: '/subjects');
+        await StudioMakerApi.getInstance().get(path: '/subjects', 
+        queryParameters: {});
 
     List<dynamic> subjectList = response.data as List<dynamic>;
 

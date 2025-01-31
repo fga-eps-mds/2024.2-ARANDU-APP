@@ -1,30 +1,53 @@
-import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/join_subjects/viewmodel/join_subjects_viewmodel.dart';
+import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
+import 'package:aranduapp/ui/shared/loading_widget.dart';
+import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
 class JoinSubjects extends StatelessWidget {
-  const JoinSubjects({super.key});
+  final SubjectModel subject;
+  const JoinSubjects({super.key, required this.subject});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<JoinSubjectsViewmodel>.value(
       value: GetIt.instance<JoinSubjectsViewmodel>(),
-      child: const _JoinSubjectsScreen(),
+      child:
+          Consumer<JoinSubjectsViewmodel>(builder: (context, viewModel, child) {
+        if (viewModel.isSubscribe) {
+          Future.microtask(() {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (context) => Journey(subject: subject),
+              ),
+            );
+          });
+          return const LoadingWidget();
+        }
+        return _JoinSubjectsScreen(subject: subject);
+      }),
     );
   }
 }
 
 class _JoinSubjectsScreen extends StatelessWidget {
-  const _JoinSubjectsScreen();
+  final SubjectModel subject;
+  const _JoinSubjectsScreen({required this.subject});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<JoinSubjectsViewmodel>(context);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      viewModel.subjectDetails(subject.id);
+    });
+
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: _buildJoinSubjects(context),
+      body: _buildJoinSubjects(context, viewModel, subject),
     );
   }
 
@@ -32,7 +55,7 @@ class _JoinSubjectsScreen extends StatelessWidget {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
       elevation: 0,
-      title: Text('',
+      title: Text(subject.name,
         style: TextStyle(
           color: Theme.of(context).colorScheme.onSurface,
           fontSize: 24,
@@ -62,11 +85,9 @@ class _JoinSubjectsScreen extends StatelessWidget {
   }
 }
 
-Widget _buildJoinSubjects(BuildContext context) {
+Widget _buildJoinSubjects(BuildContext context, JoinSubjectsViewmodel viewModel, SubjectModel subject) {
   final screenWidth = MediaQuery.of(context).size.width;
   final screenHeight = MediaQuery.of(context).size.height;
-
-  final viewModel = Provider.of<JoinSubjectsViewmodel>(context);
 
   return Column(children: [
     Expanded(
@@ -88,17 +109,17 @@ Widget _buildJoinSubjects(BuildContext context) {
                   size: 120,
                 ),
                 SizedBox(width: screenWidth * 0.03),
-                const Flexible(
-                    child: Text('',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                  softWrap: true,
+                Flexible(
+                  child: Text(
+                    viewModel.subject?.name ?? subject.name,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                    softWrap: true,
                 )),
               ]), // Espaçamento entre o ícone e o título
-              SizedBox(
-                  height: screenHeight *
-                      0.06), // Espaçamento entre o título e a descrição
-              const Text('',
-                style: TextStyle(fontSize: 13),
+              SizedBox(height: screenHeight * 0.06), // Espaçamento entre o título e a descrição
+              Text(
+                viewModel.subject?.description ?? subject.description,
+                style: const TextStyle(fontSize: 13),
                 textAlign: TextAlign.justify,
               ),
             ],

@@ -29,7 +29,7 @@ class StudioMakerApi {
   }
 
   Future<Response> get(
-      {required String path, Map<String, dynamic>? data}) async {
+      {required String path, Map<String, dynamic>? data, required Map<String, String> queryParameters}) async {
     try {
       return await _dio.get(path, data: data);
     } catch (e) {

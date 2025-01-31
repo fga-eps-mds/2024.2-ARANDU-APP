@@ -7,8 +7,7 @@ class JoinSubjectsService {
   Future<bool> isUsersubscribe(String subjectId) async {
     try {
       Response response = await StudioMakerApi.getInstance().get(
-          path: '/users/{userId}/subscribedSubjects',
-          queryParameters: {'subjectId': subjectId});
+          path: '/users/{userId}/subscribedSubjects');
       return response.data['isSubscribe'] ?? false;
     } catch (e) {
       Log.d('Erro ao verificar inscrição: $e');
@@ -17,15 +16,9 @@ class JoinSubjectsService {
   }
 
   Future<SubjectModel> getJoinSubjects(String subjectId) async {
-    try {
       Response response =
-          await StudioMakerApi.getInstance().get(path: '/subjects/$subjectId',
-          queryParameters: {},);
+          await StudioMakerApi.getInstance().get(path:'/subjects/$subjectId');
 
       return SubjectModel.fromJson(response.data);
-    } catch (e) {
-      Log.d('falha detalhes da disciplina');
-      throw Exception('falha ao carregar');
-    }
   }
 }

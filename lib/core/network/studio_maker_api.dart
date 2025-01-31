@@ -1,4 +1,3 @@
-
 import 'package:aranduapp/core/log/log.dart';
 import 'package:dio/dio.dart';
 
@@ -14,7 +13,6 @@ class StudioMakerApi {
     _dio.options.connectTimeout = const Duration(seconds: 5);
     _dio.options.receiveTimeout = const Duration(seconds: 5);
 
-
     _dio.interceptors.add(LogInterceptor(
         requestBody: true,
         responseBody: true,
@@ -25,11 +23,11 @@ class StudioMakerApi {
   }
 
   static StudioMakerApi getInstance() {
-      return _instance ??= StudioMakerApi._internal();
+    return _instance ??= StudioMakerApi._internal();
   }
 
   Future<Response> get(
-      {required String path, Map<String, dynamic>? data, required Map<String, String> queryParameters}) async {
+      {required String path, Map<String, dynamic>? data}) async {
     try {
       return await _dio.get(path, data: data);
     } catch (e) {

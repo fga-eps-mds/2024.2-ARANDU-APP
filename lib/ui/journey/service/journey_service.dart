@@ -7,8 +7,7 @@ import 'package:dio/dio.dart';
 class JourneyService {
   Future<List<JourneyModel>> getJourneys(JourneyRequest journeyRequest) async {
     Response response = await StudioMakerApi.getInstance()
-        .get(path: '/journeys/subjects/${journeyRequest.subjectId}', 
-        queryParameters: {});
+        .get(path: '/journeys/subjects/${journeyRequest.subjectId}');
 
     List<dynamic> subjectList = response.data as List<dynamic>;
 

@@ -4,7 +4,6 @@ import 'package:aranduapp/ui/content/viewmodel/content_viewmodel.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:flutter_markdown_latex/flutter_markdown_latex.dart';
-import 'package:aranduapp/ui/home/view/home_view.dart';
 
 class ContentView extends StatelessWidget {
   final String contentID;
@@ -131,7 +130,7 @@ class ContentView extends StatelessWidget {
   void _showCompletionDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         return AlertDialog(
           content: SizedBox(
             width: 250,
@@ -154,11 +153,8 @@ class ContentView extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomeView()),
-                      (Route<dynamic> route) => false,
-                    );
+                    Navigator.of(dialogContext).pop();
+                    Navigator.of(context).pop();
                   },
                   child: Text(
                     'Trilha',

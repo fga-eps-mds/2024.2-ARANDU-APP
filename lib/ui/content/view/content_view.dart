@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:flutter_markdown_latex/flutter_markdown_latex.dart';
-import 'package:markdown/markdown.dart' as md;
 import 'package:provider/provider.dart';
-import 'package:aranduapp/ui/content/service/content_service.dart';
 import 'package:aranduapp/ui/content/viewmodel/content_viewmodel.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown/markdown.dart' as md;
+import 'package:flutter_markdown_latex/flutter_markdown_latex.dart';
+import 'package:aranduapp/ui/home/view/home_view.dart';
 
 class ContentView extends StatelessWidget {
   final String contentID;
@@ -13,24 +13,20 @@ class ContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ContentService contentService = ContentService();
-
     return ChangeNotifierProvider(
-      create: (context) => ContentViewModel(),
+      create: (context) => ContentViewModel()..fetchContent(contentID),
       child: Scaffold(
         appBar: AppBar(
-          title: FutureBuilder<Map<String, dynamic>?>(
-            future: contentService.getContentsById(contentID),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
+          title: Consumer<ContentViewModel>(
+            builder: (context, viewModel, child) {
+              if (viewModel.isLoading) {
                 return const Text("Carregando...");
-              } else if (snapshot.hasError) {
+              } else if (viewModel.error != null) {
                 return const Text("Erro");
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              } else if (viewModel.content == null) {
                 return const Text("Conteúdo não encontrado");
               }
-              final content = snapshot.data!;
-              return Text(content['title']);
+              return Text(viewModel.content!.title);
             },
           ),
           backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -38,49 +34,50 @@ class ContentView extends StatelessWidget {
           foregroundColor: Theme.of(context).colorScheme.onSurface,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        body: FutureBuilder<Map<String, dynamic>?>(
-          future: contentService.getContentsById(contentID),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+        body: Consumer<ContentViewModel>(
+          builder: (context, viewModel, child) {
+            if (viewModel.isLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text("Erro ao carregar conteúdo"));
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            } else if (viewModel.error != null) {
+              return Center(child: Text(viewModel.error!));
+            } else if (viewModel.content == null) {
               return const Center(child: Text("Conteúdo não encontrado"));
             }
 
-            final content = snapshot.data!;
+            final content = viewModel.content!;
 
-            return Consumer<ContentViewModel>(
-              builder: (context, viewModel, child) {
-                return Column(
-                  children: [
-                    // Barra de progresso
-                    SizedBox(
-                      height: 10.0,
-                      child: LinearProgressIndicator(
-                        value: viewModel.progress,
-                        backgroundColor: Colors.grey[300],
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
+            return Column(
+              children: [
+                // Barra de progresso
+                SizedBox(
+                  height: 10.0,
+                  child: LinearProgressIndicator(
+                    value: viewModel.progress,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary,
                     ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        controller: viewModel.scrollController,
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            _renderMarkdown(content['content']),
-                            // Botão "Finalizar" sempre visível no final
+                  ),
+                ),
+                // Conteúdo rolável
+                Expanded(
+                  child: SingleChildScrollView(
+                    controller: viewModel.scrollController,
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      constraints: BoxConstraints(
+                        minHeight: MediaQuery.of(context).size.height,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _renderMarkdown(
+                              content.content), // Renderiza Markdown
+                          if (viewModel.shouldShowButton) ...[
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16.0),
@@ -89,9 +86,7 @@ class ContentView extends StatelessWidget {
                                   backgroundColor:
                                       Theme.of(context).colorScheme.primary,
                                 ),
-                                onPressed: () {
-                                  _showCompletionDialog(context);
-                                },
+                                onPressed: () => _showCompletionDialog(context),
                                 child: Text(
                                   'Finalizar',
                                   style: Theme.of(context)
@@ -106,12 +101,12 @@ class ContentView extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                );
-              },
+                  ),
+                ),
+              ],
             );
           },
         ),
@@ -119,15 +114,16 @@ class ContentView extends StatelessWidget {
     );
   }
 
+  // Método para renderizar Markdown
   Widget _renderMarkdown(String markdownContent) {
     return MarkdownBody(
       data: markdownContent,
       builders: {
-        'latex': LatexElementBuilder(),
+        'latex': LatexElementBuilder(), // Suporte a LaTeX
       },
       extensionSet: md.ExtensionSet(
-        [LatexBlockSyntax()],
-        [LatexInlineSyntax()],
+        [LatexBlockSyntax()], // Suporte a blocos LaTeX
+        [LatexInlineSyntax()], // Suporte a LaTeX inline
       ),
     );
   }
@@ -135,7 +131,7 @@ class ContentView extends StatelessWidget {
   void _showCompletionDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext dialogContext) {
+      builder: (BuildContext context) {
         return AlertDialog(
           content: SizedBox(
             width: 250,
@@ -158,8 +154,11 @@ class ContentView extends StatelessWidget {
                     backgroundColor: Theme.of(context).colorScheme.primary,
                   ),
                   onPressed: () {
-                    Navigator.of(dialogContext).pop();
-                    Navigator.of(context).pop();
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomeView()),
+                      (Route<dynamic> route) => false,
+                    );
                   },
                   child: Text(
                     'Trilha',
@@ -167,7 +166,7 @@ class ContentView extends StatelessWidget {
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                   ),
-                )
+                ),
               ],
             ),
           ),

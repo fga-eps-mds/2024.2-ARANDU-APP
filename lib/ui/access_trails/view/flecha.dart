@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Fundo extends CustomPainter {
+  final ColorScheme colors;
+  Fundo(this.colors);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey;
+    final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
       ..moveTo(0, 0)
@@ -21,9 +23,11 @@ class Fundo extends CustomPainter {
 }
 
 class Square extends CustomPainter {
+  final ColorScheme colors;
+  Square(this.colors);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey;
+    final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
       ..moveTo(0, 0)
@@ -40,9 +44,11 @@ class Square extends CustomPainter {
 }
 
 class Base extends CustomPainter {
+  final ColorScheme colors;
+  Base(this.colors);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey;
+    final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
       ..moveTo(0, 0)
@@ -59,9 +65,11 @@ class Base extends CustomPainter {
 }
 
 class Corpo extends CustomPainter {
+  final ColorScheme colors;
+  Corpo(this.colors);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey;
+    final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
       ..moveTo(size.width * 1 / 4, 0)
@@ -78,9 +86,11 @@ class Corpo extends CustomPainter {
 }
 
 class Ponta extends CustomPainter {
+  final ColorScheme colors;
+  Ponta(this.colors);
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Colors.grey;
+    final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
       ..moveTo(0, 0)
@@ -96,7 +106,8 @@ class Ponta extends CustomPainter {
 }
 
 class CorpoList extends StatelessWidget {
-  const CorpoList({super.key});
+  const CorpoList({super.key, required this.colors});
+  final ColorScheme colors;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +119,7 @@ class CorpoList extends StatelessWidget {
       children: List.generate(
         items.length,
         (index) => CustomPaint(
-          painter: Corpo(),
+          painter: Corpo(colors),
           child: SizedBox(
             height: 100,
             width: 200,
@@ -135,16 +146,13 @@ class CorpoList extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .primary, // Cor do botão
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // Cantos arredondados
+                          borderRadius: BorderRadius.circular(37.5),
                         ),
                       ),
                       child: Text(
-                        'B', // Texto no botão
+                        'B',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onSurface),
                       ),

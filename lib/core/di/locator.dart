@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/content/di/di_content.dart';
 import 'package:aranduapp/core/network/token_manager/di/di_auth.dart';
 import 'package:aranduapp/ui/edit_delete_user/di/di_edit_delete_user.dart';
 import 'package:aranduapp/ui/edit_password/di/di_edit_password.dart';
@@ -26,6 +27,7 @@ void setupLocator() {
   setupJourneyDI();
   setupSubjectDI();
   setupProfileDI();
+  setupContentDI();
   setupAuthDI();
   setupEditDeleteUser();
   setupJoinSubjectsDI();

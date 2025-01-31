@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/edit_delete_user/viewmode/edit_delte_user_viewmodel.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
@@ -51,6 +52,7 @@ class EditDeleteUserScreen extends StatelessWidget {
                 );
               },
               onErrorCallback: (e) {
+                Log.e(e);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                       content: Text('Não foi possível apagar a conta')),

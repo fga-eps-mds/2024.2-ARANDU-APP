@@ -1,5 +1,6 @@
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/join_subjects/view/join_subjects_view.dart';
+import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -21,7 +22,6 @@ class Subject extends StatelessWidget {
 
 class _SubjectScreen extends StatelessWidget {
   const _SubjectScreen();
-  final bool isConditionMet = false; // parametro que diz se ta inscrito ou não
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,7 @@ class _SubjectScreen extends StatelessWidget {
         listenable: viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
-            return listView(viewModel, screenHeight);
+            return _createListView(viewModel, screenHeight);
           } else if (viewModel.subjectCommand.isError) {
             return ErrorScreen(
                 message:
@@ -69,7 +69,7 @@ class _SubjectScreen extends StatelessWidget {
     );
   }
 
-  ListView listView(SubjectsViewmodel viewModel, double screenHeight) {
+  ListView _createListView(SubjectsViewmodel viewModel, double screenHeight) {
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         itemCount: viewModel.subjectCommand.result!.asValue!.value.length,
@@ -78,49 +78,57 @@ class _SubjectScreen extends StatelessWidget {
           var subject = viewModel.subjectCommand.result!.asValue!.value[index];
           return Column(
             children: [
-              ListTile(
-                contentPadding: EdgeInsets.all(screenHeight * 0.02),
-                tileColor: Theme.of(context).colorScheme.onInverseSurface,
-                leading: Container(
-                  width: 72,
-                  alignment: Alignment.topLeft,
-                  child: Icon(
-                    Icons.book,
-                    color: Theme.of(context).colorScheme.onSurface,
-                    size: 64,
-                  ),
-                ),
-                title: Text(subject.name),
-                subtitle: Text(subject.description),
-                trailing: Icon(
-                  Icons.chevron_right,
-                  color: Theme.of(context).colorScheme.onSurface,
-                  size: 56,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                onTap: () async {
-                  bool isSubscribed = await viewModel.isUserSUbscribed(subject.id);
-                  if (!isSubscribed) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => JoinSubjects(subject: subject),
-                        // Redireciona para a página de exceção
-                      ),
-                    );
-                  } else {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => Journey(subject: subject),
-                      ),
-                    );
-                  }
+              ListenableBuilder(
+                listenable: viewModel.isUserSUbscribedCommand,
+                builder: (context, child) {
+                  return _createListTile(
+                      screenHeight, context, subject, viewModel);
                 },
               ),
               SizedBox(height: screenHeight * 0.01),
             ],
           );
         });
+  }
+
+  ListTile _createListTile(double screenHeight, BuildContext context,
+      SubjectModel subject, SubjectsViewmodel viewModel) {
+    return ListTile(
+      contentPadding: EdgeInsets.all(screenHeight * 0.02),
+      tileColor: Theme.of(context).colorScheme.onInverseSurface,
+      leading: Container(
+        width: 72,
+        alignment: Alignment.topLeft,
+        child: Icon(
+          Icons.book,
+          color: Theme.of(context).colorScheme.onSurface,
+          size: 64,
+        ),
+      ),
+      title: Text(subject.name),
+      subtitle: Text(subject.description),
+      trailing: Icon(
+        Icons.chevron_right,
+        color: Theme.of(context).colorScheme.onSurface,
+        size: 56,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      onTap: () async {
+        viewModel.isUserSUbscribedCommand.execute(subject.id);
+
+        if (viewModel.isUserSUbscribedCommand.isOk) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  viewModel.isUserSUbscribedCommand.result!.asValue!.value
+                      ? Journey(subject: subject)
+                      : JoinSubjects(subject: subject),
+            ),
+          );
+        }
+      },
+    );
   }
 }

@@ -10,11 +10,13 @@ class SubjectsViewmodel extends ChangeNotifier {
   List<SubjectModel> subjects = [];
 
   late Command0<List<SubjectModel>> subjectCommand;
+  late Command1<bool, String> isUserSUbscribedCommand;
 
   SubjectsViewmodel() {
     subjectCommand = Command0(subject);
-
     subjectCommand.execute();
+
+    isUserSUbscribedCommand =  Command1<bool, String> (isUserSUbscribed);
   }
 
   Future<Result<List<SubjectModel>>> subject() async {
@@ -22,9 +24,9 @@ class SubjectsViewmodel extends ChangeNotifier {
 
     return Result.value(res);
   }
+ Future<Result<bool>> isUserSUbscribed(String subjectId) async {
+    return Result.value( await GetIt.instance<JoinSubjectsService>()
+        .isUsersubscribe(subjectId));
 
-  Future<bool> isUserSUbscribed(String subjectId) async {
-    return await GetIt.instance<JoinSubjectsService>()
-        .isUsersubscribe(subjectId);
   }
 }

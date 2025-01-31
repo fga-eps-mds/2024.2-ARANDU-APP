@@ -1,5 +1,4 @@
 import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/join_subjects/service/join_subjects_service.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:aranduapp/ui/subjects/service/subjects_service.dart';
 import 'package:async/async.dart';
@@ -16,7 +15,7 @@ class SubjectsViewmodel extends ChangeNotifier {
     subjectCommand = Command0(subject);
     subjectCommand.execute();
 
-    isUserSUbscribedCommand =  Command1<bool, String> (isUserSUbscribed);
+    isUserSUbscribedCommand = Command1<bool, String>(isUserSUbscribed);
   }
 
   Future<Result<List<SubjectModel>>> subject() async {
@@ -24,9 +23,9 @@ class SubjectsViewmodel extends ChangeNotifier {
 
     return Result.value(res);
   }
- Future<Result<bool>> isUserSUbscribed(String subjectId) async {
-    return Result.value( await GetIt.instance<JoinSubjectsService>()
-        .isUsersubscribe(subjectId));
 
+  Future<Result<bool>> isUserSUbscribed(String subjectId) async {
+    return Result.value(
+        await GetIt.instance<SubjectService>().isUsersubscribe(subjectId));
   }
 }

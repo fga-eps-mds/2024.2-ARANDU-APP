@@ -12,6 +12,7 @@ import 'package:aranduapp/ui/recover_account/di/di_recover_account.dart';
 import 'package:aranduapp/ui/register_account/di/di_register_account.dart';
 import 'package:aranduapp/ui/join_subjects/di/di_join_subjects.dart';
 import 'package:aranduapp/ui/subjects/di/di.dart';
+import 'package:aranduapp/ui/trails/di/di.dart';
 import 'package:get_it/get_it.dart';
 
 final GetIt locator = GetIt.instance;
@@ -31,4 +32,5 @@ void setupLocator() {
   setupAuthDI();
   setupEditDeleteUser();
   setupJoinSubjectsDI();
+  setupTrailsDI();
 }

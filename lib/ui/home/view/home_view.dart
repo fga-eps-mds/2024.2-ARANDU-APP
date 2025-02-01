@@ -22,7 +22,7 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(height: 20),
               _searchbar(context),
               const SizedBox(height: 20),
-              // _knowledgecard(context),
+              _knowledgecard(context),
             ],
           ),
         ),
@@ -127,45 +127,59 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  // Widget _knowledgecard(BuildContext context) {
-  //   return Center(
-  //     child: Card(
-  //       color: Theme.of(context).cardColor,
-  //       elevation: 10.0,
-  //       clipBehavior: Clip.hardEdge,
-  //       child: InkWell(
-  //         splashColor: Theme.of(context).colorScheme.primary,
-  //         onTap: () {
-  //           debugPrint('Card tapped.');
-  //         },
-  //         child: const SizedBox(
-  //           width: 300,
-  //           height: 100,
-  //           child: Text('A card that can be tapped'),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget _knowledgecard(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
-  // Widget _knowledgecard(BuildContext context) {
-  //   return Center(
-  //     child: Card(
-  //       color: Theme.of(context).cardColor,
-  //       elevation: 10.0,
-  //       clipBehavior: Clip.hardEdge,
-  //       child: InkWell(
-  //         splashColor: Theme.of(context).colorScheme.primary,
-  //         onTap: () {
-  //           debugPrint('Card tapped.');
-  //         },
-  //         child: const SizedBox(
-  //           width: 300,
-  //           height: 100,
-  //           child: Text('A card that can be tapped'),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+    final cardWidth = screenWidth * 0.45;
+    final cardHeight = screenHeight * 0.2;
+
+    return InkWell(
+      onTap: () {
+        // Ação ao tocar no card
+        print('Card foi tocado!');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Você tocou no card de Cálculo 1!')),
+        );
+      },
+      borderRadius: BorderRadius.circular(4.0),
+      child: Card(
+        elevation: 5.0,
+        child: Container(
+          width: cardWidth,
+          height: cardHeight,
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                  child: Center(
+                    child: Icon(
+                      Icons.calculate,
+                      size: 50,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.all(10),
+                color: Theme.of(context).colorScheme.onTertiary,
+                width: double.infinity,
+                child: Text(
+                  'Cálculo 1',
+                  textAlign: TextAlign.start,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

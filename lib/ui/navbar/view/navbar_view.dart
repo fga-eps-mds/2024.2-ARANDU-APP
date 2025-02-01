@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
 import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class NavBarScreen extends StatelessWidget {
     NavbarViewModel viewModel = Provider.of<NavbarViewModel>(context);
 
     final List<Widget> pages = [
-      const Subject(),
+      const HomeView(),
       const Center(child: Text('Friends', style: TextStyle(fontSize: 20))),
       const Center(child: Text('Dashboard', style: TextStyle(fontSize: 20))),
       const Profile(),
@@ -42,9 +43,9 @@ class NavBarScreen extends StatelessWidget {
         unselectedItemColor: Theme.of(context).colorScheme.onSurface,
         items: const [
           BottomNavigationBarItem(
-            key: Key('disciplinasTab'),
+            key: Key('homeTab'),
             icon: Icon(Icons.book_outlined),
-            label: "Disciplinas",
+            label: "Home",
           ),
           BottomNavigationBarItem(
             key: Key('amigosTab'),

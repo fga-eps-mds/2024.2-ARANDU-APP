@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:aranduapp/ui/subjects/service/subjects_service.dart';
@@ -12,20 +13,23 @@ class SubjectsViewmodel extends ChangeNotifier {
   late Command1<bool, String> isUserSUbscribedCommand;
 
   SubjectsViewmodel() {
-    subjectCommand = Command0(subject);
+    subjectCommand = Command0(_subject);
     subjectCommand.execute();
 
-    isUserSUbscribedCommand = Command1<bool, String>(isUserSUbscribed);
+    isUserSUbscribedCommand = Command1<bool, String>(_isUserSUbscribed);
   }
 
-  Future<Result<List<SubjectModel>>> subject() async {
+  Future<Result<List<SubjectModel>>> _subject() async {
     final res = await GetIt.instance<SubjectService>().getSubjects();
 
     return Result.value(res);
   }
 
-  Future<Result<bool>> isUserSUbscribed(String subjectId) async {
-    return Result.value(
-        await GetIt.instance<SubjectService>().isUsersubscribe(subjectId));
+  Future<Result<bool>> _isUserSUbscribed(String subjectId) async {
+    var res = await GetIt.instance<SubjectService>().isUsersubscribe(subjectId);
+
+    Log.i(res);
+
+    return Result.value(res);
   }
 }

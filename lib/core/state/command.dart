@@ -41,13 +41,12 @@ abstract class Command<T> extends ChangeNotifier {
 
       if (_result?.asError != null) {
         _isError = true;
-        Log.e(_result?.asError!.error.toString());
+        Log.i(_result?.asError!.error.toString());
       } else {
         _isOk = true;
       }
-
     } catch (e) {
-      Log.e(e);
+      Log.i(e);
       _result = Result.error(e);
       _isError = true;
     } finally {

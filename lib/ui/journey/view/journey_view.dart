@@ -95,8 +95,8 @@ class _JourneyScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
-            title: Text(journey.title),
-            subtitle: Text(journey.description),
+            title: Text(journey.title?? "NUll"),
+            subtitle: Text(journey.description?? "NULL"),
             trailing: Icon(
               Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,

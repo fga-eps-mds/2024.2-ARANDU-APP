@@ -3,7 +3,7 @@ import 'dart:convert';
 class JourneyModel {
   final String id;
   final String title;
-  final String description;
+  final String? description;
 
   JourneyModel({
     required this.id,
@@ -17,7 +17,7 @@ class JourneyModel {
     return JourneyModel(
       id: json['_id']! as String,
       title: json['title']! as String,
-      description: json['description']! as String,
+      description: json['description'] as String?,
     );
   }
 }

@@ -1,6 +1,6 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/join_subjects/view/join_subjects_view.dart';
-import 'package:aranduapp/ui/subjects/model/subject_model.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -33,7 +33,7 @@ class _SubjectScreen extends StatelessWidget {
 
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       scrolledUnderElevation: 0,
       title: Text(
         'Disciplinas',
@@ -53,7 +53,7 @@ class _SubjectScreen extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: viewModel.subjectCommand.execute,
       child: ListenableBuilder(
-        listenable: viewModel.subjectCommand,
+        listenable:  viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
             return _createListView(viewModel, screenHeight);
@@ -76,59 +76,64 @@ class _SubjectScreen extends StatelessWidget {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           var subject = viewModel.subjectCommand.result!.asValue!.value[index];
-          return Column(
-            children: [
-              ListenableBuilder(
-                listenable: viewModel.isUserSUbscribedCommand,
-                builder: (context, child) {
-                  return _createListTile(
-                      screenHeight, context, subject, viewModel);
-                },
-              ),
-              SizedBox(height: screenHeight * 0.01),
-            ],
-          );
+
+          return ListenableBuilder(
+              listenable: viewModel.isUserSUbscribedCommand,
+              builder: (context, child) {
+                return ListTile(
+                  contentPadding: EdgeInsets.all(screenHeight * 0.02),
+                  tileColor: Theme.of(context).colorScheme.onInverseSurface,
+                  leading: Container(
+                    width: 72,
+                    alignment: Alignment.topLeft,
+                    child: Icon(
+                      Icons.book,
+                      color: Theme.of(context).colorScheme.onSurface,
+                      size: 64,
+                    ),
+                  ),
+                  title: Text(subject.name),
+                  subtitle: Text(subject.description),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: Theme.of(context).colorScheme.onSurface,
+                    size: 56,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () async {
+                    //TODO; isso deveria funcionar sem o await!!!!!
+                    await viewModel.isUserSUbscribedCommand.execute(subject.id);
+
+                    if (viewModel.isUserSUbscribedCommand.isOk) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => viewModel
+                                  .isUserSUbscribedCommand
+                                  .result!
+                                  .asValue!
+                                  .value
+                              ? Journey(subject: subject)
+                              : JoinSubjects(subject: subject),
+                        ),
+                      );
+                    }
+
+                    if (viewModel.isUserSUbscribedCommand.isError) {
+                      Log.d(viewModel
+                          .isUserSUbscribedCommand.result!.asError!.error);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content: Text(viewModel
+                                .isUserSUbscribedCommand.result!.asError!.error
+                                .toString())),
+                      );
+                    }
+                  },
+                );
+              });
         });
-  }
-
-  ListTile _createListTile(double screenHeight, BuildContext context,
-      SubjectModel subject, SubjectsViewmodel viewModel) {
-    return ListTile(
-      contentPadding: EdgeInsets.all(screenHeight * 0.02),
-      tileColor: Theme.of(context).colorScheme.onInverseSurface,
-      leading: Container(
-        width: 72,
-        alignment: Alignment.topLeft,
-        child: Icon(
-          Icons.book,
-          color: Theme.of(context).colorScheme.onSurface,
-          size: 64,
-        ),
-      ),
-      title: Text(subject.name),
-      subtitle: Text(subject.description),
-      trailing: Icon(
-        Icons.chevron_right,
-        color: Theme.of(context).colorScheme.onSurface,
-        size: 56,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      onTap: () async {
-        viewModel.isUserSUbscribedCommand.execute(subject.id);
-
-        if (viewModel.isUserSUbscribedCommand.isOk) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) =>
-                  viewModel.isUserSUbscribedCommand.result!.asValue!.value
-                      ? Journey(subject: subject)
-                      : JoinSubjects(subject: subject),
-            ),
-          );
-        }
-      },
-    );
   }
 }

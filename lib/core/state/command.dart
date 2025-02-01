@@ -1,3 +1,4 @@
+import 'package:aranduapp/core/log/log.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 
@@ -40,11 +41,13 @@ abstract class Command<T> extends ChangeNotifier {
 
       if (_result?.asError != null) {
         _isError = true;
+        Log.e(_result?.asError!.error.toString());
       } else {
         _isOk = true;
       }
 
     } catch (e) {
+      Log.e(e);
       _result = Result.error(e);
       _isError = true;
     } finally {

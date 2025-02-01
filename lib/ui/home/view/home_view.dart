@@ -8,6 +8,24 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
+final List<Map<String, dynamic>> knowledgeItems = [
+  {
+    'title': 'Cálculo 1',
+  },
+  {
+    'title': 'Cálculo 2',
+  },
+  {
+    'title': 'Álgebra Linear',
+  },
+  {
+    'title': 'Geometria Analítica',
+  },
+  {
+    'title': 'Equações Diferenciais',
+  },
+];
+
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
@@ -21,8 +39,10 @@ class _HomeViewState extends State<HomeView> {
               _logo(context),
               const SizedBox(height: 20),
               _searchbar(context),
-              const SizedBox(height: 20),
-              _knowledgecard(context),
+              const SizedBox(height: 40),
+              _knowledgeCarousel(context, "Disciplinas Matriculadas"),
+              const SizedBox(height: 30),
+              _knowledgeCarousel(context, "Disciplinas Dispóniveis"),
             ],
           ),
         ),
@@ -79,7 +99,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _searchbar(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36.0, vertical: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 16.0),
       child: SearchAnchor(
         builder: (BuildContext context, SearchController controller) {
           return SearchBar(
@@ -127,27 +147,24 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _knowledgecard(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
-    final cardWidth = screenWidth * 0.45;
-    final cardHeight = screenHeight * 0.2;
-
+  Widget _knowledgecard({
+    required BuildContext context,
+    required String title,
+    required IconData iconData,
+  }) {
     return InkWell(
       onTap: () {
-        // Ação ao tocar no card
-        print('Card foi tocado!');
+        print('Card "$title" foi tocado!');
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Você tocou no card de Cálculo 1!')),
+          SnackBar(content: Text('Você tocou no card: $title')),
         );
       },
       borderRadius: BorderRadius.circular(4.0),
       child: Card(
-        elevation: 5.0,
+        elevation: 4.0,
         child: Container(
-          width: cardWidth,
-          height: cardHeight,
+          width: 360,
+          height: 116,
           child: Column(
             children: [
               Expanded(
@@ -167,11 +184,11 @@ class _HomeViewState extends State<HomeView> {
                 color: Theme.of(context).colorScheme.onTertiary,
                 width: double.infinity,
                 child: Text(
-                  'Cálculo 1',
+                  title,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -180,6 +197,46 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _knowledgeCarousel(BuildContext context, String titulo) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Text(
+            titulo,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        AspectRatio(
+          aspectRatio: 3 / 1.2,
+          child: PageView.builder(
+            controller: PageController(
+              viewportFraction: 0.5,
+              initialPage: 2,
+            ),
+            itemCount: knowledgeItems.length,
+            itemBuilder: (context, index) {
+              final item = knowledgeItems[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: _knowledgecard(
+                  context: context,
+                  title: item['title'],
+                  iconData: item['icon'],
+                ),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }

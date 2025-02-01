@@ -34,11 +34,11 @@ class AuthService {
   }
 
   Future<UserModel> getUser() async {
-    String? json = await StorageValue.getInstance().getJsonUser();
+   // String? json = await StorageValue.getInstance().getJsonUser();
 
-    if (json != null) {
-      return UserModel.fromJsonString(json);
-    } else {
+   // if (json != null) {
+   //   return UserModel.fromJsonString(json);
+   // } else {
       final response = await validateToken();
 
       Log.f(response);
@@ -52,6 +52,6 @@ class AuthService {
       await StorageValue.getInstance().setJsonUser(user.toJson());
 
       return user;
-    }
+    //}
   }
 }

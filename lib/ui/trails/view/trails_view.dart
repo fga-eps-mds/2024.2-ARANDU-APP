@@ -1,4 +1,5 @@
 import 'package:aranduapp/core/log/log.dart';
+import 'package:aranduapp/ui/content/view/content_view.dart';
 import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
@@ -39,7 +40,7 @@ class _TrailsScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.onPrimary,
       scrolledUnderElevation: 0,
       title: Text(
-        'Lógica Booleana',
+        journey.title,
         style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),
@@ -71,7 +72,9 @@ class _TrailsScreen extends StatelessWidget {
           if (viewModel.getTrailsCommand.isOk) {
             return _buildListView(context);
           } else if (viewModel.getTrailsCommand.isError) {
-            return ErrorScreen(message: "Deslize para baixo\n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}");
+            return ErrorScreen(
+                message:
+                    "Deslize para baixo\n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}");
           } else {
             return const LoadingWidget();
           }
@@ -81,7 +84,6 @@ class _TrailsScreen extends StatelessWidget {
   }
 
   ListView _buildListView(BuildContext context) {
-
     TrailsViewmodel viewModel = Provider.of<TrailsViewmodel>(context);
 
     return ListView.builder(
@@ -95,14 +97,22 @@ class _TrailsScreen extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
-            title: Text(trails.name?? "NULL"),
+            title: Text(trails.name),
             trailing: Icon(
               Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
             onTap: () {
-              Log.d("tap");
+              if (trails.contectId != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ContentView(
+                      contentID: trails.contectId!,
+                    ),
+                  ),
+                );
+              }
             },
           );
         });

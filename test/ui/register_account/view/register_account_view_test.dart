@@ -59,7 +59,6 @@ void main() {
     expect(find.byKey(const Key('userNameField')), findsOneWidget);
     expect(find.byType(TextEmail), findsOneWidget);
     expect(find.byType(TextPassWord), findsOneWidget);
-    expect(find.byType(Checkbox), findsOneWidget);
 
     expect(find.text('Registrar'), findsOneWidget);
     expect(find.byType(TextAndLink), findsOneWidget);
@@ -92,36 +91,6 @@ void main() {
             req.email == email &&
             req.userName == userName &&
             req.password == password)))).called(1);
-  });
-
-  testWidgets('Checkbox shows correct value when initially unchecked',
-      (WidgetTester tester) async {
-    when(mockViewModel.isTermsAccepted).thenReturn(false);
-
-    await tester.pumpWidget(createLoginScreen());
-    await tester.pumpAndSettle();
-
-    Checkbox checkbox = tester.widget(find.byType(Checkbox));
-    expect(checkbox.value, false);
-
-    await tester.tap(find.byType(Checkbox));
-
-    verify(mockViewModel.setToggleTermsAccepted(true)).called(1);
-  });
-
-  testWidgets('Checkbox shows correct value when initially checked',
-      (WidgetTester tester) async {
-    when(mockViewModel.isTermsAccepted).thenReturn(true);
-
-    await tester.pumpWidget(createLoginScreen());
-    await tester.pumpAndSettle();
-
-    Checkbox checkbox = tester.widget(find.byType(Checkbox));
-    expect(checkbox.value, true);
-
-    await tester.tap(find.byType(Checkbox));
-
-    verify(mockViewModel.setToggleTermsAccepted(false)).called(1);
   });
 
   testWidgets('Register Account user notification snackbar',

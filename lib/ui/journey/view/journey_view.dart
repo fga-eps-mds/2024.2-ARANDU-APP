@@ -1,8 +1,9 @@
-import 'package:aranduapp/core/log/log.dart';
+//import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
+import 'package:aranduapp/ui/trails/view/trails_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
@@ -71,7 +72,7 @@ class _JourneyScreen extends StatelessWidget {
           if (viewModel.getJourneyCommand.isOk) {
             return _buildListView(context);
           } else if (viewModel.getJourneyCommand.isError) {
-            return const ErrorScreen(message: "Deslize para baixo");
+            return ErrorScreen(message: "Deslize para baixo\n\n ${viewModel.getJourneyCommand.result!.asError!.error.toString()}");
           } else {
             return const LoadingWidget();
           }
@@ -96,14 +97,18 @@ class _JourneyScreen extends StatelessWidget {
               size: 32,
             ),
             title: Text(journey.title),
-            subtitle: Text(journey.description),
+            subtitle: Text(journey.description?? "Sem descrição"),
             trailing: Icon(
               Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
             onTap: () {
-              Log.d("tap");
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => Trails(journey: journey),
+              ),
+            );
             },
           );
         });

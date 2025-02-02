@@ -18,7 +18,6 @@ class ProfileViewModel extends ChangeNotifier {
 
   Future<Result<void>> logout() async {
     await StorageValue.getInstance().clear();
-    await GetIt.instance<AuthRepository>().clearUser();
 
     Log.d("Usuário deslogado com sucesso.");
     return Result.value(null);

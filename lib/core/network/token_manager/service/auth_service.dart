@@ -34,23 +34,24 @@ class AuthService {
   }
 
   Future<UserModel> getUser() async {
-    Log.d("get user");
-    String? json = await StorageValue.getInstance().getJsonUser();
+   // String? json = await StorageValue.getInstance().getJsonUser();
 
-    if (json != null) {
-      return UserModel.fromJsonString(json);
-    } else {
+   // if (json != null) {
+   //   return UserModel.fromJsonString(json);
+   // } else {
       final response = await validateToken();
 
       Log.f(response);
 
       Map<String, dynamic> json = jsonDecode(response.toString());
 
+      if (json['userPayload'] == null) Log.e('user payload is null');
+
       UserModel user = UserModel.fromMap(json['userPayload']!);
 
       await StorageValue.getInstance().setJsonUser(user.toJson());
 
       return user;
-    }
+    //}
   }
 }

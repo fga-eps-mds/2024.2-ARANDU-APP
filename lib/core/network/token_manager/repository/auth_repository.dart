@@ -15,7 +15,7 @@ class AuthRepository {
         _userCache = user;
         return user;
       } catch (e) {
-        throw Exception('Erro ao obter o usuário');
+        throw Exception(e);
       }
     }
   }
@@ -23,6 +23,5 @@ class AuthRepository {
   Future<void> clearUser() async {
     _userCache = null;
     StorageValue.getInstance().setJsonUser(null);
-    await GetIt.instance<AuthService>().refreshToken();
   }
 }

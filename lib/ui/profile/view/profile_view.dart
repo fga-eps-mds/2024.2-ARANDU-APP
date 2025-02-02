@@ -94,7 +94,9 @@ class Profile extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const EditProfile()),
-              );
+              ).then((result) {
+                viewModel.getUserCommand.execute();
+              });
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.primary,

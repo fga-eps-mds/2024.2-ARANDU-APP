@@ -16,14 +16,17 @@ class TrailsService {
     var res = journeyList.map((e) {
       final Map<String, dynamic> trailsMap = e as Map<String, dynamic>;
 
-      final list = trailsMap['contents'] as List<dynamic>;
+      final List<String> list = (trailsMap['contents'] as List<dynamic>)
+          .map((element) => element as String)
+          .toList();
+
+      Log.t(list);
 
       return TrailsModel(
-          id: trailsMap['_id']! as String,
-          name: trailsMap['name']! as String,
-          contectId: list.isNotEmpty ? list[0] as String : null,
-          );
-          
+        id: trailsMap['_id']! as String,
+        name: trailsMap['name']! as String,
+        contects: list,
+      );
     }).toList();
 
     return res;

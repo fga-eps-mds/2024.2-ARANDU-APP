@@ -7,6 +7,7 @@ import 'package:aranduapp/ui/journey/di/di.dart';
 import 'package:aranduapp/ui/login/di/di_login.dart';
 import 'package:aranduapp/ui/navbar/di/di_navbar.dart';
 import 'package:aranduapp/ui/onboarding/di/di_onboarding.dart';
+import 'package:aranduapp/ui/pages_content/di/di.dart';
 import 'package:aranduapp/ui/profile/di/di_profile.dart';
 import 'package:aranduapp/ui/recover_account/di/di_recover_account.dart';
 import 'package:aranduapp/ui/register_account/di/di_register_account.dart';
@@ -33,4 +34,5 @@ void setupLocator() {
   setupEditDeleteUser();
   setupJoinSubjectsDI();
   setupTrailsDI();
+  setupPagesContentDI();
 }

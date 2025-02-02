@@ -3,6 +3,7 @@ import 'package:aranduapp/core/network/token_manager/di/di_auth.dart';
 import 'package:aranduapp/ui/edit_delete_user/di/di_edit_delete_user.dart';
 import 'package:aranduapp/ui/edit_password/di/di_edit_password.dart';
 import 'package:aranduapp/ui/edit_profile/di/di_edit_profile.dart';
+import 'package:aranduapp/ui/home/di/di.dart';
 import 'package:aranduapp/ui/journey/di/di.dart';
 import 'package:aranduapp/ui/login/di/di_login.dart';
 import 'package:aranduapp/ui/navbar/di/di_navbar.dart';
@@ -29,4 +30,5 @@ void setupLocator() {
   setupContentDI();
   setupAuthDI();
   setupEditDeleteUser();
+  setupHomeDI();
 }

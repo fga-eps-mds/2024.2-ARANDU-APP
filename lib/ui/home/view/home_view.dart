@@ -1,34 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:get_it/get_it.dart';
+import 'package:aranduapp/ui/home/model/home_model.dart';
+import 'package:aranduapp/ui/home/viewmodel/home_viewmodel.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-final List<Map<String, dynamic>> knowledgeItems = [
-  {
-    'title': 'Cálculo 1',
-  },
-  {
-    'title': 'Cálculo 2',
-  },
-  {
-    'title': 'Álgebra Linear',
-  },
-  {
-    'title': 'Geometria Analítica',
-  },
-  {
-    'title': 'Equações Diferenciais',
-  },
-];
-
-class _HomeViewState extends State<HomeView> {
-  @override
   Widget build(BuildContext context) {
+    final viewModel = GetIt.instance<HomeViewModel>();
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -40,9 +23,7 @@ class _HomeViewState extends State<HomeView> {
               const SizedBox(height: 20),
               _searchbar(context),
               const SizedBox(height: 40),
-              _knowledgeCarousel(context, "Disciplinas Matriculadas"),
-              const SizedBox(height: 30),
-              _knowledgeCarousel(context, "Disciplinas Dispóniveis"),
+              _knowledgeCarousel(context, "Áreas de conhecimento", viewModel),
             ],
           ),
         ),
@@ -54,8 +35,6 @@ class _HomeViewState extends State<HomeView> {
     Size screenSize = MediaQuery.of(context).size;
 
     double circleDiameter = screenSize.longestSide * 0.7;
-    double nameSize = screenSize.height * 0.07;
-
     return Center(
       child: Column(
         children: [
@@ -150,7 +129,6 @@ class _HomeViewState extends State<HomeView> {
   Widget _knowledgecard({
     required BuildContext context,
     required String title,
-    required IconData iconData,
   }) {
     return InkWell(
       onTap: () {
@@ -200,43 +178,63 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _knowledgeCarousel(BuildContext context, String titulo) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30.0),
-          child: Text(
-            titulo,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        const SizedBox(height: 8),
-        AspectRatio(
-          aspectRatio: 3 / 1.2,
-          child: PageView.builder(
-            controller: PageController(
-              viewportFraction: 0.5,
-              initialPage: 2,
-            ),
-            itemCount: knowledgeItems.length,
-            itemBuilder: (context, index) {
-              final item = knowledgeItems[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                child: _knowledgecard(
-                  context: context,
-                  title: item['title'],
-                  iconData: item['icon'],
+  Widget _knowledgeCarousel(
+      BuildContext context, String titulo, HomeViewModel viewModel) {
+    return ListenableBuilder(
+      listenable: viewModel, // Observa o HomeViewModel
+      builder: (context, child) {
+        final knowledgeItems =
+            viewModel.getHomeCommand.result?.asValue?.value ?? [];
+
+        if (viewModel.getHomeCommand.running) {
+          return Center(child: CircularProgressIndicator()); // Exibe um loading
+        } else if (viewModel.getHomeCommand.isError) {
+          return Center(
+              child: Text(
+                  'Erro ao carregar os dados')); // Exibe uma mensagem de erro
+        } else if (knowledgeItems.isEmpty) {
+          return Center(
+              child: Text(
+                  'Nenhum dado disponível')); // Exibe uma mensagem se não houver dados
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+              child: Text(
+                titulo,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
                 ),
-              );
-            },
-          ),
-        )
-      ],
+              ),
+            ),
+            const SizedBox(height: 8),
+            AspectRatio(
+              aspectRatio: 3 / 1.2,
+              child: PageView.builder(
+                controller: PageController(
+                  viewportFraction: 0.5,
+                  initialPage: 2,
+                ),
+                itemCount: knowledgeItems.length,
+                itemBuilder: (context, index) {
+                  final item = knowledgeItems[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: _knowledgecard(
+                      context: context,
+                      title: item.name, // Use o título do item
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

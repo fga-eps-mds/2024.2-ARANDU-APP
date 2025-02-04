@@ -5,6 +5,19 @@ import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/home/model/home_model.dart';
 import 'package:aranduapp/ui/home/viewmodel/home_viewmodel.dart';
 
+class Home extends StatelessWidget {
+  const Home({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<HomeViewModel>.value(
+      value: GetIt.instance<HomeViewModel>(),
+    );
+  }
+}
+
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
@@ -181,21 +194,24 @@ class HomeView extends StatelessWidget {
   Widget _knowledgeCarousel(
       BuildContext context, String titulo, HomeViewModel viewModel) {
     return ListenableBuilder(
-      listenable: viewModel, // Observa o HomeViewModel
+      listenable: viewModel,
       builder: (context, child) {
-        final knowledgeItems =
-            viewModel.getHomeCommand.result?.asValue?.value ?? [];
+        // Dispara a busca se o comando não foi executado e não está em andamento
+        if (!viewModel.getHomeCommand.isOk &&
+            !viewModel.getHomeCommand.running) {
+          Future.microtask(() => viewModel.fetchKnowledges());
+        }
 
         if (viewModel.getHomeCommand.running) {
-          return Center(child: CircularProgressIndicator()); // Exibe um loading
+          return const Center(child: CircularProgressIndicator());
         } else if (viewModel.getHomeCommand.isError) {
-          return Center(
-              child: Text(
-                  'Erro ao carregar os dados')); // Exibe uma mensagem de erro
-        } else if (knowledgeItems.isEmpty) {
-          return Center(
-              child: Text(
-                  'Nenhum dado disponível')); // Exibe uma mensagem se não houver dados
+          return const Center(child: Text('Erro ao carregar os dados'));
+        }
+
+        final knowledgeItems =
+            viewModel.getHomeCommand.result?.asValue?.value ?? [];
+        if (knowledgeItems.isEmpty) {
+          return const Center(child: Text('Nenhum dado disponível'));
         }
 
         return Column(
@@ -226,7 +242,7 @@ class HomeView extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: _knowledgecard(
                       context: context,
-                      title: item.name, // Use o título do item
+                      title: item.name,
                     ),
                   );
                 },

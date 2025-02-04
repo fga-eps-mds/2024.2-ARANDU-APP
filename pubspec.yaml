@@ -47,9 +47,34 @@ dependencies:
   build_runner: ^2.4.13
   async: ^2.11.0
   get_it: ^8.0.3
+  flutter_launcher_icons: ^0.13.1
+  flutter_html: ^3.0.0-beta.2
+  flutter_markdown: ^0.7.5
+  markdown: ^7.3.0
+  flutter_markdown_latex: ^0.3.4
+  lottie: ^2.7.0
+  
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "./assets/images/Logo-App-v-2.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+# web:
+#   generate: true
+#   image_path: "path/to/image.png"
+#   background_color: "#hexcode"
+#   theme_color: "#hexcode"
+# windows:
+#   generate: true
+#   image_path: "path/to/image.png"
+#   icon_size: 48 # min:48, max:256, default: 48
+# macos:
+#   generate: true
+#   image_path: "path/to/image.png"
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.13.1
   flutter_test:
     sdk: flutter
 
@@ -82,6 +107,7 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/Logo-App-v-2.png" # Caminho da sua imagem
+
 
 
   # To add assets to your application, add an assets section, like this:

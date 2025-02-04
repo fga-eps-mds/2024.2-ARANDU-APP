@@ -3,9 +3,11 @@ import 'package:aranduapp/ui/login/model/login_request.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
 import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
+import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:aranduapp/ui/shared/text_email.dart';
 import 'package:aranduapp/ui/shared/text_password.dart';
+import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,28 +23,31 @@ void main() {
   late MockLoginViewModel mockViewModel;
   late MockCommand1<void, LoginRequest> mockLoginCommand;
   late MockCommand0 mockValidadeTokenCommand;
+  late NavbarViewModel mockNavbarViewModel;
 
   setUp(() async {
     mockViewModel = MockLoginViewModel();
-
     mockLoginCommand = MockCommand1();
+    mockValidadeTokenCommand = MockCommand0();
 
     when(mockLoginCommand.execute(any))
         .thenAnswer((_) async => Result.value(null));
-
     when(mockViewModel.loginCommand).thenReturn(mockLoginCommand);
 
-    mockValidadeTokenCommand = MockCommand0();
-    when(mockViewModel.validadeTokenCommand)
-        .thenReturn(mockValidadeTokenCommand);
     when(mockValidadeTokenCommand.execute())
         .thenAnswer((_) async => Result.value(null));
     when(mockValidadeTokenCommand.running).thenReturn(false);
     when(mockValidadeTokenCommand.isError).thenReturn(false);
     when(mockValidadeTokenCommand.isOk).thenReturn(false);
+    when(mockViewModel.validadeTokenCommand)
+        .thenReturn(mockValidadeTokenCommand);
+
+    mockNavbarViewModel = NavbarViewModel();
 
     await GetIt.instance.reset();
     GetIt.I.registerLazySingleton<LoginViewModel>(() => mockViewModel);
+    GetIt.I.registerLazySingleton<NavbarViewModel>(() => mockNavbarViewModel);
+    GetIt.I.registerLazySingleton<SubjectsViewmodel>(() => SubjectsViewmodel());
   });
 
   Widget createLoginScreen() {
@@ -92,6 +97,18 @@ void main() {
     expect(find.text('Entrar'), findsOneWidget);
   });
 
+  testWidgets(
+      'Login screen displays email when mockValidadeTokenCommand.isOk, mockValidadeTokenCommand.isError and mockValidadeTokenCommand.running are false',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createLoginScreen());
+    await tester.pumpAndSettle();
+
+    expect(find.byType(TextEmail), findsOneWidget);
+    expect(find.byType(TextPassWord), findsOneWidget);
+    expect(find.byType(CommandButton), findsOneWidget);
+    expect(find.text('Entrar'), findsOneWidget);
+  });
+
   testWidgets('Test User Input for Email and Password',
       (WidgetTester tester) async {
     when(mockValidadeTokenCommand.isError).thenReturn(true);
@@ -132,11 +149,12 @@ void main() {
 
     verify(mockLoginCommand.execute(argThat(
       predicate<LoginRequest>(
-          (req) => req.email == email && req.password == password)
+          (req) => req.email == email && req.password == password),
     ))).called(1);
 
     // TODO: Verify navigation to navbar
   });
+
   testWidgets('Displays error when login fails', (WidgetTester tester) async {
     //TODO:
   });

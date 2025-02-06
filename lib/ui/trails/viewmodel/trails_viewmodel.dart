@@ -9,11 +9,18 @@ import 'package:get_it/get_it.dart';
 class TrailsViewmodel extends ChangeNotifier {
   late Command1<List<TrailsModel>, String> getTrailsCommand;
 
+  bool _isReloadingData = false;
+
   TrailsViewmodel() {
     getTrailsCommand = Command1(getTrails);
   }
 
+  bool get isReloadingData => _isReloadingData;
+
   Future<Result<List<TrailsModel>>> getTrails(String journeyId) async {
+    _isReloadingData = true;
+    notifyListeners();
+
     List<TrailsModel> res = await GetIt.instance<TrailsService>()
         .getTrails(TrailsRequest(journeyId: journeyId));
 

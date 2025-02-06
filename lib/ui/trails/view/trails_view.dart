@@ -1,5 +1,3 @@
-import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/ui/content/view/content_view.dart';
 import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'package:aranduapp/ui/pages_content/view/pages_content_view.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
@@ -72,12 +70,27 @@ class _TrailsScreen extends StatelessWidget {
         builder: (context, child) {
           if (viewModel.getTrailsCommand.isOk) {
             return _buildListView(context);
-          } else if (viewModel.getTrailsCommand.isError) {
-            return ErrorScreen(
-                message:
-                    "Deslize para baixo\n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}");
           } else {
-            return const LoadingWidget();
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (viewModel.getTrailsCommand.isError)
+                        ErrorScreen(
+                          message:
+                              "Deslize para baixo \n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}",
+                        )
+                      else if (!viewModel.isReloadingData)
+                        const LoadingWidget(),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),
@@ -108,7 +121,9 @@ class _TrailsScreen extends StatelessWidget {
               if (trails.contects != null) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PagesContentView(listContent: trails.contects ?? [],),
+                    builder: (context) => PagesContentView(
+                      listContent: trails.contects ?? [],
+                    ),
                   ),
                 );
               }

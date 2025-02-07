@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+
+class Fundo extends CustomPainter {
+  final ColorScheme colors;
+  Fundo(this.colors);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = colors.onInverseSurface;
+
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width / 2, size.height)
+      ..moveTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width / 2, size.height);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class Square extends CustomPainter {
+  final ColorScheme colors;
+  Square(this.colors);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = colors.onInverseSurface;
+
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class Base extends CustomPainter {
+  final ColorScheme colors;
+  Base(this.colors);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = colors.onInverseSurface;
+
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width * 1 / 4, size.height)
+      ..lineTo(size.width * 3 / 4, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class Corpo extends CustomPainter {
+  final ColorScheme colors;
+  Corpo(this.colors);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = colors.onInverseSurface;
+
+    final path = Path()
+      ..moveTo(size.width * 1 / 4, 0)
+      ..lineTo(size.width * 1 / 4, size.height)
+      ..lineTo(size.width * 3 / 4, size.height)
+      ..lineTo(size.width * 3 / 4, 0)
+      ..lineTo(size.width * 1 / 4, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class Ponta extends CustomPainter {
+  final ColorScheme colors;
+  Ponta(this.colors);
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()..color = colors.onInverseSurface;
+
+    final path = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width * 1 / 2, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0);
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

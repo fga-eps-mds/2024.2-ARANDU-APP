@@ -16,11 +16,10 @@ import 'journey_view_test.mocks.dart';
 import '../../login/view/login_view_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>(), MockSpec<Command1>()])
-
 void main() {
   late MockJourneyViewModel mockViewModel;
   late MockCommand1<List<JourneyModel>, String> mockGetJourneyCommand;
-  final fakeSubject =
+  final testSubject =
       SubjectModel(id: '1', name: 'Matemática', shortName: '', description: '');
 
   setUp(() async {
@@ -38,7 +37,7 @@ void main() {
 
   Widget createJourneyScreen() {
     return MaterialApp(
-      home: Journey(subject: fakeSubject),
+      home: Journey(subject: testSubject),
     );
   }
 
@@ -53,13 +52,13 @@ void main() {
 
   testWidgets('Deve mostrar lista de jornadas quando comando for bem sucedido',
       (WidgetTester tester) async {
-    final fakeJourneys = [
+    final testJourneys = [
       JourneyModel(id: '1', title: 'Jornada 1', description: 'Descrição 1'),
       JourneyModel(id: '2', title: 'Jornada 2', description: 'Descrição 2'),
     ];
 
     when(mockGetJourneyCommand.isOk).thenReturn(true);
-    when(mockGetJourneyCommand.result).thenReturn(Result.value(fakeJourneys));
+    when(mockGetJourneyCommand.result).thenReturn(Result.value(testJourneys));
 
     await tester.pumpWidget(createJourneyScreen());
     await tester.pumpAndSettle();
@@ -82,6 +81,31 @@ void main() {
 
     expect(find.text('Deslize para baixo\n\n Erro de conexão'), findsOneWidget);
     expect(find.text('Algo deu errado...'), findsOneWidget);
-  }); 
+  });
+
+  testWidgets('Deve chamar o comando execute ao iniciar a tela',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createJourneyScreen());
+    verify(mockGetJourneyCommand.execute(testSubject.id)).called(1);
+  });
+
+  testWidgets(
+      'Deve chamar o comando execute novamente ao realizar o refresh na tela',
+      (WidgetTester tester) async {
+    when(mockGetJourneyCommand.isOk).thenReturn(true);
+    when(mockGetJourneyCommand.result).thenReturn(Result.value([
+      JourneyModel(id: '1', title: 'Jornada 1', description: 'Descrição 1'),
+    ]));
+  
+    await tester.pumpWidget(createJourneyScreen());
+    await tester.pumpAndSettle();
+
+    // Simulate a pull-to-refresh
+    await tester.fling(find.byType(ListView),const Offset(0.0, 300.0),1000.0,);
+    await tester.pumpAndSettle();
+
+    verify(mockGetJourneyCommand.execute(testSubject.id)).called(greaterThan(1));
+  });
+  
 
 }

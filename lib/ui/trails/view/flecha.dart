@@ -13,8 +13,19 @@ class Fundo extends CustomPainter {
       ..lineTo(size.width / 2, size.height)
       ..moveTo(size.width, 0)
       ..lineTo(size.width, size.height)
-      ..lineTo(size.width / 2, size.height);
+      ..lineTo(size.width / 2, size.height)
+      ..close();
 
+    final shadowPath = Path()
+      ..moveTo(0, size.height)
+      ..lineTo(0, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..moveTo(size.width / 2, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..close();
+
+    canvas.drawShadow(shadowPath, colors.shadow, 10.0, false);
     canvas.drawPath(path, paint);
   }
 
@@ -34,8 +45,19 @@ class Square extends CustomPainter {
       ..lineTo(0, size.height)
       ..lineTo(size.width, size.height)
       ..lineTo(size.width, 0)
-      ..lineTo(0, 0);
+      ..lineTo(0, 0)
+      ..close();
 
+    final shadowPath = Path()
+      ..moveTo(0, size.height)
+      ..lineTo(0, 0)
+      ..lineTo(size.width / 2, size.height)
+      ..moveTo(size.width / 2, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..close();
+
+    canvas.drawShadow(shadowPath, colors.shadow, 10.0, false);
     canvas.drawPath(path, paint);
   }
 
@@ -55,8 +77,19 @@ class Base extends CustomPainter {
       ..lineTo(size.width * 1 / 4, size.height)
       ..lineTo(size.width * 3 / 4, size.height)
       ..lineTo(size.width, 0)
-      ..lineTo(0, 0);
+      ..lineTo(0, 0)
+      ..close();
 
+    final shadowPath = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width * 1 / 4, size.height)
+      ..lineTo(size.width / 2, size.height / 2)
+      ..moveTo(size.width, 0)
+      ..lineTo(size.width * 3 / 4, size.height)
+      ..lineTo(size.width / 2, size.height / 2)
+      ..close();
+
+    canvas.drawShadow(shadowPath, colors.shadow, 10.0, false);
     canvas.drawPath(path, paint);
   }
 
@@ -72,11 +105,23 @@ class Corpo extends CustomPainter {
     final paint = Paint()..color = colors.onInverseSurface;
 
     final path = Path()
-      ..moveTo(size.width * 1 / 4, 0)
-      ..lineTo(size.width * 1 / 4, size.height)
-      ..lineTo(size.width * 3 / 4, size.height)
-      ..lineTo(size.width * 3 / 4, 0)
-      ..lineTo(size.width * 1 / 4, 0);
+      ..moveTo(0, 0)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(0, 0)
+      ..close();
+
+    final shadowPath = Path()
+      ..moveTo(0, 0)
+      ..lineTo(0, size.height)
+      ..lineTo(size.width / 2, size.height / 2)
+      ..moveTo(size.width, 0)
+      ..lineTo(size.width, size.height)
+      ..lineTo(size.width / 2, size.height / 2)
+      ..close();
+
+    canvas.drawShadow(shadowPath, colors.shadow, 10.0, false);
 
     canvas.drawPath(path, paint);
   }
@@ -96,7 +141,18 @@ class Ponta extends CustomPainter {
       ..moveTo(0, 0)
       ..lineTo(size.width * 1 / 2, size.height)
       ..lineTo(size.width, 0)
-      ..lineTo(0, 0);
+      ..lineTo(0, 0)
+      ..close();
+
+    final shadowPath = Path()
+      ..moveTo(0, 0)
+      ..lineTo(size.width * 1 / 2, size.height)
+      ..lineTo(size.width, 0)
+      ..lineTo(size.width / 2, size.height / 2)
+      ..lineTo(0, 0)
+      ..close();
+
+    canvas.drawShadow(shadowPath, colors.shadow, 10.0, false);
 
     canvas.drawPath(path, paint);
   }

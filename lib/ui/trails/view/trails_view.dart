@@ -59,11 +59,14 @@ class _TrailsScreen extends StatelessWidget {
                   width: 200,
                 ),
               ),
-              Container(
-                color: colors.onInverseSurface,
-                width: 100,
-                child: Center(
-                  child: _buildTrails(context),
+              CustomPaint(
+                painter: Corpo(colors),
+                child: SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Center(
+                    child: _buildTrails(context),
+                  ),
                 ),
               ),
               CustomPaint(
@@ -145,22 +148,24 @@ class _TrailsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         var trails = viewModel.getTrailsCommand.result!.asValue!.value[index];
         return ListTile(
-          title: Container(
-            child: Center(
-              child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  onPressed: () {
-                    if (trails.contects != null) {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => PagesContentView(
-                            listContent: trails.contects ?? [],
-                          ),
+          title: Center(
+            child: FloatingActionButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                elevation: 5,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                onPressed: () {
+                  if (trails.contects != null) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PagesContentView(
+                          listContent: trails.contects ?? [],
                         ),
-                      );
-                    }
-                  }),
-            ),
+                      ),
+                    );
+                  }
+                }),
           ),
         );
       },

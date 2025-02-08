@@ -18,7 +18,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    viewModel.fetchKnowledges();
+    viewModel.fetchKnowledgesCommand.execute(null);
   }
 
   @override
@@ -28,7 +28,7 @@ class _HomeViewState extends State<HomeView> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
         flexibleSpace: CustomPaint(
-          size: Size(double.infinity, kToolbarHeight),
+          size: const Size(double.infinity, kToolbarHeight),
           painter: CustomPatternPainter(colors),
         ),
       ),
@@ -52,7 +52,6 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _logo(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-
     double circleDiameter = screenSize.longestSide * 0.7;
     return Center(
       child: Column(
@@ -71,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               // Imagem com deslocamento para a esquerda
               Transform.translate(
-                offset: const Offset(-5, -5), // Move 30 pixels para a esquerda
+                offset: const Offset(-10, 0),
                 child: Image.asset(
                   'assets/images/Logo.png',
                   width: circleDiameter * 0.24,
@@ -102,26 +101,22 @@ class _HomeViewState extends State<HomeView> {
         builder: (BuildContext context, SearchController controller) {
           return SearchBar(
             backgroundColor: WidgetStatePropertyAll<Color>(
-              Theme.of(context).colorScheme.surface, // Cor de fundo
+              Theme.of(context).colorScheme.surface,
             ),
-            hintText: 'Pesquisar', // Texto dentro do campo
-            leading: const Icon(Icons.search), // Ícone da lupa
+            hintText: 'Pesquisar',
+            leading: const Icon(Icons.search),
             padding: const WidgetStatePropertyAll<EdgeInsets>(
               EdgeInsets.symmetric(horizontal: 16.0),
             ),
             shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: const BorderRadius.all(
-                    Radius.circular(12.0)), // Borda arredondada
+                borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                 side: BorderSide(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .onSurface, // Borda com cor dinâmica
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
-            elevation:
-                const WidgetStatePropertyAll<double>(0.0), // Remove a elevação
+            elevation: const WidgetStatePropertyAll<double>(0.0),
             onTap: () {
               controller.openView();
             },
@@ -153,11 +148,14 @@ class _HomeViewState extends State<HomeView> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => subjectsByKnowledgesView(
-                    knowledgeId: item['_id'].toString(),
-                    subjectName: item['name'].toString())));
+          context,
+          MaterialPageRoute(
+            builder: (context) => subjectsByKnowledgesView(
+              knowledgeId: item['_id'].toString(),
+              subjectName: item['name'].toString(),
+            ),
+          ),
+        );
       },
       borderRadius: BorderRadius.circular(4.0),
       child: Card(
@@ -201,20 +199,15 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _knowledgeCarousel(BuildContext context) {
-    return AnimatedBuilder(
-      animation: viewModel, // Observa o HomeViewModel
+    return ListenableBuilder(
+      listenable: viewModel.fetchKnowledgesCommand,
       builder: (context, child) {
-        if (viewModel.isLoading) {
-          return const Center(
-              child: CircularProgressIndicator()); // Exibe um loading
-        } else if (viewModel.erroMessage != null) {
-          return const Center(
-              child: Text(
-                  'Erro ao carregar os dados')); // Exibe uma mensagem de erro
+        if (viewModel.fetchKnowledgesCommand.running) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (viewModel.fetchKnowledgesCommand.isError) {
+          return const Center(child: Text('Erro ao carregar os dados'));
         } else if (viewModel.knowledges.isEmpty) {
-          return const Center(
-              child: Text(
-                  'Nenhum dado disponível')); // Exibe uma mensagem se não houver dados
+          return const Center(child: Text('Nenhum dado disponível'));
         }
         final knowledgeItems = viewModel.knowledges;
         return Column(

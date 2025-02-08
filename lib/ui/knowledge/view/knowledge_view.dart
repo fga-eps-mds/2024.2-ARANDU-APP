@@ -26,12 +26,12 @@ class _KnowledgeViewState extends State<KnowledgeView> {
     final colors = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
         flexibleSpace: CustomPaint(
           size: const Size(double.infinity, kToolbarHeight),
           painter: CustomPatternPainter(colors),
         ),
         toolbarHeight: 20,
+        backgroundColor: Colors.transparent,
       ),
       body: ListView(
         padding: EdgeInsets.zero, // Remove padding extra

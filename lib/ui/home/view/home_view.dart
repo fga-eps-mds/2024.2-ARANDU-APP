@@ -1,17 +1,27 @@
+import 'package:aranduapp/ui/home/view/subject_by_knowledges_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
-import 'package:aranduapp/ui/home/model/home_model.dart';
 import 'package:aranduapp/ui/home/viewmodel/home_viewmodel.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final viewModel = GetIt.instance<HomeViewModel>();
+  State<HomeView> createState() => _HomeViewState();
+}
 
+class _HomeViewState extends State<HomeView> {
+  final HomeViewModel viewModel = GetIt.instance<HomeViewModel>();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.fetchKnowledges();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
@@ -23,7 +33,7 @@ class HomeView extends StatelessWidget {
               const SizedBox(height: 20),
               _searchbar(context),
               const SizedBox(height: 40),
-              _knowledgeCarousel(context, "Áreas de conhecimento", viewModel),
+              _knowledgeCarousel(context),
             ],
           ),
         ),
@@ -92,7 +102,7 @@ class HomeView extends StatelessWidget {
             ),
             shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                     Radius.circular(12.0)), // Borda arredondada
                 side: BorderSide(
                   color: Theme.of(context)
@@ -101,7 +111,8 @@ class HomeView extends StatelessWidget {
                 ),
               ),
             ),
-            elevation: WidgetStatePropertyAll<double>(0.0), // Remove a elevação
+            elevation:
+                const WidgetStatePropertyAll<double>(0.0), // Remove a elevação
             onTap: () {
               controller.openView();
             },
@@ -128,19 +139,21 @@ class HomeView extends StatelessWidget {
 
   Widget _knowledgecard({
     required BuildContext context,
-    required String title,
+    required Map<String, dynamic> item,
   }) {
     return InkWell(
       onTap: () {
-        print('Card "$title" foi tocado!');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Você tocou no card: $title')),
-        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => subjectsByKnowledgesView(
+                    knowledgeId: item['_id'].toString(),
+                    subjectName: item['name'].toString())));
       },
       borderRadius: BorderRadius.circular(4.0),
       child: Card(
         elevation: 4.0,
-        child: Container(
+        child: SizedBox(
           width: 360,
           height: 116,
           child: Column(
@@ -158,11 +171,11 @@ class HomeView extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 color: Theme.of(context).colorScheme.onTertiary,
                 width: double.infinity,
                 child: Text(
-                  title,
+                  item['name'].toString(),
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.onSurface,
@@ -178,34 +191,31 @@ class HomeView extends StatelessWidget {
     );
   }
 
-  Widget _knowledgeCarousel(
-      BuildContext context, String titulo, HomeViewModel viewModel) {
-    return ListenableBuilder(
-      listenable: viewModel, // Observa o HomeViewModel
+  Widget _knowledgeCarousel(BuildContext context) {
+    return AnimatedBuilder(
+      animation: viewModel, // Observa o HomeViewModel
       builder: (context, child) {
-        final knowledgeItems =
-            viewModel.getHomeCommand.result?.asValue?.value ?? [];
-
-        if (viewModel.getHomeCommand.running) {
-          return Center(child: CircularProgressIndicator()); // Exibe um loading
-        } else if (viewModel.getHomeCommand.isError) {
-          return Center(
+        if (viewModel.isLoading) {
+          return const Center(
+              child: CircularProgressIndicator()); // Exibe um loading
+        } else if (viewModel.erroMessage != null) {
+          return const Center(
               child: Text(
                   'Erro ao carregar os dados')); // Exibe uma mensagem de erro
-        } else if (knowledgeItems.isEmpty) {
-          return Center(
+        } else if (viewModel.knowledges.isEmpty) {
+          return const Center(
               child: Text(
                   'Nenhum dado disponível')); // Exibe uma mensagem se não houver dados
         }
-
+        final knowledgeItems = viewModel.knowledges;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
-                titulo,
-                style: const TextStyle(
+                "Áreas de conhecimento",
+                style: TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
                 ),
@@ -224,10 +234,7 @@ class HomeView extends StatelessWidget {
                   final item = knowledgeItems[index];
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: _knowledgecard(
-                      context: context,
-                      title: item.name, // Use o título do item
-                    ),
+                    child: _knowledgecard(context: context, item: item),
                   );
                 },
               ),

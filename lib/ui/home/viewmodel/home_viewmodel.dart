@@ -1,22 +1,29 @@
-import 'package:aranduapp/core/state/command.dart';
-import 'package:aranduapp/ui/home/model/home_model.dart';
-import 'package:aranduapp/ui/home/model/home_request.dart';
 import 'package:aranduapp/ui/home/service/home_service.dart';
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  late Command1<List<HomeModel>, String> getHomeCommand;
+  final HomeService _homeService = HomeService();
+  List<Map<String, dynamic>> _knowledges = [];
+  bool _isLoading = false;
+  String? _errorMessage;
 
-  HomeViewModel() {
-    getHomeCommand = Command1(getKnowledges);
-  }
+  List<Map<String, dynamic>> get knowledges => _knowledges;
+  bool get isLoading => _isLoading;
+  String? get erroMessage => _errorMessage;
 
-  Future<Result<List<HomeModel>>> getKnowledges(String name) async {
-    List<HomeModel> res = await GetIt.instance<HomeService>()
-        .getKnowledges(HomeRequest(name: name));
+  Future<void> fetchKnowledges() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
 
-    return Result.value(res);
+    final result = await _homeService.getKnowledges();
+    if (result != null) {
+      _knowledges = result;
+    } else {
+      _errorMessage = "Erro ao carregar os dados";
+    }
+
+    _isLoading = false;
+    notifyListeners();
   }
 }

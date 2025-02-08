@@ -149,23 +149,25 @@ class _TrailsScreen extends StatelessWidget {
         var trails = viewModel.getTrailsCommand.result!.asValue!.value[index];
         return ListTile(
           title: Center(
-            child: FloatingActionButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                elevation: 5,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                onPressed: () {
-                  if (trails.contects != null) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => PagesContentView(
-                          listContent: trails.contects ?? [],
-                        ),
+            child: FloatingActionButton.extended(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(28),
+              ),
+              elevation: 5,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              onPressed: () {
+                if (trails.contects != null) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => PagesContentView(
+                        listContent: trails.contects ?? [],
                       ),
-                    );
-                  }
-                }),
+                    ),
+                  );
+                }
+              },
+              label: Text(trails.name),
+            ),
           ),
         );
       },

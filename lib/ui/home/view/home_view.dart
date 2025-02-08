@@ -71,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               // Imagem com deslocamento para a esquerda
               Transform.translate(
-                offset: const Offset(-10, 0), // Move 30 pixels para a esquerda
+                offset: const Offset(-5, -5), // Move 30 pixels para a esquerda
                 child: Image.asset(
                   'assets/images/Logo.png',
                   width: circleDiameter * 0.24,

@@ -6,8 +6,6 @@ import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
-import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
-import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';

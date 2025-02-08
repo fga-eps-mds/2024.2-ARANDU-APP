@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/home/viewmodel/home_viewmodel.dart';
+import 'package:aranduapp/ui/shared/grafismo.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -22,7 +23,15 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        flexibleSpace: CustomPaint(
+          size: Size(double.infinity, kToolbarHeight),
+          painter: CustomPatternPainter(colors),
+        ),
+      ),
       body: Center(
         child: SingleChildScrollView(
           child: Column(

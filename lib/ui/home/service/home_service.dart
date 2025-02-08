@@ -1,11 +1,9 @@
 import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/studio_maker_api.dart';
-import 'package:aranduapp/ui/home/model/home_knowledge_request.dart';
 import 'package:dio/dio.dart';
 
 class HomeService {
-  Future<List<Map<String, dynamic>>?> getKnowledges(
-      HomeRequest homeRequest) async {
+  Future<List<Map<String, dynamic>>?> getKnowledges() async {
     try {
       String path = '/knowledges';
       Response response = await StudioMakerApi.getInstance().get(path: path);
@@ -21,13 +19,15 @@ class HomeService {
     }
   }
 
-  Future<List<Map<String, dynamic>>?> getSubjects(
+  Future<List<Map<String, dynamic>>?> getSubjectsByKnowledges(
       String knowledgeId, String name) async {
     try {
-      String path = '/knowledges/$knowledgeId';
+      String path = '/knowledges/$knowledgeId/subjects';
       Response response = await StudioMakerApi.getInstance().get(path: path);
       if (response.statusCode == 200 && response.data != null) {
-        return List<Map<String, dynamic>>.from(response.data);
+        final data = response.data;
+        final subjectsList = data['subjects'];
+        return List<Map<String, dynamic>>.from(subjectsList);
       } else {
         Log.e('Erro ao buscar as disciplinas de $name :${response.statusCode}');
         return null;

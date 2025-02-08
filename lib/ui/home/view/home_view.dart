@@ -31,21 +31,17 @@ class _HomeViewState extends State<HomeView> {
           size: const Size(double.infinity, kToolbarHeight),
           painter: CustomPatternPainter(colors),
         ),
+        toolbarHeight: 20,
       ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _logo(context),
-              const SizedBox(height: 20),
-              _searchbar(context),
-              const SizedBox(height: 40),
-              _knowledgeCarousel(context),
-            ],
-          ),
-        ),
+      body: ListView(
+        padding: EdgeInsets.zero, // Remove padding extra
+        children: [
+          _logo(context),
+          const SizedBox(height: 20),
+          _searchbar(context),
+          const SizedBox(height: 40),
+          _knowledgeCarousel(context),
+        ],
       ),
     );
   }

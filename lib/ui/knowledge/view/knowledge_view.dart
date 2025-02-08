@@ -220,7 +220,7 @@ class _KnowledgeViewState extends State<KnowledgeView> {
               child: PageView.builder(
                 controller: PageController(
                   viewportFraction: 0.5,
-                  initialPage: 2,
+                  initialPage: 0,
                 ),
                 itemCount: knowledgeItems.length,
                 itemBuilder: (context, index) {

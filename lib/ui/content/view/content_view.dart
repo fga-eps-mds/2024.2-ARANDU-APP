@@ -85,8 +85,40 @@ class ContentScreen extends StatelessWidget {
 
         return Column(
           children: [
+            // Barra de progresso
             _buildProgressBar(context),
-            _buildContent(context),
+            // Texto com o tempo estimado de leitura
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.timer_outlined, size: 16),
+                  const SizedBox(width: 8),
+                  Text(
+                    viewModel.estimatedReadingTime,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+            // Conteúdo principal
+            Expanded(
+              child: SingleChildScrollView(
+                controller: viewModel.scrollController,
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _renderMarkdown(viewModel.content!.content),
+                    if (viewModel.shouldShowButton)
+                      _buildCompletionButton(context),
+                  ],
+                ),
+              ),
+            ),
           ],
         );
       },
@@ -102,30 +134,6 @@ class ContentScreen extends StatelessWidget {
         backgroundColor: Colors.grey[300],
         valueColor: AlwaysStoppedAnimation<Color>(
           Theme.of(context).colorScheme.primary,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
-    final viewModel = Provider.of<ContentViewModel>(context, listen: true);
-    final content = viewModel.content!;
-
-    return Expanded(
-      child: SingleChildScrollView(
-        controller: viewModel.scrollController,
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _renderMarkdown(content.content),
-              if (viewModel.shouldShowButton) _buildCompletionButton(context),
-            ],
-          ),
         ),
       ),
     );

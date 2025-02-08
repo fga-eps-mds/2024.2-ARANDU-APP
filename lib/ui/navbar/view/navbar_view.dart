@@ -1,6 +1,5 @@
 import 'package:aranduapp/ui/home/view/home_view.dart';
 import 'package:aranduapp/ui/profile/view/profile_view.dart';
-import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';

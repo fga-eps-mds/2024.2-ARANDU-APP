@@ -77,6 +77,13 @@ class MockJourneyViewModel extends _i1.Mock implements _i4.JourneyViewModel {
       );
 
   @override
+  bool get isReloadingData => (super.noSuchMethod(
+        Invocation.getter(#isReloadingData),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
   bool get hasListeners => (super.noSuchMethod(
         Invocation.getter(#hasListeners),
         returnValue: false,
@@ -147,3 +154,109 @@ class MockJourneyViewModel extends _i1.Mock implements _i4.JourneyViewModel {
       );
 }
 
+/// A class which mocks [Command1].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
+  @override
+  _i6.Future<_i3.Result<T>> Function(A) get action => (super.noSuchMethod(
+        Invocation.getter(#action),
+        returnValue: (A __p0) =>
+            _i6.Future<_i3.Result<T>>.value(_FakeResult_1<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+        returnValueForMissingStub: (A __p0) =>
+            _i6.Future<_i3.Result<T>>.value(_FakeResult_1<T>(
+          this,
+          Invocation.getter(#action),
+        )),
+      ) as _i6.Future<_i3.Result<T>> Function(A));
+
+  @override
+  bool get isError => (super.noSuchMethod(
+        Invocation.getter(#isError),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get isOk => (super.noSuchMethod(
+        Invocation.getter(#isOk),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get running => (super.noSuchMethod(
+        Invocation.getter(#running),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  _i6.Future<_i3.Result<T>> execute(A? arg1) => (super.noSuchMethod(
+        Invocation.method(
+          #execute,
+          [arg1],
+        ),
+        returnValue: _i6.Future<_i3.Result<T>>.value(_FakeResult_1<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [arg1],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i6.Future<_i3.Result<T>>.value(_FakeResult_1<T>(
+          this,
+          Invocation.method(
+            #execute,
+            [arg1],
+          ),
+        )),
+      ) as _i6.Future<_i3.Result<T>>);
+
+  @override
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}

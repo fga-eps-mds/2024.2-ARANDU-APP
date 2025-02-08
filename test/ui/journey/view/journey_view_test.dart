@@ -13,14 +13,13 @@ import 'package:aranduapp/ui/shared/loading_widget.dart';
 import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'journey_view_test.mocks.dart';
 
-import '../../login/view/login_view_test.mocks.dart';
 
 @GenerateNiceMocks([MockSpec<JourneyViewModel>(), MockSpec<Command1>()])
 void main() {
   late MockJourneyViewModel mockViewModel;
   late MockCommand1<List<JourneyModel>, String> mockGetJourneyCommand;
   final testSubject =
-      SubjectModel(id: '1', name: 'Matemática', shortName: '', description: '');
+      SubjectModel(id: '1', name: 'Matemática', shortName: 'Mat', description:'Desvende os mistérios da Matemática e expanda seus horizontes intelectuais.');
 
   setUp(() async {
     mockViewModel = MockJourneyViewModel();
@@ -41,7 +40,7 @@ void main() {
     );
   }
 
-  testWidgets('Deve mostrar LoadingWidget inicialmente',
+  testWidgets('Should show LoadingWidget initially',
       (WidgetTester tester) async {
     when(mockGetJourneyCommand.running).thenReturn(true);
 
@@ -50,7 +49,7 @@ void main() {
     expect(find.byType(LoadingWidget), findsOneWidget);
   });
 
-  testWidgets('Deve mostrar lista de jornadas quando comando for bem sucedido',
+  testWidgets('Should show journey list when command is successful',
       (WidgetTester tester) async {
     final testJourneys = [
       JourneyModel(id: '1', title: 'Jornada 1', description: 'Descrição 1'),
@@ -68,7 +67,7 @@ void main() {
     expect(find.text('Jornada 2'), findsOneWidget);
   });
 
-  testWidgets('Deve mostrar erro quando comando falhar',
+  testWidgets('Should show error when command fails',
       (WidgetTester tester) async {
     when(mockGetJourneyCommand.isError).thenReturn(true);
     when(mockGetJourneyCommand.result)
@@ -78,19 +77,18 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ErrorScreen), findsOneWidget);
+    expect(find.text('Deslize para baixo \n\n Erro de conexão'), findsOneWidget);
 
-    expect(find.text('Deslize para baixo\n\n Erro de conexão'), findsOneWidget);
     expect(find.text('Algo deu errado...'), findsOneWidget);
   });
 
-  testWidgets('Deve chamar o comando execute ao iniciar a tela',
+  testWidgets('Should call execute command when screen starts',
       (WidgetTester tester) async {
     await tester.pumpWidget(createJourneyScreen());
     verify(mockGetJourneyCommand.execute(testSubject.id)).called(1);
   });
 
-  testWidgets(
-      'Deve chamar o comando execute novamente ao realizar o refresh na tela',
+  testWidgets('Should call execute command again when performing refresh on the screen',
       (WidgetTester tester) async {
     when(mockGetJourneyCommand.isOk).thenReturn(true);
     when(mockGetJourneyCommand.result).thenReturn(Result.value([

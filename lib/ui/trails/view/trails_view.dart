@@ -1,5 +1,3 @@
-import 'package:aranduapp/core/log/log.dart';
-import 'package:aranduapp/ui/content/view/content_view.dart';
 import 'package:aranduapp/ui/journey/model/journey_model.dart';
 import 'package:aranduapp/ui/pages_content/view/pages_content_view.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
@@ -108,7 +106,9 @@ class _TrailsScreen extends StatelessWidget {
               if (trails.contects != null) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => PagesContentView(listContent: trails.contects ?? [],),
+                    builder: (context) => PagesContentView(
+                      listContent: trails.contects ?? [],
+                    ),
                   ),
                 );
               }

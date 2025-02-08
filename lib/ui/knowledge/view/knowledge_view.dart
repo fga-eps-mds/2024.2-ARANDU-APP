@@ -1,19 +1,19 @@
-import 'package:aranduapp/ui/home/view/subject_by_knowledges_view.dart';
+import 'package:aranduapp/ui/subjects/view/subjects_view.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
-import 'package:aranduapp/ui/home/viewmodel/home_viewmodel.dart';
+import 'package:aranduapp/ui/knowledge/viewmodel/knowledge_viewmodel.dart';
 import 'package:aranduapp/ui/shared/grafismo.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class KnowledgeView extends StatefulWidget {
+  const KnowledgeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<KnowledgeView> createState() => _KnowledgeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  final HomeViewModel viewModel = GetIt.instance<HomeViewModel>();
+class _KnowledgeViewState extends State<KnowledgeView> {
+  final KnowledgeViewmodel viewModel = GetIt.instance<KnowledgeViewmodel>();
 
   @override
   void initState() {
@@ -149,12 +149,7 @@ class _HomeViewState extends State<HomeView> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => subjectsByKnowledgesView(
-              knowledgeId: item['_id'].toString(),
-              subjectName: item['name'].toString(),
-            ),
-          ),
+          MaterialPageRoute(builder: (context) => const Subject()),
         );
       },
       borderRadius: BorderRadius.circular(4.0),

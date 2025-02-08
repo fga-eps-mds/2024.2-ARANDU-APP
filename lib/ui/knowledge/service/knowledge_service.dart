@@ -2,7 +2,7 @@ import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/network/studio_maker_api.dart';
 import 'package:dio/dio.dart';
 
-class HomeService {
+class KnowledgeService {
   Future<List<Map<String, dynamic>>?> getKnowledges() async {
     try {
       String path = '/knowledges';

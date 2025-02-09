@@ -25,6 +25,7 @@ class _SubjectScreen extends StatelessWidget {
   final String knowledgeId;
   _SubjectScreen({required this.knowledgeId}) {
     Log.d(knowledgeId);
+
   }
 
   @override
@@ -36,6 +37,9 @@ class _SubjectScreen extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+
+
+
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
       scrolledUnderElevation: 0,
@@ -50,10 +54,10 @@ class _SubjectScreen extends StatelessWidget {
 
   Widget _buildSubjects(BuildContext context) {
     SubjectsViewmodel viewModel = Provider.of<SubjectsViewmodel>(context);
-    viewModel.subjectCommand.execute(knowledgeId);
 
     //final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
 
     return RefreshIndicator(
       onRefresh: () => viewModel.subjectCommand.execute(knowledgeId),
@@ -90,6 +94,9 @@ class _SubjectScreen extends StatelessWidget {
   }
 
   ListView _createListView(SubjectsViewmodel viewModel, double screenHeight) {
+
+    viewModel.subjectCommand.execute(knowledgeId);
+
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         itemCount: viewModel.subjectCommand.result!.asValue!.value.length,

@@ -27,7 +27,6 @@ class SubjectsViewmodel extends ChangeNotifier {
         .getSubjects(SubjectRequest(KnowledgeId: knowledgeId));
 
     _isReloadingData = true;
-    notifyListeners();
     return Result.value(res);
   }
 

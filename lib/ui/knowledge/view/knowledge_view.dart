@@ -24,23 +24,32 @@ class _KnowledgeViewState extends State<KnowledgeView> {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: CustomPaint(
-          size: const Size(double.infinity, kToolbarHeight),
-          painter: CustomPatternPainter(colors),
-        ),
-        toolbarHeight: 20,
-        backgroundColor: Colors.transparent,
+        toolbarHeight: 0,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 0,
       ),
-      body: ListView(
-        padding: EdgeInsets.zero, // Remove padding extra
+      body: Stack(
         children: [
-          _logo(context),
-          const SizedBox(height: 20),
-          _searchbar(context),
-          const SizedBox(height: 40),
-          _knowledgeCarousel(context),
+          Positioned(
+            child: CustomPaint(
+              size: const Size(double.infinity, kToolbarHeight),
+              painter: CustomPatternPainter(colors),
+            ),
+          ),
+          ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              const SizedBox(height: kToolbarHeight),
+              _logo(context),
+              const SizedBox(height: 20),
+              _searchbar(context),
+              const SizedBox(height: 40),
+              _knowledgeCarousel(context),
+            ],
+          ),
         ],
       ),
     );

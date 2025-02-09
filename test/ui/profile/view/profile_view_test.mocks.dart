@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
+import 'dart:ui' as _i7;
 
 import 'package:aranduapp/core/network/token_manager/model/user_model.dart'
     as _i5;
@@ -149,7 +150,7 @@ class MockProfileViewModel extends _i1.Mock implements _i4.ProfileViewModel {
       ) as _i6.Future<_i3.Result<_i5.UserModel>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -158,7 +159,7 @@ class MockProfileViewModel extends _i1.Mock implements _i4.ProfileViewModel {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -255,7 +256,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       ) as _i6.Future<_i3.Result<T>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -264,7 +265,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

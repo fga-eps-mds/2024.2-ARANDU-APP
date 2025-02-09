@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
+import 'dart:ui' as _i7;
 
 import 'package:aranduapp/core/state/command.dart' as _i2;
 import 'package:aranduapp/ui/subjects/model/subject_model.dart' as _i5;
@@ -24,8 +25,9 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeCommand0_0<T> extends _i1.SmartFake implements _i2.Command0<T> {
-  _FakeCommand0_0(
+class _FakeCommand1_0<T, A> extends _i1.SmartFake
+    implements _i2.Command1<T, A> {
+  _FakeCommand1_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -65,25 +67,51 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
       );
 
   @override
-  _i2.Command0<List<_i5.SubjectModel>> get subjectCommand =>
+  _i2.Command1<List<_i5.SubjectModel>, String> get subjectCommand =>
       (super.noSuchMethod(
         Invocation.getter(#subjectCommand),
-        returnValue: _FakeCommand0_0<List<_i5.SubjectModel>>(
+        returnValue: _FakeCommand1_0<List<_i5.SubjectModel>, String>(
           this,
           Invocation.getter(#subjectCommand),
         ),
-        returnValueForMissingStub: _FakeCommand0_0<List<_i5.SubjectModel>>(
+        returnValueForMissingStub:
+            _FakeCommand1_0<List<_i5.SubjectModel>, String>(
           this,
           Invocation.getter(#subjectCommand),
         ),
-      ) as _i2.Command0<List<_i5.SubjectModel>>);
+      ) as _i2.Command1<List<_i5.SubjectModel>, String>);
 
   @override
-  set subjectCommand(_i2.Command0<List<_i5.SubjectModel>>? _subjectCommand) =>
+  set subjectCommand(
+          _i2.Command1<List<_i5.SubjectModel>, String>? _subjectCommand) =>
       super.noSuchMethod(
         Invocation.setter(
           #subjectCommand,
           _subjectCommand,
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i2.Command1<bool, String> get isUserSUbscribedCommand => (super.noSuchMethod(
+        Invocation.getter(#isUserSUbscribedCommand),
+        returnValue: _FakeCommand1_0<bool, String>(
+          this,
+          Invocation.getter(#isUserSUbscribedCommand),
+        ),
+        returnValueForMissingStub: _FakeCommand1_0<bool, String>(
+          this,
+          Invocation.getter(#isUserSUbscribedCommand),
+        ),
+      ) as _i2.Command1<bool, String>);
+
+  @override
+  set isUserSUbscribedCommand(
+          _i2.Command1<bool, String>? _isUserSUbscribedCommand) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #isUserSUbscribedCommand,
+          _isUserSUbscribedCommand,
         ),
         returnValueForMissingStub: null,
       );
@@ -96,18 +124,19 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
       ) as bool);
 
   @override
-  _i6.Future<_i3.Result<List<_i5.SubjectModel>>> subject() =>
+  _i6.Future<_i3.Result<List<_i5.SubjectModel>>> getSubject(
+          String? knowledgeId) =>
       (super.noSuchMethod(
         Invocation.method(
-          #subject,
-          [],
+          #getSubject,
+          [knowledgeId],
         ),
         returnValue: _i6.Future<_i3.Result<List<_i5.SubjectModel>>>.value(
             _FakeResult_1<List<_i5.SubjectModel>>(
           this,
           Invocation.method(
-            #subject,
-            [],
+            #getSubject,
+            [knowledgeId],
           ),
         )),
         returnValueForMissingStub:
@@ -115,14 +144,14 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
                 _FakeResult_1<List<_i5.SubjectModel>>(
           this,
           Invocation.method(
-            #subject,
-            [],
+            #getSubject,
+            [knowledgeId],
           ),
         )),
       ) as _i6.Future<_i3.Result<List<_i5.SubjectModel>>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -131,7 +160,7 @@ class MockSubjectsViewmodel extends _i1.Mock implements _i4.SubjectsViewmodel {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i7.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

@@ -3,8 +3,9 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:aranduapp/core/state/command.dart' as _i2;
-import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart' as _i3;
+import 'dart:ui' as _i3;
+
+import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -20,42 +21,10 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeCommand0_0<T> extends _i1.SmartFake implements _i2.Command0<T> {
-  _FakeCommand0_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [NavbarViewModel].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNavbarViewModel extends _i1.Mock implements _i3.NavbarViewModel {
-  @override
-  _i2.Command0<void> get navbarCommand => (super.noSuchMethod(
-        Invocation.getter(#navbarCommand),
-        returnValue: _FakeCommand0_0<void>(
-          this,
-          Invocation.getter(#navbarCommand),
-        ),
-        returnValueForMissingStub: _FakeCommand0_0<void>(
-          this,
-          Invocation.getter(#navbarCommand),
-        ),
-      ) as _i2.Command0<void>);
-
-  @override
-  set navbarCommand(_i2.Command0<void>? _navbarCommand) => super.noSuchMethod(
-        Invocation.setter(
-          #navbarCommand,
-          _navbarCommand,
-        ),
-        returnValueForMissingStub: null,
-      );
-
+class MockNavbarViewModel extends _i1.Mock implements _i2.NavbarViewModel {
   @override
   int get selectedIndex => (super.noSuchMethod(
         Invocation.getter(#selectedIndex),
@@ -80,7 +49,7 @@ class MockNavbarViewModel extends _i1.Mock implements _i3.NavbarViewModel {
       );
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i3.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -89,7 +58,7 @@ class MockNavbarViewModel extends _i1.Mock implements _i3.NavbarViewModel {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i3.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

@@ -67,29 +67,45 @@ class _JourneyScreen extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => viewModel.getJourneyCommand.execute(subject.id),
       child: ListenableBuilder(
-        listenable: viewModel.getJourneyCommand,
-        builder: (context, child) {
-          if (viewModel.getJourneyCommand.isOk) {
-            return _buildListView(context);
-          } else if (viewModel.getJourneyCommand.isError) {
-            return ErrorScreen(message: "Deslize para baixo\n\n ${viewModel.getJourneyCommand.result!.asError!.error.toString()}");
-          } else {
-            return const LoadingWidget();
-          }
-        },
-      ),
+          listenable: viewModel.getJourneyCommand,
+          builder: (context, child) {
+            if (viewModel.getJourneyCommand.isOk) {
+              return _buildListView(context);
+            } else {
+              return SingleChildScrollView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: Center(
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        if (viewModel.getJourneyCommand.isError)
+                          ErrorScreen(
+                            message:
+                                "Deslize para baixo \n\n ${viewModel.getJourneyCommand.result!.asError!.error.toString()}",
+                          )
+                        else if (!viewModel.isReloadingData)
+                          const LoadingWidget(),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }
+          }),
     );
   }
 
   ListView _buildListView(BuildContext context) {
-
     JourneyViewModel viewModel = Provider.of<JourneyViewModel>(context);
 
     return ListView.builder(
         itemCount: viewModel.getJourneyCommand.result!.asValue!.value.length,
         shrinkWrap: true,
         itemBuilder: (context, index) {
-          var journey = viewModel.getJourneyCommand.result!.asValue!.value[index];
+          var journey =
+              viewModel.getJourneyCommand.result!.asValue!.value[index];
           return ListTile(
             leading: Icon(
               Icons.border_right,
@@ -97,18 +113,18 @@ class _JourneyScreen extends StatelessWidget {
               size: 32,
             ),
             title: Text(journey.title),
-            subtitle: Text(journey.description?? "Sem descrição"),
+            subtitle: Text(journey.description ?? "Sem descrição"),
             trailing: Icon(
               Icons.chevron_right,
               color: Theme.of(context).colorScheme.primary,
               size: 32,
             ),
             onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => Trails(journey: journey),
-              ),
-            );
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => Trails(journey: journey),
+                ),
+              );
             },
           );
         });

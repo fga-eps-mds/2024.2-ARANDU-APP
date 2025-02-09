@@ -51,18 +51,31 @@ class _SubjectScreen extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return RefreshIndicator(
-      onRefresh: viewModel.subjectCommand.execute,
+      onRefresh: () async { await viewModel.subjectCommand.execute();},
       child: ListenableBuilder(
         listenable:  viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
             return _createListView(viewModel, screenHeight);
-          } else if (viewModel.subjectCommand.isError) {
-            return ErrorScreen(
-                message:
-                    "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}");
           } else {
-            return const LoadingWidget();
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (viewModel.subjectCommand.isError)
+                        ErrorScreen(message:"Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}",
+                      )
+                      else if (!viewModel.isReloadingData)
+                        const LoadingWidget(),
+                    ],
+                  ),
+                ),
+              ),
+            ); 
           }
         },
       ),

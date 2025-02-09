@@ -70,12 +70,27 @@ class _TrailsScreen extends StatelessWidget {
         builder: (context, child) {
           if (viewModel.getTrailsCommand.isOk) {
             return _buildListView(context);
-          } else if (viewModel.getTrailsCommand.isError) {
-            return ErrorScreen(
-                message:
-                    "Deslize para baixo\n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}");
           } else {
-            return const LoadingWidget();
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (viewModel.getTrailsCommand.isError)
+                        ErrorScreen(
+                          message:
+                              "Deslize para baixo \n\n ${viewModel.getTrailsCommand.result!.asError!.error.toString()}",
+                        )
+                      else if (!viewModel.isReloadingData)
+                        const LoadingWidget(),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

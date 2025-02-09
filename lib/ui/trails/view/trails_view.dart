@@ -35,7 +35,8 @@ class _TrailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: SingleChildScrollView(
-        child: Center(
+        child: Align(
+          alignment: Alignment.centerLeft,
           child: Column(
             children: [
               CustomPaint(
@@ -49,9 +50,7 @@ class _TrailsScreen extends StatelessWidget {
                 painter: Corpo(colors),
                 child: SizedBox(
                   width: 100,
-                  child: Center(
-                    child: _buildTrails(context),
-                  ),
+                  child: _buildTrails(context),
                 ),
               ),
               CustomPaint(
@@ -133,26 +132,40 @@ class _TrailsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         var trails = viewModel.getTrailsCommand.result!.asValue!.value[index];
         return ListTile(
-          minTileHeight: 100,
-          title: Center(
-            child: FloatingActionButton.extended(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(28),
-              ),
-              elevation: 5,
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              onPressed: () {
-                if (trails.contects != null) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => PagesContentView(
-                        listContent: trails.contects ?? [],
-                      ),
+          minTileHeight: 300,
+          title: FloatingActionButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(28),
+            ),
+            elevation: 5,
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            onPressed: () {
+              if (trails.contects != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => PagesContentView(
+                      listContent: trails.contects ?? [],
                     ),
-                  );
-                }
-              },
-              label: Text(trails.name),
+                  ),
+                );
+              }
+            },
+          ),
+          subtitle: Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  child: Text(trails.name),
+                ),
+                SizedBox(
+                  child: Text(trails.id),
+                ),
+              ],
             ),
           ),
         );

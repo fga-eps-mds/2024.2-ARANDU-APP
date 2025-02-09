@@ -58,6 +58,7 @@ class _SubjectScreen extends StatelessWidget {
     //final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    viewModel.subjectCommand.execute(knowledgeId);
 
     return RefreshIndicator(
       onRefresh: () => viewModel.subjectCommand.execute(knowledgeId),
@@ -95,7 +96,6 @@ class _SubjectScreen extends StatelessWidget {
 
   ListView _createListView(SubjectsViewmodel viewModel, double screenHeight) {
 
-    viewModel.subjectCommand.execute(knowledgeId);
 
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),

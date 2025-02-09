@@ -145,7 +145,7 @@ class _KnowledgeViewState extends State<KnowledgeView> {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const Subject()),
+          MaterialPageRoute(builder: (context) =>  Subject(knowledgeId: item['_id'],)),
         );
       },
       borderRadius: BorderRadius.circular(4.0),

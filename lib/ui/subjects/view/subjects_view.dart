@@ -9,19 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Subject extends StatelessWidget {
-  const Subject({super.key});
+  final String knowledgeId;
+  const Subject({super.key, required this.knowledgeId});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return ChangeNotifierProvider<SubjectsViewmodel>.value(
       value: GetIt.instance<SubjectsViewmodel>(),
-      child: const _SubjectScreen(),
+      child: _SubjectScreen(knowledgeId: knowledgeId),
     );
   }
 }
 
 class _SubjectScreen extends StatelessWidget {
-  const _SubjectScreen();
+  final String knowledgeId;
+   _SubjectScreen({required this.knowledgeId}){Log.d(knowledgeId);}
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +48,16 @@ class _SubjectScreen extends StatelessWidget {
 
   Widget _buildSubjects(BuildContext context) {
     SubjectsViewmodel viewModel = Provider.of<SubjectsViewmodel>(context);
+    viewModel.subjectCommand.execute(knowledgeId);
 
     //final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return RefreshIndicator(
-      onRefresh: viewModel.subjectCommand.execute,
+      onRefresh: () =>
+        viewModel.subjectCommand.execute(knowledgeId),
       child: ListenableBuilder(
-        listenable:  viewModel.subjectCommand,
+        listenable: viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
             return _createListView(viewModel, screenHeight);

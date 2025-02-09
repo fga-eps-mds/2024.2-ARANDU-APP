@@ -1,6 +1,7 @@
 import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
+import 'package:aranduapp/ui/subjects/model/subject_request.dart';
 import 'package:aranduapp/ui/subjects/service/subjects_service.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
@@ -9,18 +10,17 @@ import 'package:get_it/get_it.dart';
 class SubjectsViewmodel extends ChangeNotifier {
   List<SubjectModel> subjects = [];
 
-  late Command0<List<SubjectModel>> subjectCommand;
+  late Command1<List<SubjectModel>, String> subjectCommand;
   late Command1<bool, String> isUserSUbscribedCommand;
 
   SubjectsViewmodel() {
-    subjectCommand = Command0(_subject);
-    subjectCommand.execute();
+    subjectCommand = Command1(getSubject);
 
     isUserSUbscribedCommand = Command1<bool, String>(_isUserSUbscribed);
   }
 
-  Future<Result<List<SubjectModel>>> _subject() async {
-    final res = await GetIt.instance<SubjectService>().getSubjects();
+  Future<Result<List<SubjectModel>>> getSubject(String knowledgeId) async {
+    List<SubjectModel> res = await GetIt.instance<SubjectService>().getSubjects(SubjectRequest(KnowledgeId: knowledgeId));
 
     return Result.value(res);
   }

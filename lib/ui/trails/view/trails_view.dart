@@ -41,28 +41,13 @@ class _TrailsScreen extends StatelessWidget {
               CustomPaint(
                 painter: Fundo(colors),
                 child: const SizedBox(
-                  height: 100,
-                  width: 200,
-                ),
-              ),
-              CustomPaint(
-                painter: Square(colors),
-                child: const SizedBox(
-                  height: 100,
-                  width: 200,
-                ),
-              ),
-              CustomPaint(
-                painter: Base(colors),
-                child: const SizedBox(
-                  height: 50,
+                  height: 250,
                   width: 200,
                 ),
               ),
               CustomPaint(
                 painter: Corpo(colors),
                 child: SizedBox(
-                  height: 100,
                   width: 100,
                   child: Center(
                     child: _buildTrails(context),
@@ -148,6 +133,7 @@ class _TrailsScreen extends StatelessWidget {
       itemBuilder: (context, index) {
         var trails = viewModel.getTrailsCommand.result!.asValue!.value[index];
         return ListTile(
+          minTileHeight: 100,
           title: Center(
             child: FloatingActionButton.extended(
               shape: RoundedRectangleBorder(

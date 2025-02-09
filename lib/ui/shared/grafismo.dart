@@ -25,8 +25,8 @@ class CustomPatternPainter extends CustomPainter {
       }
 
       path.moveTo(x, 0);
-      path.lineTo(x + tileWidth / 2, 0);
-      path.lineTo(x, tileHeight / 2);
+      path.lineTo(x + (tileWidth / 2), 0);
+      path.lineTo(x, (tileHeight / 2) - 2);
       path.lineTo(x, 0);
       path.close();
 
@@ -36,10 +36,22 @@ class CustomPatternPainter extends CustomPainter {
       path.lineTo(x + tileWidth, tileHeight);
       path.close();
 
-      path.moveTo(x + tileWidth * 3 / 2, 0);
+      path.moveTo(x + (tileWidth * 3 / 2), 0);
       path.lineTo(x + tileWidth * 2, 0);
-      path.lineTo(x + tileWidth * 2, tileHeight / 2);
-      path.lineTo(x + tileWidth * 3 / 2, 0);
+      path.lineTo(x + tileWidth * 2, (tileHeight / 2) - 2);
+      path.lineTo(x + (tileWidth * 3 / 2), 0);
+      path.close();
+
+      path.moveTo(x, (tileHeight / 2));
+      path.lineTo(x, (tileHeight * 3 / 2));
+      path.lineTo(x + (tileWidth / 2), tileHeight);
+      path.moveTo(x, (tileHeight / 2));
+      path.close();
+
+      path.moveTo(x + tileWidth * 2, (tileHeight / 2));
+      path.lineTo(x + tileWidth * 2, (tileHeight * 3 / 2));
+      path.lineTo(x + (tileWidth * 3 / 2), tileHeight);
+      path.moveTo(x + tileWidth * 2, (tileHeight / 2));
       path.close();
     }
 

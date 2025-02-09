@@ -1,6 +1,7 @@
 import 'package:aranduapp/core/state/command.dart';
 import 'package:aranduapp/ui/join_subjects/view/join_subjects_view.dart';
 import 'package:aranduapp/ui/join_subjects/viewmodel/join_subjects_viewmodel.dart';
+import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/journey/viewmodel/journey_viewmodel.dart';
 import 'package:aranduapp/ui/shared/command_button.dart';
 import 'package:aranduapp/ui/subjects/model/subject_model.dart';
@@ -65,7 +66,7 @@ void main() {
     verify(mockJoinsubjectsCommand1.execute(testSubject.id)).called(1);
   });
 
- /* testWidgets('navigates to SubjectsView after successful join',
+  testWidgets('navigates to SubjectsView after successful join',
       (WidgetTester tester) async {
     when(mockJoinsubjectsCommand1.isOk).thenReturn(true);
 
@@ -74,5 +75,5 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(Journey), findsOneWidget);
-  });*/
+  });
 }

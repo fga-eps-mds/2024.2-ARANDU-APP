@@ -3,6 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:ui' as _i4;
+
 import 'package:aranduapp/ui/onboarding/viewmodel/onboarding_viewmodel.dart'
     as _i3;
 import 'package:flutter/material.dart' as _i2;
@@ -101,7 +103,7 @@ class MockOnboardingViewModel extends _i1.Mock
       );
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i4.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -110,7 +112,7 @@ class MockOnboardingViewModel extends _i1.Mock
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i4.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

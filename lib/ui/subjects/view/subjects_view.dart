@@ -1,27 +1,32 @@
 import 'package:aranduapp/core/log/log.dart';
 import 'package:aranduapp/ui/journey/view/journey_view.dart';
 import 'package:aranduapp/ui/join_subjects/view/join_subjects_view.dart';
-import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:aranduapp/ui/shared/erro_screen.dart';
 import 'package:aranduapp/ui/shared/loading_widget.dart';
+import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Subject extends StatelessWidget {
-  const Subject({super.key});
+  final String knowledgeId;
+  const Subject({super.key, required this.knowledgeId});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<SubjectsViewmodel>.value(
       value: GetIt.instance<SubjectsViewmodel>(),
-      child: const _SubjectScreen(),
+      child: _SubjectScreen(knowledgeId: knowledgeId),
     );
   }
 }
 
 class _SubjectScreen extends StatelessWidget {
-  const _SubjectScreen();
+  final String knowledgeId;
+  _SubjectScreen({required this.knowledgeId}) {
+    Log.d(knowledgeId);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +37,9 @@ class _SubjectScreen extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) {
+
+
+
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surface,
       scrolledUnderElevation: 0,
@@ -50,19 +58,36 @@ class _SubjectScreen extends StatelessWidget {
     //final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    viewModel.subjectCommand.execute(knowledgeId);
+
     return RefreshIndicator(
-      onRefresh: viewModel.subjectCommand.execute,
+      onRefresh: () => viewModel.subjectCommand.execute(knowledgeId),
       child: ListenableBuilder(
-        listenable:  viewModel.subjectCommand,
+        listenable: viewModel.subjectCommand,
         builder: (context, child) {
           if (viewModel.subjectCommand.isOk) {
             return _createListView(viewModel, screenHeight);
-          } else if (viewModel.subjectCommand.isError) {
-            return ErrorScreen(
-                message:
-                    "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}");
           } else {
-            return const LoadingWidget();
+            return SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Center(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (viewModel.subjectCommand.isError)
+                        ErrorScreen(
+                          message:
+                              "Deslize para baixo \n\n ${viewModel.subjectCommand.result!.asError!.error.toString()}",
+                        )
+                      else if (!viewModel.isReloadingData)
+                        const LoadingWidget(),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),
@@ -70,6 +95,8 @@ class _SubjectScreen extends StatelessWidget {
   }
 
   ListView _createListView(SubjectsViewmodel viewModel, double screenHeight) {
+
+
     return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
         itemCount: viewModel.subjectCommand.result!.asValue!.value.length,

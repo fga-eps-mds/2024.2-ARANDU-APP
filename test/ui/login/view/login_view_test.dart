@@ -1,4 +1,6 @@
 import 'package:aranduapp/core/state/command.dart';
+import 'package:aranduapp/ui/knowledge/view/knowledge_view.dart';
+import 'package:aranduapp/ui/knowledge/viewmodel/knowledge_viewmodel.dart';
 import 'package:aranduapp/ui/login/model/login_request.dart';
 import 'package:aranduapp/ui/login/view/login_view.dart';
 import 'package:aranduapp/ui/login/viewmodel/login_viewmodel.dart';
@@ -48,6 +50,7 @@ void main() {
     GetIt.I.registerLazySingleton<LoginViewModel>(() => mockViewModel);
     GetIt.I.registerLazySingleton<NavbarViewModel>(() => mockNavbarViewModel);
     GetIt.I.registerLazySingleton<SubjectsViewmodel>(() => SubjectsViewmodel());
+    GetIt.I.registerLazySingleton<KnowledgeViewmodel>(() => KnowledgeViewmodel());
   });
 
   Widget createLoginScreen() {

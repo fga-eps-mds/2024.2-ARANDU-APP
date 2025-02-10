@@ -6,6 +6,5 @@ final GetIt locator = GetIt.instance;
 
 void setupEditProfileDI() {
   locator.registerLazySingleton(() => EditProfileService());
-
   locator.registerFactory(() => EditProfileViewModel());
 }

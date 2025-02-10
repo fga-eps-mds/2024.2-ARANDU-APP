@@ -1,3 +1,4 @@
+import 'package:aranduapp/ui/knowledge/viewmodel/knowledge_viewmodel.dart';
 import 'package:aranduapp/ui/navbar/view/navbar_view.dart';
 import 'package:aranduapp/ui/navbar/viewmodel/navbar_viewmodel.dart';
 import 'package:aranduapp/ui/subjects/viewmodel/subjects_viewmodel.dart';
@@ -22,6 +23,8 @@ void main() {
 
     GetIt.I.registerSingleton<NavbarViewModel>(mockNavbarViewModel);
     GetIt.I.registerLazySingleton<SubjectsViewmodel>(() => SubjectsViewmodel());
+    GetIt.I.registerLazySingleton<KnowledgeViewmodel>(() => KnowledgeViewmodel());
+
   });
 
   Widget createScreen() {

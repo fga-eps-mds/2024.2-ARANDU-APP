@@ -141,4 +141,30 @@ void main() {
     expect(viewModel.progress,
         greaterThan(0.0)); // Checa se a barra de progresso atualizou
   });
+  testWidgets('Should display loading indicator when request is in progress',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createTestWidget(
+      child: ListenableBuilder(
+        listenable: viewModel.contentCommand,
+        builder: (context, child) {
+          if (viewModel.contentCommand.running) {
+            return const CircularProgressIndicator();
+          }
+          return const Text('Content Loaded');
+        },
+      ),
+    ));
+
+    // Execute request
+    viewModel.contentCommand.execute('test-id');
+    await tester.pump();
+
+    // Check if loading indicator is present
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    await tester.pumpAndSettle(); // Wait for loading to finish
+
+    // Verify content is displayed
+    expect(find.text('Content Loaded'), findsOneWidget);
+  });
 }

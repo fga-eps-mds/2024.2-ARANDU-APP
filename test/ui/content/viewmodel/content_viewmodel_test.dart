@@ -24,11 +24,13 @@ void main() {
 
     viewModel = ContentViewModel();
 
+    // Simulando a API corretamente
     when(mockContentService.getContentsById(any)).thenAnswer((_) async {
-      await Future.delayed(const Duration(seconds: 2)); // Simula um delay
+      await Future.delayed(
+          const Duration(milliseconds: 500)); // Simula pequeno delay
       return Result.value(ContentRequest(
-        title: 'Teste',
-        content: 'Conteúdo de teste',
+        title: 'Test',
+        content: 'Test content',
         trailID: 'trail-123',
       ));
     });
@@ -50,7 +52,7 @@ void main() {
     );
   }
 
-  testWidgets('showing if content is loading or not',
+  testWidgets('Should update UI when state changes',
       (WidgetTester tester) async {
     await tester.pumpWidget(createTestWidget(
       child: ListenableBuilder(
@@ -59,22 +61,52 @@ void main() {
           if (viewModel.contentCommand.running) {
             return const CircularProgressIndicator();
           }
-          return const Text('Conteúdo Carregado');
+          return const Text('Content Loaded');
         },
       ),
     ));
 
     viewModel.contentCommand.execute('test-id');
-    await tester.pump(); // Inicia o loading
+    await tester.pump(); // Começa a carregar
 
+    // Agora verifica se o indicador de carregamento aparece
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-    await tester.pumpAndSettle();
+    await tester.pumpAndSettle(); // Aguarda finalização do carregamento
 
-    expect(find.text('Conteúdo Carregado'), findsOneWidget);
+    // Verifica se o conteúdo carregado aparece corretamente
+    expect(find.text('Content Loaded'), findsOneWidget);
   });
 
-  testWidgets('progressbar is working or not', (WidgetTester tester) async {
+  testWidgets(
+      'Should show loading indicator while async operation is in progress',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(createTestWidget(
+      child: ListenableBuilder(
+        listenable: viewModel.contentCommand,
+        builder: (context, child) {
+          if (viewModel.contentCommand.running) {
+            return const CircularProgressIndicator();
+          }
+          return const Text('Content Loaded');
+        },
+      ),
+    ));
+
+    // Simula carregamento
+    viewModel.contentCommand.execute('test-id');
+    await tester.pump();
+
+    // O indicador de carregamento deve estar na tela
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    await tester.pumpAndSettle(); // Aguarda finalização
+
+    // Agora, o conteúdo carregado deve aparecer
+    expect(find.text('Content Loaded'), findsOneWidget);
+  });
+
+  testWidgets('Progress bar is working correctly', (WidgetTester tester) async {
     await tester.pumpWidget(createTestWidget(
       child: SingleChildScrollView(
         child: Column(
@@ -91,7 +123,7 @@ void main() {
               child: SingleChildScrollView(
                 key: const Key('scrollableContent'),
                 controller: viewModel.scrollController,
-                child: const Text('Conteúdo longo'),
+                child: const Text('Long content'),
               ),
             ),
           ],
@@ -106,6 +138,7 @@ void main() {
     viewModel.scrollController.notifyListeners();
     await tester.pump();
 
-    expect(viewModel.progress, greaterThan(0.0));
+    expect(viewModel.progress,
+        greaterThan(0.0)); // Checa se a barra de progresso atualizou
   });
 }

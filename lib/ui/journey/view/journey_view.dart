@@ -120,6 +120,7 @@ class _JourneyScreen extends StatelessWidget {
               size: 32,
             ),
             onTap: () {
+              viewModel.subscribedJourney(journey.id);
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => Trails(journey: journey),

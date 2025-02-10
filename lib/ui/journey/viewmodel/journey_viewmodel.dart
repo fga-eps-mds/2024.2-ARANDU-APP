@@ -8,13 +8,23 @@ import 'package:get_it/get_it.dart';
 
 class JourneyViewModel extends ChangeNotifier {
   late Command1<List<JourneyModel>, String> getJourneyCommand;
+  late Command1<void, String> subscribedJourneyCommand;
+
   bool _isReloadingData = false;
 
   JourneyViewModel() {
     getJourneyCommand = Command1(getJourney);
+
+    subscribedJourneyCommand = Command1(subscribedJourney);
   }
 
   bool get isReloadingData => _isReloadingData;
+
+  Future<Result<void>> subscribedJourney(String journeyId) async {
+    await GetIt.instance<JourneyService>().subscribedJourney(journeyId);
+
+    return Result.value(null);
+  }
 
   Future<Result<List<JourneyModel>>> getJourney(String subjectId) async {
     _isReloadingData = true;

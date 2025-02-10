@@ -47,7 +47,7 @@ dependencies:
   build_runner: ^2.4.13
   async: ^2.11.0
   get_it: ^8.0.3
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   flutter_html: ^3.0.0-beta.2
   flutter_markdown: ^0.7.5
   markdown: ^7.3.0
@@ -59,7 +59,7 @@ dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "./assets/images/Logo-App.png"
+  image_path: "./assets/images/Logo-App-v-2.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
 # web:
 #   generate: true
@@ -100,6 +100,14 @@ flutter:
     - assets/images/Component2.png
     - assets/images/Component3.png
     - assets/images/Logo.png
+    - assets/images/Logo-App.png
+    - assets/images/Logo-App-v-2.png
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/Logo-App-v-2.png" # Caminho da sua imagem
+
 
 
   # To add assets to your application, add an assets section, like this:

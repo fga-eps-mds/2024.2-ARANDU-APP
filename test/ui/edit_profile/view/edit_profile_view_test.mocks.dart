@@ -4,6 +4,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i7;
+import 'dart:ui' as _i8;
 
 import 'package:aranduapp/core/network/token_manager/model/user_model.dart'
     as _i6;
@@ -168,7 +169,7 @@ class MockEditProfileViewModel extends _i1.Mock
       ) as _i7.Future<_i3.Result<_i6.UserModel>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -177,7 +178,7 @@ class MockEditProfileViewModel extends _i1.Mock
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -275,7 +276,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       ) as _i7.Future<_i3.Result<T>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -284,7 +285,7 @@ class MockCommand1<T, A> extends _i1.Mock implements _i2.Command1<T, A> {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],
@@ -381,7 +382,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       ) as _i7.Future<_i3.Result<T>>);
 
   @override
-  void addListener(dynamic listener) => super.noSuchMethod(
+  void addListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #addListener,
           [listener],
@@ -390,7 +391,7 @@ class MockCommand0<T> extends _i1.Mock implements _i2.Command0<T> {
       );
 
   @override
-  void removeListener(dynamic listener) => super.noSuchMethod(
+  void removeListener(_i8.VoidCallback? listener) => super.noSuchMethod(
         Invocation.method(
           #removeListener,
           [listener],

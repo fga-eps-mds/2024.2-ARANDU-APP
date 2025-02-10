@@ -28,7 +28,7 @@ void main() {
   });
 
   Widget createScreen() {
-    return const MaterialApp( home: Subject(),
+    return const MaterialApp( home: Subject(knowledgeId: "teste Marina"),
     );
   }
 
